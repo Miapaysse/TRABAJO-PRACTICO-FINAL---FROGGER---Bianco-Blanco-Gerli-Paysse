@@ -18,6 +18,22 @@
  ******************************************************************************/
 
 
+typedef enum{
+    START,
+    ROAD,
+    SAFE,
+    WATER,
+    GOAL
+} Zone;
+
+typedef struct {
+    Zone zones[MAP_HEIGHT];
+    Entity entities[MAX_ENTITIES];
+    int entityCount;
+} Level;
+
+
+
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -25,11 +41,13 @@
 
 // +ej: extern unsigned int anio_actual;+
 
-
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
+ void createLevel();
+ void deleteLevel();
+ void checkLevel();
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1

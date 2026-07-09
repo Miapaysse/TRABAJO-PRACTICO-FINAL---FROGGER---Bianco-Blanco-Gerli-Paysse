@@ -1,7 +1,7 @@
 /***************************************************************************//**
   @file     +game.c+
   @brief    +funciones del juego+
-  @author   +Mia Paysse+
+  @author   +Bianco-Blanco-Gerli-Paysse+
  ******************************************************************************/
 
 /*******************************************************************************
@@ -49,7 +49,7 @@
 
  void updateGame(Game * game, Input input){
     switch ((game->state).id){
-        case MENU: //pienso un caso todo de una y dsps lo divido en funciones como en playing
+        case MENU: 
             processInputMenu(game, input);
         break;
         case PLAYING:
@@ -212,7 +212,49 @@ void processInputVictory(Game * game, Input input){
 }
 //////////////////////////////////////////////////////////POINTS
 void processInputPoints(Game * game, Input input){
-    
+        switch(input){
+                case SELECT:
+                    switch ( ((game->state).points.selected) ){
+                        case POINTS_MENU: 
+                            (game->state).id = MENU;
+                        break;
+                        case POINTS_EXIT:
+                            (game->state).id = EXIT;
+                        break;
+                    }
+                break;
+                case UP:
+                    menuPrevious(&((game->state).paused));
+                break;
+
+                case DOWN:
+                    menuNext(&((game->state).paused));
+                break;
+    }
+}
+/////////////////////////////GAME LOGIC///////////////////////
+void processInputPlaying(Game * game, Input input){
+    switch(input){
+                case SELECT:
+                    (game->state).id = PAUSED;
+                break;
+
+                case UP:
+                    moveFrog(UP);
+                break;
+
+                case DOWN:
+                    moveFrog(DOWN);
+                break;
+
+                case RIGHT:
+                    moveFrog(RIGHT);
+                break;
+
+                case LEFT:
+                    moveFrog(LEFT);
+                break;
+    }
 }
 
 /*******************************************************************************

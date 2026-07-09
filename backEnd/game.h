@@ -1,7 +1,7 @@
 /***************************************************************************//**
   @file     +game.h+
   @brief    +game data types and functions+
-  @author   +Mia Paysse+
+  @author   +Bianco-Blanco-Gerli-Paysse+
  ******************************************************************************/
 
 #ifndef _GAME_H_
@@ -26,7 +26,7 @@ typedef enum{
 } Input;
 
 typedef enum{
-   MENU=20,
+   MENU,
    PLAYING,
    PAUSED,
    VICTORY,
@@ -114,6 +114,7 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+ void processInputPlaying(){}
  
  void updateGame(Game * game, Input input);
  /**

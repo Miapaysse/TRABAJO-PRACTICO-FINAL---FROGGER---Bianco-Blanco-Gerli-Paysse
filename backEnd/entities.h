@@ -16,6 +16,19 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+
+typedef enum{
+    ENTITY_CAR,
+    ENTITY_TRUCK,
+    ENTITY_LOG,
+    ENTITY_TURTLE
+} EntityType;
+
+typedef enum{
+    DIR_LEFT,
+    DIR_RIGHT
+} Direction;
+
 typedef struct{
     int x;
     int y;
@@ -24,16 +37,14 @@ typedef struct{
 typedef struct{
     int x;
     int y;
-    int speed;
     int length;
-} Obstacle;
+    int height; 
+    int speed;
+    int direction;
+    int type;
+    bool active;
+} Entity;
 
-typedef struct{
-    int x;
-    int y;
-    int speed;
-    int length;
-} Log;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -61,7 +72,7 @@ void resetFrog();
  * @return Descripcion valor que devuelve
 */
 
-void createObstacle();
+void createEntities();
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -69,13 +80,6 @@ void createObstacle();
  * @return Descripcion valor que devuelve
 */
 
-void createLog();
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
 
 /******************************************************************************/
 
