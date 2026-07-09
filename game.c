@@ -166,13 +166,12 @@ void processInputPaused(Game * game, Input input){
 }
 
 ///////////////////////////////////////////////////////////GAME OVER
+void processInputGameOver(Game * game, Input input){}
 
 ///////////////////////////////////////////////////////////VICTORY
-void processInputVictory(Game * game, Input input){
-
-
-}
+void processInputVictory(Game * game, Input input){}
 //////////////////////////////////////////////////////////POINTS
+void processInputPoints(Game * game, Input input){}
 
 /*******************************************************************************
  *******************************************************************************
