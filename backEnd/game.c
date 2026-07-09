@@ -166,12 +166,54 @@ void processInputPaused(Game * game, Input input){
 }
 
 ///////////////////////////////////////////////////////////GAME OVER
-void processInputGameOver(Game * game, Input input){}
+void processInputGameOver(Game * game, Input input){
+        switch(input){
+                case SELECT:
+                    switch ( ((game->state).gameOver.selected) ){
+                        case GAME_OVER_MENU: 
+                            (game->state).id = MENU;
+                        break;
+                        case GAME_OVER_EXIT:
+                            (game->state).id = EXIT;
+                        break;
+                    }
+                break;
+                case UP:
+                    menuPrevious(&((game->state).paused));
+                break;
+
+                case DOWN:
+                    menuNext(&((game->state).paused));
+                break;
+    }
+}
 
 ///////////////////////////////////////////////////////////VICTORY
-void processInputVictory(Game * game, Input input){}
+void processInputVictory(Game * game, Input input){
+        switch(input){
+                case SELECT:
+                    switch ( ((game->state).victory.selected) ){
+                        case VICTORY_MENU: 
+                            (game->state).id = MENU;
+                        break;
+                        case VICTORY_EXIT:
+                            (game->state).id = EXIT;
+                        break;
+                    }
+                break;
+                case UP:
+                    menuPrevious(&((game->state).paused));
+                break;
+
+                case DOWN:
+                    menuNext(&((game->state).paused));
+                break;
+    }
+}
 //////////////////////////////////////////////////////////POINTS
-void processInputPoints(Game * game, Input input){}
+void processInputPoints(Game * game, Input input){
+    
+}
 
 /*******************************************************************************
  *******************************************************************************
