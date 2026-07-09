@@ -98,7 +98,7 @@
  void showMenu(){}
  void showPause(){}
 
-///////////////////////////////////////////MENUES///////////////
+///////////////////////////////////////////MENUS///////////////
 void menuPrevious(MenuState *menu){
     if(menu->selected == 0)
         menu->selected = menu->optionCount - 1;
