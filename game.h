@@ -21,33 +21,78 @@ typedef enum{
    UP,
    DOWN,
    LEFT,
-   RIGHT
-} Direction;
+   RIGHT,
+   SELECT,
+} Input;
 
 typedef enum{
-   MENU=5,
+   MENU=20,
    PLAYING,
    PAUSED,
+   VICTORY,
    GAME_OVER,
-   OFF
-} GameState;
+   POINTS,
+   EXIT
+} GameStateId;
+
+typedef enum{
+    MENU_PLAY,
+    MENU_POINTS,
+    MENU_EXIT,
+    MENU_COUNT
+}MenuOption;
+
+typedef enum{
+    PAUSED_MENU,
+    PAUSED_PLAY, //DISTINTO SERIA REPLAY!!!!! MANTENER VIDAS 
+    PAUSED_EXIT,
+    PAUSED_COUNT
+}PausedOption;
+
+typedef enum{
+    GAME_OVER_MENU,
+    GAME_OVER_EXIT,
+    GAME_OVER_COUNT
+}GameOverOption;
+
+typedef enum{
+    VICTORY_MENU,
+    VICTORY_EXIT,
+    VICTORY_COUNT
+}VictoryOption;
+
+typedef enum{
+    POINTS_MENU,
+    POINTS_EXIT,
+    POINTS_COUNT
+}PointsOption;
 
 typedef struct{
-   int y,
-   int x,
-} Position;
 
-int userAction;
+    int selected;
+
+    int optionCount;
+
+} MenuState;
+
+typedef struct{
+
+    MenuState menu;
+    MenuState paused;
+    MenuState gameOver;
+    MenuState victory;
+    MenuState points;
+
+    GameStateId id;
+
+} GameState;
+
 
 typedef struct {
 
    Frog frog;
 
-   Obstacle obstacles[MAX_OBSTACLES];
-
-   Log logs[MAX_LOGS];
-
-   //int obstacleCount;
+   Entity entities[MAX_ENTITIES];
 
    int score;
 
@@ -56,7 +101,7 @@ typedef struct {
    int level;
 
    GameState state;
-
+   
 } Game;
 
 /*******************************************************************************
@@ -70,7 +115,7 @@ typedef struct {
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
  
- void updateGame();
+ void updateGame(Game * game, Input input);
  /**
  * @brief TODO: updates the game
  * @param param1 Descripcion parametro 1
@@ -84,7 +129,7 @@ typedef struct {
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
- void startGame();
+ void gameInit();
  /**
  * @brief TODO: initialize the game
  * @param param1 Descripcion parametro 1
@@ -92,17 +137,13 @@ typedef struct {
  * @return Descripcion valor que devuelve
 */
 
- void renderGame();
-  /**
- * @brief TODO: initialize the game
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
+void loseLife()
 
-void showMenu();
+void updateScore();
 
-void showPause();
+
+
+
 /******************************************************************************/
 
 #endif // _GAME_H_

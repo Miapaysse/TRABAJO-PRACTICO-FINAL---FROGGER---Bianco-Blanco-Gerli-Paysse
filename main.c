@@ -6,7 +6,7 @@ int main(void)
 
     frontendInit();
 
-    while(game.state != OFF)
+    while(game.state.id != EXIT)
     {
         Input input = frontendGetInput();
 

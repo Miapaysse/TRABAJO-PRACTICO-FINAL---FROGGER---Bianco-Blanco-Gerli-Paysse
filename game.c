@@ -50,33 +50,11 @@
  void updateGame(Game * game, Input input){
     switch ((game->state).id){
         case MENU: //pienso un caso todo de una y dsps lo divido en funciones como en playing
-            switch(input){
-                case SELECT:
-                    switch ( ((game->state).menu) ){
-                        case MENU_POINTS: 
-                            (game->state).id = POINTS;
-                        break;
-                        case MENU_PLAY:
-                            (game->state).id = PLAYING;
-                        break;
-                        case MENU_EXIT:
-                            (game->state).id = EXIT;
-                        break;
-                    }
-                break;
-
-                case UP:
-                    if(((game->state).menu) == max())
-                break;
-
-                case DOWN:
-                break;
-            }
-
+            processInputMenu(game, input);
         break;
         case PLAYING:
 
-            processInput();
+            processInputPlaying();
 
             updateEntities();
 
@@ -88,38 +66,16 @@
 
         break;
         case PAUSE:
-            switch (((game->state).paused)){
-                case PAUSED_MENU: 
-                break;
-                case PAUSED_PLAY:
-                break;
-                case PAUSED_EXIT:
-                break;
-            }
+            processInputPaused(game, input);
         break;
         case VICTORY:
-            switch (((game->state).victory)){
-                case VICTORY_MENU: 
-                break;
-                case VICTORY_EXIT:
-                break;
-            }
+            processInputVictory(game, input);
         break;
         case GAME_OVER:
-            switch (((game->state).gameOver)){
-                case GAME_OVER_MENU: 
-                break;
-                case GAME_OVER_EXIT:
-                break;
-            }
+            processInputGameOver(game, input);
         break;
         case POINTS:
-            switch (((game->state).points)){
-                case GAME_OVER_MENU: 
-                break;
-                case GAME_OVER_EXIT:
-                break;
-            }
+            processInputPoints(game, input);
         break;
         case EXIT:
         break;
@@ -142,6 +98,81 @@
  void showMenu(){}
  void showPause(){}
 
+///////////////////////////////////////////MENUES///////////////
+void menuPrevious(MenuState *menu){
+    if(menu->selected == 0)
+        menu->selected = menu->optionCount - 1;
+    else
+        menu->selected--;
+}
+
+void menuNext(MenuState *menu){
+    menu->selected++;
+
+    if(menu->selected >= menu->optionCount)
+        menu->selected = 0;
+}
+
+/////////////////////////////////////////////////////////////////MENU
+void processInputMenu(Game * game, Input input){
+        switch(input){
+                case SELECT:
+                    switch ( ((game->state).menu.selected) ){
+                        case MENU_POINTS: 
+                            (game->state).id = POINTS;
+                        break;
+                        case MENU_PLAY:
+                            (game->state).id = PLAYING;
+                        break;
+                        case MENU_EXIT:
+                            (game->state).id = EXIT;
+                        break;
+                    }
+                break;
+                case UP:
+                    menuPrevious(&((game->state).menu));
+                break;
+
+                case DOWN:
+                    menuNext(&((game->state).menu));
+                break;
+        }
+}
+
+////////////////////////////////////////////////////////////////////////PAUSED
+void processInputPaused(Game * game, Input input){
+    switch(input){
+                case SELECT:
+                    switch ( ((game->state).paused.selected) ){
+                        case PAUSED_MENU: 
+                            (game->state).id = MENU;
+                        break;
+                        case PAUSED_PLAY:
+                            (game->state).id = PLAYING; //////////////ANALIZAR TEMA VIDAS REPLAY
+                        break;
+                        case PAUSED_EXIT:
+                            (game->state).id = EXIT;
+                        break;
+                    }
+                break;
+                case UP:
+                    menuPrevious(&((game->state).paused));
+                break;
+
+                case DOWN:
+                    menuNext(&((game->state).paused));
+                break;
+    }
+}
+
+///////////////////////////////////////////////////////////GAME OVER
+
+///////////////////////////////////////////////////////////VICTORY
+void processInputVictory(Game * game, Input input){
+
+
+}
+//////////////////////////////////////////////////////////POINTS
 
 /*******************************************************************************
  *******************************************************************************
