@@ -1,11 +1,11 @@
 /***************************************************************************//**
   @file     +Nombre del archivo (ej: template.h)+
   @brief    +Descripcion del archivo+
-  @author   +Bianco-Blanco-Gerli-Paysse+
+  @author   +Nombre del autor (ej: Salvador Allende)+
  ******************************************************************************/
 
-#ifndef _COLLISION_H_
-#define _COLLISION_H_
+#ifndef _LEVELS_H_
+#define _LEVELS_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
@@ -16,17 +16,7 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef enum{
 
-    COLLISION_NONE,
-
-    COLLISION_CAR,
-
-    COLLISION_WATER,
-
-    COLLISION_GOAL
-
-}CollisionType;
 
 
 /*******************************************************************************
@@ -39,31 +29,16 @@ typedef enum{
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-bool runOverFrog(parametros);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
-bool drownedFrog(parametros);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
-bool arrivedAtFinishLine(parametros);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
- */
 
-void checkCollisions();
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+*/
+// +ej: char lcd_goto (int fil, int col);+
 
 
 /******************************************************************************/
 
-#endif // _COLLISION_H_
+#endif // _LEVELS_H_

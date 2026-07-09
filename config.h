@@ -23,11 +23,20 @@
 
 #define LIVES 3
 
-#define WIDTH_MAP 20
+#define MAP_WIDTH 20
 
-#define HEIGHT_MAP 15
+#define MAP_HEIGHT 15
 
-#define FISHIN_LINE 13
+#define START_ROWS 2
+#define SAFE_ROWS  1
+#define FINISH_ROWS  1
+
+#define FISHIN_LINE (MAP_HEIGHT)
+
+
+
+#define ROAD_ROWS  ((MAP_HEIGHT - START_ROWS - SAFE_ROWS - GOAL_ROWS) / 2)
+#define WATER_ROWS (MAP_HEIGHT - START_ROWS - SAFE_ROWS - GOAL_ROWS - ROAD_ROWS)
 
 
 /*******************************************************************************

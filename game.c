@@ -19,7 +19,6 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
-Game game;
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
@@ -48,59 +47,101 @@ Game game;
  *******************************************************************************
  ******************************************************************************/
 
- void updateGame(){
-    switch (game.state){
-        case MENU:
-        break;
-        case PLAYING:
-            renderGame();
-            switch (userAction){
-                case DOWN: 
-                    (game.frog).y-=1;
+ void updateGame(Game * game, Input input){
+    switch ((game->state).id){
+        case MENU: //pienso un caso todo de una y dsps lo divido en funciones como en playing
+            switch(input){
+                case SELECT:
+                    switch ( ((game->state).menu) ){
+                        case MENU_POINTS: 
+                            (game->state).id = POINTS;
+                        break;
+                        case MENU_PLAY:
+                            (game->state).id = PLAYING;
+                        break;
+                        case MENU_EXIT:
+                            (game->state).id = EXIT;
+                        break;
+                    }
                 break;
+
                 case UP:
-                    (game.frog).y+=1;
+                    if(((game->state).menu) == max())
                 break;
-                case RIGHT:
-                    (game.frog).x+=1;
-                break;
-                case LEFT:
-                    (game.frog).x-=1;
-                break;
-                case PAUSE:
-                    game.state = PAUSE;
+
+                case DOWN:
                 break;
             }
-            if(runOverFrog(parametros)){}
-            if(drownedFrog(parametros)){}
-            if(arrivedAtFinishLine(parametros)){}
+
+        break;
+        case PLAYING:
+
+            processInput();
+
+            updateEntities();
+
+            checkCollisions();
+
+            updateScore();
+
+            checkLevel();
 
         break;
         case PAUSE:
+            switch (((game->state).paused)){
+                case PAUSED_MENU: 
+                break;
+                case PAUSED_PLAY:
+                break;
+                case PAUSED_EXIT:
+                break;
+            }
+        break;
+        case VICTORY:
+            switch (((game->state).victory)){
+                case VICTORY_MENU: 
+                break;
+                case VICTORY_EXIT:
+                break;
+            }
         break;
         case GAME_OVER:
+            switch (((game->state).gameOver)){
+                case GAME_OVER_MENU: 
+                break;
+                case GAME_OVER_EXIT:
+                break;
+            }
         break;
-        case OFF:
+        case POINTS:
+            switch (((game->state).points)){
+                case GAME_OVER_MENU: 
+                break;
+                case GAME_OVER_EXIT:
+                break;
+            }
+        break;
+        case EXIT:
         break;
 
 
     }
  }
 
- void endGame(){}
- void startGame(){
-    int i;
-    game.frog = frog;
-    for(i=0; i<MAX_OBSTACLES; i++){
-        (game.obstacles)[i]=createObstacle();
-    }
-    for(i=0; i<MAX_LOGS; i++){
-        (game.logs)[i]=createLog();
-    }
+ void endGame(){
+    deleteFrog();
+    deleteEntities();
+    deleteGame();
+ }
+ void gameInit(){
+    createGame();
+    createFrog();
+    createEntities();
  }
  void renderGame(){}
  void showMenu(){}
- void showMenu(){}
+ void showPause(){}
+
 
 /*******************************************************************************
  *******************************************************************************
