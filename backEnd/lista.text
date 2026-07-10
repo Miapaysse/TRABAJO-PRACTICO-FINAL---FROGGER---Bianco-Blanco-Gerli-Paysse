@@ -1,0 +1,9 @@
+FALTA:
+1-Acomodar todo lo de check collisions, las acciones se deben tomar dentro de la funcion check collisions y las otras las tengo q mezclar para que solo detecten
+2- Codear logica de movimiento
+3- Codear INITS: setear game inicial 
+4- Niveles
+5- Zonas
+6- Puntos
+7- Acomodar .h y .c, tipos de datos y funciones
+8- Validacion de datos, punteros y enums

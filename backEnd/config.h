@@ -17,21 +17,18 @@
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-#define MAX_ENTITIES 30
 
-#define MAX_LOGS 30
+#define MAX_OBSTACLES 15
 
-#define LIVES 3
+#define MAX_FLOATERS 15
+
+#define MAX_LIVES 3
 
 #define MAP_WIDTH 13
 
 #define MAP_HEIGHT 15
 
-#define START_ROWS 2
-#define SAFE_ROWS  1
-#define FINISH_ROWS  1
-
-#define FISHIN_LINE (MAP_HEIGHT)
+#define FINISH_LINE MAP_HEIGHT
 
 
 

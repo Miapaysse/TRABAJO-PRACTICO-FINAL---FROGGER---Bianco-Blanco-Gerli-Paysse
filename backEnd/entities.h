@@ -18,13 +18,6 @@
  ******************************************************************************/
 
 typedef enum{
-    ENTITY_CAR,
-    ENTITY_TRUCK,
-    ENTITY_LOG,
-    ENTITY_TURTLE
-} EntityType;
-
-typedef enum{
     DIR_LEFT,
     DIR_RIGHT
 } Direction;
@@ -43,8 +36,12 @@ typedef struct{
     int direction;
     int type;
     bool active;
-} Entity;
+}Entity;
 
+typedef struct{
+    Entity obstacles{MAX_OBSTACLES};
+    Entity floaters[MAX_FLOATERS];
+}gameEntities;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -72,6 +69,16 @@ void resetFrog();
  * @return Descripcion valor que devuelve
 */
 
+void moveFrog();
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+*/
+
+void moveFrogWithFloater();
+
 void createEntities();
 /**
  * @brief TODO: completar descripcion
@@ -80,6 +87,13 @@ void createEntities();
  * @return Descripcion valor que devuelve
 */
 
+void updateEntities();
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+*/
 
 /******************************************************************************/
 

@@ -92,13 +92,15 @@ typedef struct {
 
    Frog frog;
 
-   Entity entities[MAX_ENTITIES];
+   gameEntities entities;
 
    int score;
 
    int lives;
 
-   int level;
+   Level level;
+
+   Zone currentZone;
 
    GameState state;
    
@@ -114,8 +116,14 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
- void processInputPlaying(){}
- 
+ void processInputPlaying(gameState * state, Input input);
+ void processInputMenu(gameState * state, Input input);
+ void processInputPaused(gameState * state, Input input);
+ void processInputGameOver(gameState * state, Input input);
+ void processInputVictory(gameState * state, Input input);
+ void processInputPoints(gameState * state, Input input);
+
+
  void updateGame(Game * game, Input input);
  /**
  * @brief TODO: updates the game
@@ -138,11 +146,11 @@ typedef struct {
  * @return Descripcion valor que devuelve
 */
 
-void loseLife()
+void frogDies();
 
 void updateScore();
 
-
+void updateZone();
 
 
 /******************************************************************************/

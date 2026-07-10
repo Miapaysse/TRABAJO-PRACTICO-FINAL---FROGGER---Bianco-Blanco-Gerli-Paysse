@@ -51,10 +51,22 @@
  ******************************************************************************/
 void createFrog(){}
 void moveFrog(){}
+void moveFrogWithFloater(){}
 void resetFrog(){}
 
+void frogDies(Game* game){
+  if(game->lives > 0){
+    game->lives--;
+    resetFrog();
+  }
+  else{
+    (game->state).id = GAME_OVER;
+    resetFrog();
+  }
+}
 
 void createEntities(){}
+void updateEntities(){}
 
 /*******************************************************************************
  *******************************************************************************

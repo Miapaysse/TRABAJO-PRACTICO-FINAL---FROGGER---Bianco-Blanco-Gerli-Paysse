@@ -50,15 +50,17 @@
  void updateGame(Game * game, Input input){
     switch ((game->state).id){
         case MENU: 
-            processInputMenu(game, input);
+            processInputMenu(&(game->state), input);
         break;
         case PLAYING:
 
-            processInputPlaying();
+            processInputPlaying(&(game->state),input);
 
             updateEntities();
 
-            checkCollisions();
+            updateZone();
+
+            checkCollisions(game);
 
             updateScore();
 
@@ -66,16 +68,16 @@
 
         break;
         case PAUSE:
-            processInputPaused(game, input);
+            processInputPaused(&(game->state), input);
         break;
         case VICTORY:
-            processInputVictory(game, input);
+            processInputVictory(&(game->state), input);
         break;
         case GAME_OVER:
-            processInputGameOver(game, input);
+            processInputGameOver(&(game->state), input);
         break;
         case POINTS:
-            processInputPoints(game, input);
+            processInputPoints(&(game->state), input);
         break;
         case EXIT:
         break;
@@ -94,9 +96,6 @@
     createFrog();
     createEntities();
  }
- void renderGame(){}
- void showMenu(){}
- void showPause(){}
 
 ///////////////////////////////////////////MENUS///////////////
 void menuPrevious(MenuState *menu){
@@ -114,129 +113,129 @@ void menuNext(MenuState *menu){
 }
 
 /////////////////////////////////////////////////////////////////MENU
-void processInputMenu(Game * game, Input input){
+void processInputMenu(gameState * state, Input input){
         switch(input){
                 case SELECT:
-                    switch ( ((game->state).menu.selected) ){
+                    switch ( (state->menu).selected ){
                         case MENU_POINTS: 
-                            (game->state).id = POINTS;
+                            state->id = POINTS;
                         break;
                         case MENU_PLAY:
-                            (game->state).id = PLAYING;
+                            state->id = PLAYING;
                         break;
                         case MENU_EXIT:
-                            (game->state).id = EXIT;
+                            state->id = EXIT;
                         break;
                     }
                 break;
                 case UP:
-                    menuPrevious(&((game->state).menu));
+                    menuPrevious(&((state->menu)));
                 break;
 
                 case DOWN:
-                    menuNext(&((game->state).menu));
+                    menuNext(&((state->menu)));
                 break;
         }
 }
 
 ////////////////////////////////////////////////////////////////////////PAUSED
-void processInputPaused(Game * game, Input input){
+void processInputPaused(gameState * state, Input input){
     switch(input){
                 case SELECT:
-                    switch ( ((game->state).paused.selected) ){
+                    switch ( (state->paused).selected ){
                         case PAUSED_MENU: 
-                            (game->state).id = MENU;
+                            state->id = MENU;
                         break;
                         case PAUSED_PLAY:
-                            (game->state).id = PLAYING; //////////////ANALIZAR TEMA VIDAS REPLAY
+                            state->id = PLAYING; //////////////ANALIZAR TEMA VIDAS REPLAY
                         break;
                         case PAUSED_EXIT:
-                            (game->state).id = EXIT;
+                            state->id = EXIT;
                         break;
                     }
                 break;
                 case UP:
-                    menuPrevious(&((game->state).paused));
+                    menuPrevious(&(state->paused));
                 break;
 
                 case DOWN:
-                    menuNext(&((game->state).paused));
+                    menuNext(&(state->paused));
                 break;
     }
 }
 
 ///////////////////////////////////////////////////////////GAME OVER
-void processInputGameOver(Game * game, Input input){
+void processInputGameOver(gameState * state, Input input){
         switch(input){
                 case SELECT:
-                    switch ( ((game->state).gameOver.selected) ){
+                    switch ( (state->gameOver).selected ){
                         case GAME_OVER_MENU: 
-                            (game->state).id = MENU;
+                            state->id = MENU;
                         break;
                         case GAME_OVER_EXIT:
-                            (game->state).id = EXIT;
+                            state->id = EXIT;
                         break;
                     }
                 break;
                 case UP:
-                    menuPrevious(&((game->state).paused));
+                    menuPrevious(&(state->gameOver));
                 break;
 
                 case DOWN:
-                    menuNext(&((game->state).paused));
+                    menuNext(&(state->gameOver));
                 break;
     }
 }
 
 ///////////////////////////////////////////////////////////VICTORY
-void processInputVictory(Game * game, Input input){
+void processInputVictory(gameState * state, Input input){
         switch(input){
                 case SELECT:
-                    switch ( ((game->state).victory.selected) ){
+                    switch ( (state->victory).selected ){
                         case VICTORY_MENU: 
-                            (game->state).id = MENU;
+                            state->id = MENU;
                         break;
                         case VICTORY_EXIT:
-                            (game->state).id = EXIT;
+                            state->id = EXIT;
                         break;
                     }
                 break;
                 case UP:
-                    menuPrevious(&((game->state).paused));
+                    menuPrevious(&(state->victory));
                 break;
 
                 case DOWN:
-                    menuNext(&((game->state).paused));
+                    menuNext(&(state->victory));
                 break;
     }
 }
 //////////////////////////////////////////////////////////POINTS
-void processInputPoints(Game * game, Input input){
+void processInputPoints(gameState * state, Input input){
         switch(input){
                 case SELECT:
-                    switch ( ((game->state).points.selected) ){
+                    switch ( (state->points).selected ){
                         case POINTS_MENU: 
-                            (game->state).id = MENU;
+                            state->id = MENU;
                         break;
                         case POINTS_EXIT:
-                            (game->state).id = EXIT;
+                            state->id = EXIT;
                         break;
                     }
                 break;
                 case UP:
-                    menuPrevious(&((game->state).paused));
+                    menuPrevious(&(state->points));
                 break;
 
                 case DOWN:
-                    menuNext(&((game->state).paused));
+                    menuNext(&(state->points));
                 break;
     }
 }
 /////////////////////////////GAME LOGIC///////////////////////
-void processInputPlaying(Game * game, Input input){
+void processInputPlaying(gameState * state, Input input){
     switch(input){
                 case SELECT:
-                    (game->state).id = PAUSED;
+                    state->id = PAUSED;
                 break;
 
                 case UP:
@@ -256,6 +255,11 @@ void processInputPlaying(Game * game, Input input){
                 break;
     }
 }
+
+////////////////////////ZONES & SCORES
+void updateScore();
+
+void updateZone();
 
 /*******************************************************************************
  *******************************************************************************

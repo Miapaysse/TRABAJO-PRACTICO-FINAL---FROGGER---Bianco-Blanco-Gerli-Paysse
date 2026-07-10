@@ -50,30 +50,81 @@
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-    bool runOverFrog(parametros){
+
+    bool runOverFrog(Frog* frog, Entity  obstacles[MAX_OBSTACLES]){
+        //VALIDAR PUNTEROS
         int i;
         for(i=0; i<MAX_OBSTACLES; i++){
-            if ((game.frog).x > (((game.obstacles)[i]).x - (((game.obstacles)[i]).length)/2) && (game.frog).x < (((game.obstacles)[i]).x + (((game.obstacles)[i]).length)/2) ){
+            if(collided(frog,&(obstacles[i])) ){
                 return 1;
+            }
+        }
+        return 0;
+    }
+
+    Entity * frogOnFloater(Frog* frog, Entity  floaters[MAX_FLOATERS]){
+        //VALIDAR PUNTEROS
+        int i;
+        for(i=0; i<MAX_FLOATERS; i++){
+            if(collided(frog,&(floaters[i])) ){
+                return &(floaters[i]);
+            }
+        }
+        return NULL;
+    }
+
+    bool arrivedAtFinishLine(Frog* frog){
+        //VALIDAR PUNTEROS
+
+        if (frog->y==FINISH_LINE){
+            return 1;
+        }
+        return 0;
+    }
+
+    void checkCollisions(Frog* frog, Zone* zone, GameEntities* entities){
+        //VALIDAR PUNTEROS
+        //CHEQUEAR LIMITES DEL JUEGO
+
+        checkRoadCollisions(frog, zone, entities->obstacles);
+        checkWaterCollisions(frog, zone, entities->floaters);
+        checkSafeSpot(frog,zone,);
+
+    }
+
+    void checkRoadCollisions(Frog* frog, Zone* zone, Entity* obstacles){
+        //VALIDAR PUNTEROS
+        if(*zone == ROAD){
+            if(runOverFrog(frog, obstacles) ){
+                frogDies(int* lives, GameStateId * id);
             }
         }
         
     }
 
-    bool drownedFrog(parametros){
-        int i;
-        for(i=0; i<MAX_OBSTACLES; i++){
-            if ((game.frog).x < (((game.logs)[i]).x - (((game.logs)[i]).length)/2) || (game.frog).x > (((game.obstacles)[i]).x + (((game.obstacles)[i]).length)/2) ){
-                return 1;
+    void checkWaterCollisions(Frog* frog, Zone* zone, Entity* floaters){
+        //VALIDAR PUNTEROS
+        if(*zone == WATER){
+            Entity* floaterP = frogOnFloater(frog, floaters);
+            if( floaterP != NULL){
+                moveFrogWithFloater(frog, floaterP);
+            }
+            else{
+                frogDies(game);
             }
         }
     }
 
-    bool arrivedAtFinishLine(parametros){
-        if ((game.frog).y==FINISH_LINE){
-            return;
-        }
+    bool collided(Frog* frog , Entity* entity){
+            if( ( (frog->x) > (entity->x - (entity->length)/2) ) && ( (frog->x) < (entity->x + (entity->length)/2) ) && ( frog->y == entity->y) ){
+                return 1;
+            }
+
+            else{
+                return 0;
+            }
     }
+
 
 /*******************************************************************************
  *******************************************************************************

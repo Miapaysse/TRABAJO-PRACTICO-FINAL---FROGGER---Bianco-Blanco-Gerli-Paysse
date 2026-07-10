@@ -16,17 +16,6 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef enum{
-
-    COLLISION_NONE,
-
-    COLLISION_CAR,
-
-    COLLISION_WATER,
-
-    COLLISION_GOAL
-
-}CollisionType;
 
 
 /*******************************************************************************
@@ -46,7 +35,7 @@ bool runOverFrog(parametros);
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-bool drownedFrog(parametros);
+Entity * frogOnFloater(Frog* frog, Entity  floaters[MAX_FLOATERS]);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -61,8 +50,11 @@ bool arrivedAtFinishLine(parametros);
  * @return Descripcion valor que devuelve
  */
 
-void checkCollisions();
+void checkCollisions(Game* game);
+void checkWaterCollisions(Game* game);
+void checkRoadCollisions(Game* game);
 
+bool collided(Frog* frog , Entity* entity);
 
 /******************************************************************************/
 

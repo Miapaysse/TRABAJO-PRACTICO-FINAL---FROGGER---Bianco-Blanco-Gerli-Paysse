@@ -19,11 +19,9 @@
 
 
 typedef enum{
-    START,
     ROAD,
     SAFE,
     WATER,
-    GOAL
 } Zone;
 
 typedef struct {
