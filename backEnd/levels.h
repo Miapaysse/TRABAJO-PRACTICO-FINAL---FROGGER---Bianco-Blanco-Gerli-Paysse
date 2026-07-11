@@ -22,12 +22,12 @@ typedef enum{
     ROAD,
     SAFE,
     WATER,
+    START
 } Zone;
 
 typedef struct {
-    Zone zones[MAP_HEIGHT];
-    Entity entities[MAX_ENTITIES];
-    int entityCount;
+    Zone zones[MAX_ZONES];
+    GameEntities entities;
 } Level;
 
 
@@ -46,14 +46,22 @@ typedef struct {
  void createLevel();
  void deleteLevel();
  void checkLevel();
+ void goToNextLevel(Level* level);
+ 
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-// +ej: char lcd_goto (int fil, int col);+
 
+bool arrivedAtFinishLine(int y);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+ */
 
 /******************************************************************************/
 

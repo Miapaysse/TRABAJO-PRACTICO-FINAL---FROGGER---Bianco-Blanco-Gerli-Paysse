@@ -28,7 +28,7 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-bool runOverFrog(parametros);
+bool runOverFrog(Frog* frog, Entity  obstacles[MAX_OBSTACLES]);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -42,19 +42,12 @@ Entity * frogOnFloater(Frog* frog, Entity  floaters[MAX_FLOATERS]);
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-bool arrivedAtFinishLine(parametros);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
- */
 
-void checkCollisions(Game* game);
-void checkWaterCollisions(Game* game);
-void checkRoadCollisions(Game* game);
+void manageInteractions(Game* game);
 
 bool collided(Frog* frog , Entity* entity);
+
+void updateScore(Frog * frog , int* score);
 
 /******************************************************************************/
 

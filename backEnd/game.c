@@ -60,9 +60,7 @@
 
             updateZone();
 
-            checkCollisions(game);
-
-            updateScore();
+            manageInteractions(game);
 
             checkLevel();
 

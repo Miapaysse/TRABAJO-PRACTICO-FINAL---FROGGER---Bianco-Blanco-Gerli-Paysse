@@ -73,47 +73,37 @@
         return NULL;
     }
 
-    bool arrivedAtFinishLine(Frog* frog){
-        //VALIDAR PUNTEROS
 
-        if (frog->y==FINISH_LINE){
-            return 1;
-        }
-        return 0;
-    }
-
-    void checkCollisions(Frog* frog, Zone* zone, GameEntities* entities){
+    void manageInteractions(Game* game){
         //VALIDAR PUNTEROS
         //CHEQUEAR LIMITES DEL JUEGO
-
-        checkRoadCollisions(frog, zone, entities->obstacles);
-        checkWaterCollisions(frog, zone, entities->floaters);
-        checkSafeSpot(frog,zone,);
-
-    }
-
-    void checkRoadCollisions(Frog* frog, Zone* zone, Entity* obstacles){
-        //VALIDAR PUNTEROS
-        if(*zone == ROAD){
-            if(runOverFrog(frog, obstacles) ){
-                frogDies(int* lives, GameStateId * id);
-            }
-        }
         
+            switch(game->currentZone){
+                case ROAD:
+                    if(runOverFrog(&(game->frog), (game->entities).obstacles)){
+                        frogDies(&(game->lives), &((game->state).id));
+                    }
+                break;
+            
+                case WATER:
+                    Entity* floaterP = frogOnFloater(&(game->frog), (game->entities).floaters);
+                    if( floaterP != NULL){
+                        moveFrogWithFloater(&(game->frog), floaterP);
+                    }
+                    else{
+                        frogDies(&(game->lives), &((game->state).id));
+                    }
+                break;
+
+                case SAFE:
+                    updateScore(&(game->frog), &(game->score));
+                break;
+            }
+        
+
+
     }
 
-    void checkWaterCollisions(Frog* frog, Zone* zone, Entity* floaters){
-        //VALIDAR PUNTEROS
-        if(*zone == WATER){
-            Entity* floaterP = frogOnFloater(frog, floaters);
-            if( floaterP != NULL){
-                moveFrogWithFloater(frog, floaterP);
-            }
-            else{
-                frogDies(game);
-            }
-        }
-    }
 
     bool collided(Frog* frog , Entity* entity){
             if( ( (frog->x) > (entity->x - (entity->length)/2) ) && ( (frog->x) < (entity->x + (entity->length)/2) ) && ( frog->y == entity->y) ){
@@ -123,6 +113,13 @@
             else{
                 return 0;
             }
+    }
+
+    void updateScore(Frog * frog , int* score){
+        if(frog->lastSafeSpot != frog->y){
+            (*score)++;
+            frog->lastSafeSpot = frog->y;
+        }
     }
 
 

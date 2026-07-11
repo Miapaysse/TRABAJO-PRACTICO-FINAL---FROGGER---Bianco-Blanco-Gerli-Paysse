@@ -50,8 +50,20 @@
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+  bool arrivedAtFinishLine(int y){
+        //VALIDAR PUNTEROS
 
+        if (y==FINISH_LINE){
+            return 1;
+        }
+        return 0;
+  }
 
+  void checkLevel(Frog* frog, Level* level){
+      if (arrivedAtFinishLine(frog->y)){
+            goToNextLevel(level);
+      }
+  }
 
 /*******************************************************************************
  *******************************************************************************

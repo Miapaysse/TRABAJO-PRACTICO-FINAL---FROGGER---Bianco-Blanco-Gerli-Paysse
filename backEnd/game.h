@@ -92,7 +92,7 @@ typedef struct {
 
    Frog frog;
 
-   gameEntities entities;
+   GameEntities entities;
 
    int score;
 
@@ -146,11 +146,13 @@ typedef struct {
  * @return Descripcion valor que devuelve
 */
 
-void frogDies();
+void menuNext(MenuState *menu);
+void menuPrevious(MenuState *menu);
 
 void updateScore();
 
 void updateZone();
+
 
 
 /******************************************************************************/

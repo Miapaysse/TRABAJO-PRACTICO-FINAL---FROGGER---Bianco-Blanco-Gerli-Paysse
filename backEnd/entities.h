@@ -25,6 +25,7 @@ typedef enum{
 typedef struct{
     int x;
     int y;
+    int lastSafeSpot;
 } Frog;
 
 typedef struct{
@@ -41,7 +42,7 @@ typedef struct{
 typedef struct{
     Entity obstacles{MAX_OBSTACLES};
     Entity floaters[MAX_FLOATERS];
-}gameEntities;
+}GameEntities;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

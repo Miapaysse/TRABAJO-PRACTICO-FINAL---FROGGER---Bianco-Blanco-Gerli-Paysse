@@ -22,6 +22,8 @@
 
 #define MAX_FLOATERS 15
 
+#define MAX_ZONES
+
 #define MAX_LIVES 3
 
 #define MAP_WIDTH 13
