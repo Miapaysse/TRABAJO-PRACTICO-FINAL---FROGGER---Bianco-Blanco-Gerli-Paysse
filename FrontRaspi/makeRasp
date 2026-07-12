@@ -1,0 +1,6 @@
+# Para compilar con libs de la catedra
+
+all: raspi
+
+raspi: raspiFrontend.c disdrv.o disdrv.h joydrv.o joydrv.h
+	gcc raspiFrontend.c disdrv.o joydrv.o -o raspiFrontend -Wall

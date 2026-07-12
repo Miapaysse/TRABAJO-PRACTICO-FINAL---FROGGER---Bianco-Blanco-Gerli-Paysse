@@ -40,7 +40,7 @@ typedef struct{
 }Entity;
 
 typedef struct{
-    Entity obstacles{MAX_OBSTACLES};
+    Entity obstacles[MAX_OBSTACLES];
     Entity floaters[MAX_FLOATERS];
 }GameEntities;
 
