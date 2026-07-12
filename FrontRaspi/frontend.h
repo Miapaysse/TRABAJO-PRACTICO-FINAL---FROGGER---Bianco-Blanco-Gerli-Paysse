@@ -16,11 +16,11 @@
 #include "config.h"
 
 /*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+typedef uint8_t MSG[MAP_WIDTH+2][MAP_HEIGHT+1]; //para dibujar mensaje mas rapido, no se si para allegro sirve DELFIIIIII avisame
 
-
- ***************************************************************************
+/***************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
