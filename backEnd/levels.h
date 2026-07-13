@@ -28,6 +28,7 @@ typedef enum{
 typedef struct {
     Zone zones[MAX_ZONES];
     GameEntities entities;
+    int id;
 } Level;
 
 

@@ -62,7 +62,12 @@
   void checkLevel(Frog* frog, Level* level){
       if (arrivedAtFinishLine(frog->y)){
             goToNextLevel(level);
+            resetFrog(frog);
       }
+  }
+
+  void goToNextLevel(Level* level){
+    level->id ++;
   }
 
 /*******************************************************************************

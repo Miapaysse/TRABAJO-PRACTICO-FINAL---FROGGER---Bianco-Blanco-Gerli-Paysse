@@ -54,7 +54,7 @@
         break;
         case PLAYING:
 
-            processInputPlaying(&(game->state),input);
+            processInputPlaying(&(game->state),input, &(game->frog));
 
             updateEntities();
 
@@ -230,26 +230,26 @@ void processInputPoints(gameState * state, Input input){
     }
 }
 /////////////////////////////GAME LOGIC///////////////////////
-void processInputPlaying(gameState * state, Input input){
+void processInputPlaying(gameState * state, Input input, Frog * frog){
     switch(input){
                 case SELECT:
                     state->id = PAUSED;
                 break;
 
                 case UP:
-                    moveFrog(UP);
+                    moveFrog(frog,UP);
                 break;
 
                 case DOWN:
-                    moveFrog(DOWN);
+                    moveFrog(frog,DOWN);
                 break;
 
                 case RIGHT:
-                    moveFrog(RIGHT);
+                    moveFrog(frog,RIGHT);
                 break;
 
                 case LEFT:
-                    moveFrog(LEFT);
+                    moveFrog(frog,LEFT);
                 break;
     }
 }

@@ -50,7 +50,22 @@
  *******************************************************************************
  ******************************************************************************/
 void createFrog(){}
-void moveFrog(){}
+void moveFrog(Frog * frog , Input input){
+  switch(input){
+    case UP:
+      (frog->y)++;
+    break;
+    case DOWN:
+      (frog->y)--;
+    break;
+    case RIGHT:
+      (frog->x)++;
+    break;
+    case LEFT:
+      (frog->x)--;
+    break;
+  }
+}
 void moveFrogWithFloater(){}
 void resetFrog(){}
 

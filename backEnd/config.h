@@ -22,7 +22,7 @@
 
 #define MAX_FLOATERS 15
 
-#define MAX_ZONES
+#define MAX_ZONES 3
 
 #define MAX_LIVES 3
 
@@ -32,7 +32,9 @@
 
 #define FINISH_LINE MAP_HEIGHT
 
+#define X0 (MAP_WIDTH/2)
 
+#define Y0 0
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
