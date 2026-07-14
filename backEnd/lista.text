@@ -4,6 +4,6 @@ FALTA:
 3- Codear INITS: setear esto inicial de game  
 
 5- Zonas
-
+6- INTERACTIONS/COLISIONS: cambiar centro de masa por inicio entity (x inicial , x final)
 7- Acomodar .h y .c, tipos de datos y funciones
 8- Validacion de datos, punteros y enums
