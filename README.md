@@ -260,7 +260,7 @@ El código reutiliza exactamente el mismo Back-End que la versión de PC.
 
 ---
 
-# Compilación multiplataforma
+# Compilacion multiplataforma
 
 El proyecto está diseñado para generar dos ejecutables distintos a partir del mismo backend.
 
