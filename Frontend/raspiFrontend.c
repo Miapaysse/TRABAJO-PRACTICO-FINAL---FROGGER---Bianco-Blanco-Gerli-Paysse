@@ -10,6 +10,8 @@
 
 #include "game.h"
 #include "config.h"
+#include "levels.h"
+#include "entities.h"
 
 #define JOY_LIM 10 //Limite para detectar movimiento del joystic
 
@@ -57,12 +59,10 @@ void frontendRender(Game * game){
 			break;
 
 		case PLAYING:
-			// Dibuja rana
-			frog_pos = {x, y};
-			disp_write(frog_pos, D_ON);
 
+			// Dibuja agua
+			check_zone(&(game->level).zones[i]);
 
-			// Dibuja obstaculos
 			drawObstacles((game->entities).obstacles));
 			drawFloaters((game->entities).floaters));
 
@@ -149,7 +149,6 @@ void drawObstacles(Entity obstacles[]){
 
 
 void drawFloaters(Entity floaters[]){
-
 	int idx_flo = 0, len = 0;
 	for ( ; idx_flo <= MAX_FLOATERS; idx_flo++){
 		if (floaters[flo].active){ //si existe obstaculo
@@ -160,5 +159,25 @@ void drawFloaters(Entity floaters[]){
 				}
 			}
 		}
+	}
+}
+
+check_zone(const Zone * zone){
+	switch (zone->type){
+		case WATER: // Dibuja agua
+			for (int f = zone->y0; f < zone->height; f++) {
+				for (int c = 0; c < 16; c++) {
+					disp_write((dcoord_t){.y = f, .x = c},D_ON);
+				}
+			}
+		break;
+
+		case ROAD: // Dibuja calle
+			for (int f = h_init; f < HEIGHT; f++) {
+				for (int c = 0; c < 16; c++) {
+					disp_write((dcoord_t){.y = f, .x = c},D_OFF);
+				}
+			}
+		break;
 	}
 }

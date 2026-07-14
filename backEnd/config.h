@@ -26,7 +26,7 @@
 
 #define MAX_LIVES 3
 
-#define MAP_WIDTH 13
+#define MAP_WIDTH 15
 
 #define MAP_HEIGHT 15
 
