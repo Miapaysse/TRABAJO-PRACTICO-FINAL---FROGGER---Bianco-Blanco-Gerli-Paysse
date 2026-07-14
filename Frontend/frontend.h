@@ -4,8 +4,8 @@
   @author   +Bianco-Blanco-Gerli-Paysse+
  ******************************************************************************/
 
-#ifndef RASPI_H
-#define RASPI_H
+#ifndef FRONTEND_H
+#define FRONTEND_H
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
