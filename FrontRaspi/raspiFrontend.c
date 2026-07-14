@@ -34,7 +34,7 @@ void frontendDestroy(void) {
 Input frontendGetInput(void) {
     joyinfo_t joy = joy_read();
     if (joy.sw == J_PRESS) {
-            return SELECT;
+		return SELECT;
     } else if (joy.y > JOY_LIM){
     	return UP;
     }  else if joy.y < -JOY_LIM){
@@ -49,7 +49,7 @@ Input frontendGetInput(void) {
 }
 
 
-void frontendRender(Game * game, GameEntities * gameEntities){
+void frontendRender(Game * game){
 	disp_clear();
 
 	switch(game->state.id) {
@@ -63,28 +63,9 @@ void frontendRender(Game * game, GameEntities * gameEntities){
 
 
 			// Dibuja obstaculos
-			int cont_obs = 0, cont_flo = 0, length = 0;
-			for ( ; cont_obs <= MAX_OBSTACLES; cont_obs++){
-				if (gameEntities->obstacles)[i].active){ //si existe obstaculo
-					for ( ; height <= (game->entities.obstacles[i].height), height++){ //itera por altura
-						for ( ; length<= (game->entities.obstacles[i].length), length++){ //itera por largo
-							entity_pos = {game->entities.obstacles[i].x + length,(game->entities.obstacles[i].y + height};
-							disp_write(entity_pos, D_ON);
-						}
-					}
-				}
-			}
+			drawObstacles((game->entities).obstacles));
+			drawFloaters((game->entities)floaters));
 
-			for ( ; cont_obs <= MAX_FLOATERS; cont_obs++){
-				if (gameEntities->floaters)[i].active){ //si existe obstaculo
-					for ( ; height <= (game->entities.floaters[i].height), height++){ //itera por altura
-						for ( ; length<= (game->entities.floaters[i].length), length++){ //itera por largo
-							entity_pos = {game->entities.floaters[i].x + length,(game->entities.floaters[i].y + height};
-							disp_write(entity_pos, D_ON);
-						}
-					}
-				}
-			}
 
 			break;
 
@@ -113,7 +94,7 @@ void frontendRender(Game * game, GameEntities * gameEntities){
 
 			for (int f = 0; f < 16; f++) {
 				for (int c = 0; c < 16; c++) {
-					disp_write((dcoord_t){.y = f, .x = c}, gameOver[f][c]);
+					disp_write((dcoord_t){.y = f, .x = c}, msg[f][c]);
 				}
 			}
 			disp_update();
@@ -155,4 +136,34 @@ void frontendRender(Game * game, GameEntities * gameEntities){
 	}
 
 	disp_update();
+}
+
+
+void drawObstacles(Entity *obstacles[]){
+	int cont_obs = 0, length = 0;
+	for ( ; cont_obs <= MAX_OBSTACLES; cont_obs++){
+		if (obstacles[i].active){ //si existe obstaculo
+			for ( ; height <= obstacles[i].height), height++){ //itera por altura
+				for ( ; length<= (obstacles[i].length), length++){ //itera por largo
+					entity_pos = {obstacles[i].x + length,(obstacles[i].y + height};
+					disp_write(entity_pos, D_ON);
+				}
+			}
+		}
+	}
+}
+
+
+void drawFloaters(Entity *floaters)[]){
+	int cont_flo = 0, length = 0;
+	for ( ; cont_obs <= MAX_FLOATERS; cont_obs++){
+		if (floaters[i].active){ //si existe obstaculo
+			for ( ; height <= (floaters[i].height), height++){ //itera por altura
+				for ( ; length<= (game->entities.floaters[i].length), length++){ //itera por largo
+					entity_pos = {game->entities.floaters[i].x + length,(game->entities.floaters[i].y + height};
+					disp_write(entity_pos, D_ON);
+				}
+			}
+		}
+	}
 }
