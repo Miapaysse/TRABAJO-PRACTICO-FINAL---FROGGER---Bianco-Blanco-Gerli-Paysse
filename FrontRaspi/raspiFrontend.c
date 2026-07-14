@@ -29,6 +29,8 @@ void frontendDestroy(void) {
     disp_update();
 }
 
+
+
 Input frontendGetInput(void) {
     joyinfo_t joy = joy_read();
     if (joy.sw == J_PRESS) {
@@ -42,7 +44,7 @@ Input frontendGetInput(void) {
     }  else if (joy.x < JOY_LIM){
     	return LEFT;
     } else {
-    	return NULL; //Caso no se movio joystick, siempre tiene que devolver algo la funcion
+    	return NONE; //Caso no se movio joystick, siempre tiene que devolver algo la funcion
     }
 }
 
