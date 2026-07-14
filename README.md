@@ -5,7 +5,7 @@
 
 Este proyecto consiste en el desarrollo de una versión del clásico **Frogger** implementada en lenguaje C con una arquitectura **multiplataforma**.
 
-El objetivo principal fue separar completamente la **lógica del juego (Back-End)** de la **representación gráfica (Front-End)**, permitiendo ejecutar exactamente el mismo motor tanto en una PC utilizando Allegro como en una Raspberry Pi utilizando una matriz LED y joystick.
+El objetivo principal fue separar completamente la **lógica del juego (Back-End)** de la **representación gráfica (Front-End)**, permitiendo ejecutar exactamente el mismo backend tanto en una PC utilizando Allegro como en una Raspberry Pi utilizando una matriz LED y joystick.
 
 ---
 # Organización del proyecto
@@ -36,44 +36,7 @@ src/
 └── Makefile: Make file generico con dos targets distintos para cada plataforma
 ```
 
-# Arquitectura del proyecto
-
-
-El proyecto fue dividido en cuatro módulos principales:
-
-```
-                +--------------------+
-                |       main.c       |
-                +---------+----------+
-                          |
-                          v
-                +--------------------+
-                |      game.c        |
-                |  Motor del juego   |
-                +---------+----------+
-                          |
-      +-------------------+-------------------+
-      |                                       |
-      v                                       v
-+--------------+                     +----------------+
-| entities.c   |                     | levels.c       |
-| Colisiones   |                     | Mapas/Niveles  |
-|              |                     | Zonas          |
-+--------------+                     +----------------+
-
-                          ^
-                          |
-                 Interfaz abstracta
-
-          +---------------+---------------+
-          |                               |
-          v                               v
-  Front-End Allegro               Front-End Raspberry
-```
-
----
-
-# Filosofía del proyecto
+# Bases de funcionamiento del proyecto
 
 El Back-End nunca conoce:
 
@@ -83,7 +46,7 @@ El Back-End nunca conoce:
 - Teclado
 - Joystick
 
-El motor únicamente trabaja con:
+El backend únicamente trabaja con:
 
 - estructuras de datos
 - posiciones
@@ -106,7 +69,7 @@ Nuevo estado del juego
 Renderizado
 ```
 
-Esto permite utilizar exactamente el mismo motor sobre distintas plataformas.
+Esto permite utilizar exactamente el mismo backend sobre distintas plataformas.
 
 ---
 
@@ -145,13 +108,13 @@ Esta estructura contiene:
 - Zona actual
 - Estado del juego
 
-De esta manera el motor puede trabajar únicamente modificando esta estructura.
+De esta manera el backend puede trabajar únicamente modificando esta estructura.
 
 ---
 
 # Máquina de estados
 
-El motor está implementado mediante una máquina de estados finitos.
+El backend está implementado mediante una máquina de estados finitos.
 
 Estados principales:
 
@@ -217,7 +180,7 @@ El Back-End determina:
 - interacción con troncos
 - llegada a zonas seguras
 
-Las funciones de detección únicamente responden consultas (por ejemplo, si la rana está sobre un tronco), mientras que las consecuencias (perder una vida, avanzar de nivel, etc.) son resueltas por el motor del juego.
+Las funciones de detección únicamente responden consultas (por ejemplo, si la rana está sobre un tronco), mientras que las consecuencias (perder una vida, avanzar de nivel, etc.) son resueltas por el backend del juego.
 
 ---
 
@@ -266,7 +229,7 @@ PC: Flecha arriba = INPUT: UP
 Raspberry: Joystick arriba = INPUT: UP
 ```
 
-El motor recibe exactamente el mismo dato independientemente de la plataforma. 
+El backend recibe exactamente el mismo dato independientemente de la plataforma. 
 
 ---
 
@@ -280,7 +243,7 @@ Responsabilidades:
 - dibujar sprites
 - reproducir sonidos
 - leer teclado
-- llamar periódicamente al motor del juego
+- llamar periódicamente al backend del juego
 
 ---
 
@@ -299,7 +262,7 @@ El código reutiliza exactamente el mismo Back-End que la versión de PC.
 
 # Compilación multiplataforma
 
-El proyecto está diseñado para generar dos ejecutables distintos a partir del mismo motor.
+El proyecto está diseñado para generar dos ejecutables distintos a partir del mismo backend.
 
 ```
                     Código común
@@ -318,7 +281,7 @@ El proyecto está diseñado para generar dos ejecutables distintos a partir del 
  Ejecutable PC      Ejecutable RasPi
 ```
 
-El `Makefile` define distintos **targets**, cada uno de los cuales enlaza el motor común con el Front-End correspondiente.
+El `Makefile` define distintos **targets**, cada uno de los cuales enlaza el backend común con el Front-End correspondiente.
 
 De esta manera:
 
@@ -334,7 +297,7 @@ make pc      -> Compila Back-End + Front-End Allegro
 make raspi   -> Compila Back-End + Front-End Raspberry
 ```
 
-El motor del juego permanece idéntico en ambos casos; únicamente cambia la implementación del Front-End y las bibliotecas enlazadas durante la compilación.
+El backend del juego permanece idéntico en ambos casos; únicamente cambia la implementación del Front-End y las bibliotecas enlazadas durante la compilación.
 
 ---
 
@@ -346,6 +309,6 @@ Durante el desarrollo se siguieron los siguientes principios:
 - Independencia de plataforma.
 - Modularidad.
 - Bajo acoplamiento entre módulos.
-- Reutilización del código del motor.
+- Reutilización del código del backend.
 - Máquina de estados para el control del flujo del juego.
 - Encapsulamiento del estado completo del juego mediante la estructura `Game`.
