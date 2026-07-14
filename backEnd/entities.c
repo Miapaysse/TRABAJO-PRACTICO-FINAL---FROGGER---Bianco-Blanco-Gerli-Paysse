@@ -50,9 +50,31 @@
  *******************************************************************************
  ******************************************************************************/
 void createFrog(){}
-void moveFrog(){}
-void moveFrogWithFloater(){}
-void resetFrog(){}
+void moveFrog(Frog * frog , Input input){
+  switch(input){
+    case UP:
+      (frog->y)++;
+    break;
+    case DOWN:
+      (frog->y)--;
+    break;
+    case RIGHT:
+      (frog->x)++;
+    break;
+    case LEFT:
+      (frog->x)--;
+    break;
+  }
+}
+void moveFrogWithFloater(Frog * frog , Entity* floater){
+  (frog->y)=(floater->y);
+  (frog->x)=(floater->x);
+}
+
+void resetFrog(Frog * frog){
+  (frog->y)=Y0;
+  (frog->x)=X0;
+}
 
 void frogDies(int* lives, GameStateId * id ){
   if(*lives > 1){

@@ -54,32 +54,31 @@
         break;
         case PLAYING:
 
-            processInputPlaying(&(game->state),input);
+            processInputPlaying(&(game->state),input, &(game->frog));
 
             updateEntities();
 
-            updateZone();
+            //updateZone();
 
             manageInteractions(game);
 
-            checkLevel();
+            checkLevel(&(game->frog), &(game->level));
 
         break;
         case PAUSE:
             processInputPaused(&(game->state), input);
         break;
         case VICTORY:
+            resetFrog(&(game->frog));
             processInputVictory(&(game->state), input);
         break;
         case GAME_OVER:
+            resetFrog(&(game->frog));
             processInputGameOver(&(game->state), input);
         break;
         case POINTS:
             processInputPoints(&(game->state), input);
         break;
-        case EXIT:
-        break;
-
 
     }
  }
@@ -230,32 +229,31 @@ void processInputPoints(gameState * state, Input input){
     }
 }
 /////////////////////////////GAME LOGIC///////////////////////
-void processInputPlaying(gameState * state, Input input){
+void processInputPlaying(gameState * state, Input input, Frog * frog){
     switch(input){
                 case SELECT:
                     state->id = PAUSED;
                 break;
 
                 case UP:
-                    moveFrog(UP);
+                    moveFrog(frog,UP);
                 break;
 
                 case DOWN:
-                    moveFrog(DOWN);
+                    moveFrog(frog,DOWN);
                 break;
 
                 case RIGHT:
-                    moveFrog(RIGHT);
+                    moveFrog(frog,RIGHT);
                 break;
 
                 case LEFT:
-                    moveFrog(LEFT);
+                    moveFrog(frog,LEFT);
                 break;
     }
 }
 
 ////////////////////////ZONES & SCORES
-void updateScore();
 
 void updateZone();
 
