@@ -1,4 +1,5 @@
 FALTA:
+1- CAMBIAR CENTRO DE MASA A INICIO DE ENTITY + LENGTH. CAMBBIAR LOGICA DE COLISIONY DE MOVE WITH FLOATER, EN VEZ DE QUE TENGAN LA MISMA X O Y, QUE SE MUEVAN CON LA MISMA VELOCIDAD 
 1- Niveles
 2- Movimiento de los obstaculos y esas cosas, VELOCIDAD: como lo hacemos?
 3- Codear INITS: setear esto inicial de game  
