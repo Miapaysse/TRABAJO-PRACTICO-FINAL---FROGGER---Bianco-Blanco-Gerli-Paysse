@@ -106,7 +106,7 @@
 
 
     bool collided(Frog* frog , Entity* entity){
-            if( ( (frog->x) > (entity->x - (entity->length)/2) ) && ( (frog->x) < (entity->x + (entity->length)/2) ) && ( frog->y == entity->y) ){
+            if( (( (frog->x) > (entity->x - (entity->length)/2) ) || ( (frog->x) < (entity->x + (entity->length)/2) ) )&& ( frog->y == entity->y) ){
                 return 1;
             }
 

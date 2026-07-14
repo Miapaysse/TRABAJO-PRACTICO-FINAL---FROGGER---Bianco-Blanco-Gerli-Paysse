@@ -58,28 +58,27 @@
 
             updateEntities();
 
-            updateZone();
+            //updateZone();
 
             manageInteractions(game);
 
-            checkLevel();
+            checkLevel(&(game->frog), &(game->level));
 
         break;
         case PAUSE:
             processInputPaused(&(game->state), input);
         break;
         case VICTORY:
+            resetFrog(&(game->frog));
             processInputVictory(&(game->state), input);
         break;
         case GAME_OVER:
+            resetFrog(&(game->frog));
             processInputGameOver(&(game->state), input);
         break;
         case POINTS:
             processInputPoints(&(game->state), input);
         break;
-        case EXIT:
-        break;
-
 
     }
  }
@@ -255,7 +254,6 @@ void processInputPlaying(gameState * state, Input input, Frog * frog){
 }
 
 ////////////////////////ZONES & SCORES
-void updateScore();
 
 void updateZone();
 
