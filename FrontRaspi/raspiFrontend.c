@@ -64,14 +64,12 @@ void frontendRender(Game * game){
 
 			// Dibuja obstaculos
 			drawObstacles((game->entities).obstacles));
-			drawFloaters((game->entities)floaters));
+			drawFloaters((game->entities).floaters));
 
 
 			break;
 
 		case GAME_OVER:
-			disp_init();
-			disp_clear();
 
 			msg = { //configura msg display para "GAME OVER"
 			        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -97,12 +95,9 @@ void frontendRender(Game * game){
 					disp_write((dcoord_t){.y = f, .x = c}, msg[f][c]);
 				}
 			}
-			disp_update();
 			break;
 
 		case VICTORY:
-			disp_init();
-			disp_clear();
 
 			msg = { //configura msg display para victory "YOU WIN"
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -128,7 +123,6 @@ void frontendRender(Game * game){
 					disp_write((dcoord_t){.y = f, .x = c}, gameOver[f][c]);
 				}
 			}
-			disp_update();
 			break;
 
 		default:
@@ -139,14 +133,14 @@ void frontendRender(Game * game){
 }
 
 
-void drawObstacles(Entity *obstacles[]){
-	int cont_obs = 0, length = 0;
-	for ( ; cont_obs <= MAX_OBSTACLES; cont_obs++){
-		if (obstacles[i].active){ //si existe obstaculo
-			for ( ; height <= obstacles[i].height), height++){ //itera por altura
-				for ( ; length<= (obstacles[i].length), length++){ //itera por largo
-					entity_pos = {obstacles[i].x + length,(obstacles[i].y + height};
-					disp_write(entity_pos, D_ON);
+void drawObstacles(Entity obstacles[]){
+	int idx_obs = 0, len = 0;
+	for ( ; idx_obs <= MAX_OBSTACLES; idx_obs++){
+		if (obstacles[idx_obs].active){ //si existe obstaculo
+			for ( ;ht < (obstacles[idx_obs].height),ht++){ //itera por altura
+				for ( ; len < (obstacles[idx_obs].length), len++){ //itera por largo
+					entity_pos = {obstacles[idx_obs].x + len,(obstacles[idx_obs].y +ht};
+					disp_write(entity_pos, D_ON); //Obstaculos prendidos. Calle apagada.
 				}
 			}
 		}
@@ -154,14 +148,15 @@ void drawObstacles(Entity *obstacles[]){
 }
 
 
-void drawFloaters(Entity *floaters)[]){
-	int cont_flo = 0, length = 0;
-	for ( ; cont_obs <= MAX_FLOATERS; cont_obs++){
-		if (floaters[i].active){ //si existe obstaculo
-			for ( ; height <= (floaters[i].height), height++){ //itera por altura
-				for ( ; length<= (game->entities.floaters[i].length), length++){ //itera por largo
-					entity_pos = {game->entities.floaters[i].x + length,(game->entities.floaters[i].y + height};
-					disp_write(entity_pos, D_ON);
+void drawFloaters(Entity floaters[]){
+
+	int idx_flo = 0, len = 0;
+	for ( ; idx_flo <= MAX_FLOATERS; idx_flo++){
+		if (floaters[flo].active){ //si existe obstaculo
+			for ( ; ht < (floaters[idx_flo].height), ht++){ //itera por altura
+				for ( ; len < (floaters[idx_flo].length), len++){ //itera por largo
+					entity_pos = {floaters[idx_flo].x + len),(floaters[idx_flo].y +ht};
+					disp_write(entity_pos, D_OFF); //Floaters apagados. Agua prendida.
 				}
 			}
 		}
