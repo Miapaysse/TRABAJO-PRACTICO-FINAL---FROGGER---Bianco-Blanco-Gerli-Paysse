@@ -23,7 +23,13 @@ typedef enum{
     SAFE,
     WATER,
     START
-} Zone;
+} ZoneType;
+
+typedef struct{
+    int y0;
+    int height;
+    ZoneType type;
+}Zone;
 
 typedef struct {
     Zone zones[MAX_ZONES];
