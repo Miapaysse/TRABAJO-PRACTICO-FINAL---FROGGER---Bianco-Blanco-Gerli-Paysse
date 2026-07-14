@@ -40,7 +40,7 @@ typedef enum{
     MENU_POINTS,
     MENU_EXIT,
     MENU_COUNT
-}MenuOption;
+} MenuOption;
 
 typedef enum{
     PAUSED_MENU,
