@@ -23,7 +23,7 @@
 
 #define FINISH_LINE MAP_HEIGHT
 
-#define MAX_ZONES 3
+#define MAX_PLAYING_ZONE_HEIGHT 6
 
 //ENTITIES SETTINGS/////////////////////////////////////////////////////
 #define MAX_OBSTACLES 15
@@ -42,6 +42,13 @@
 #define POINT_WEIGHT 50
 
 #define MAX_SCORE 999
+
+#define TOP10_SIZE 10
+
+#define TOP10_FILE "top10.txt"
+
+///////////////////////////////////////////////////////////////////////////////
+#define ISEVEN(x) ((x)%2==0)
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
