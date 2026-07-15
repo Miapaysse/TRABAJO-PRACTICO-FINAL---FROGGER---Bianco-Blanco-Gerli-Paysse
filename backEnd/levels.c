@@ -146,13 +146,13 @@ static void loadLevel1Entities(Level* level){
                 for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ // COUNT, FIRST: (SPEED, DIRECTION, LENGTH), GAP, 
                     level->rows[i+j].entityCount = 3;
                     level->rows[i+j].firstEntity = firstObstacle + (level->rows[i+j].entityCount)*j;
-                    if(ISEVEN((i+j))){
+                    if(ISEVEN((i+j))){ //LAS FILAS PARES 
                         for(k = 0; k<(level->rows[i+j].entityCount); k++){
                             ((level->rows[i+j]).firstEntity[k]).speed = 2;  //MEDIUM_SPEED
                             ((level->rows[i+j]).firstEntity[k]).direction = DIR_RIGHT;
                         }
                     }
-                    else{
+                    else{ //LAS IMPARES
                         for(k = 0; k<(level->rows[i+j].entityCount); k++){
                             ((level->rows[i+j]).firstEntity[k]).speed = 1; //SLOW_SPEED
                             ((level->rows[i+j]).firstEntity[k]).direction = DIR_LEFT;
@@ -160,7 +160,7 @@ static void loadLevel1Entities(Level* level){
 
                     }
 
-                    if(j == 5){
+                    if(j == 5){//ULTIMA FILA
                         level->rows[i+j].gap = 4; //MAX_GAP
                         for(k = 0; k<(level->rows[i+j].entityCount); k++){
                             ((level->rows[i+j]).firstEntity[k]).length = 2; // LENGTH_TRUCK
@@ -169,7 +169,7 @@ static void loadLevel1Entities(Level* level){
                         
                     }
 
-                    else{
+                    else{//PRIMERAS FILAS 
                         level->rows[i+j].gap = 3; 
                         for(k = 0; k<(level->rows[i+j].entityCount); k++){
                             ((level->rows[i+j]).firstEntity[k]).length = 1; //LENGHT_CAR 
