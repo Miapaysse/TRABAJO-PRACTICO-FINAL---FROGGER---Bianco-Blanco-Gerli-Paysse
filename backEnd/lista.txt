@@ -1,10 +1,21 @@
 FALTA:
-1- CAMBIAR CENTRO DE MASA A INICIO DE ENTITY + LENGTH. CAMBBIAR LOGICA DE COLISIONY DE MOVE WITH FLOATER, EN VEZ DE QUE TENGAN LA MISMA X O Y, QUE SE MUEVAN CON LA MISMA VELOCIDAD 
-1- Niveles
-2- Movimiento de los obstaculos y esas cosas, VELOCIDAD: como lo hacemos?
-3- Codear INITS: setear esto inicial de game  
+1- Niveles: 
+    - Subdividir crear nivel en mas funciones
+    - Funcion de siguiente nivel
 
-5- Zonas
-6- INTERACTIONS/COLISIONS: cambiar centro de masa por inicio entity (x inicial , x final)
+2- Movimiento de los obstaculos
+
+3- Movimiento rana 
+    CAMBIAR CENTRO DE MASA A INICIO DE ENTITY + LENGTH. 
+    CAMBIAR LOGICA DE COLISION Y DE MOVE WITH FLOATER, EN VEZ DE QUE TENGAN LA MISMA X O Y, QUE SE MUEVAN CON LA MISMA VELOCIDAD 
+
+3- Codear INITS: setear estado inicial de game  
+
 7- Acomodar .h y .c, tipos de datos y funciones
 8- Validacion de datos, punteros y enums
+
+
+FLOATERS:
+tamano 2: maximo entran 3
+tamano 3: maximo entran 3
+tamano 4: maximo entran 3 

@@ -11,7 +11,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-
+#include "entities.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -33,12 +33,6 @@ typedef enum{
     LEVEL_COUNT
 } LevelId;
 
-typedef struct {
-    LevelId id;
-    GameEntities* entities;
-    Row rows[MAP_HEIGHT];
-} Level;
-
 typedef struct{
 
     Zone zone;
@@ -47,15 +41,15 @@ typedef struct{
 
     int entityCount;
 
-    int speed;
-
-    Direction direction;
-
     int gap;
 
-    int entityLength;
+}Row;
 
-} Row;
+typedef struct {
+    LevelId id;
+    GameEntities* entities;
+    Row rows[MAP_HEIGHT];
+} Level;
 
 
 /*******************************************************************************
@@ -90,8 +84,8 @@ bool arrivedAtFinishLine(int y);
 
 /**************************PRIVATE****************************************************/
 static void createLevel1(Game * game);
-
-static void loadLevel1Zones(Level * level);
+s
+static void loadZones(Level * level);
 
 static void loadLevel1Obstacles(Game * game);
 
@@ -126,9 +120,5 @@ static void configureRow(Game *game,
                          uint16_t speed,
                          Direction direction);
 
-static Entity createEntity(Position pos,
-                           uint8_t length,
-                           Direction direction,
-                           EntityType type);
 
 #endif // _LEVELS_H_

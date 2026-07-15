@@ -34,7 +34,7 @@ typedef struct{
     int length;
     int height; 
     int speed;
-    int direction;
+    Direction direction;
     int type;
     bool active;
 }Entity;
@@ -43,6 +43,18 @@ typedef struct{
     Entity obstacles[MAX_OBSTACLES];
     Entity floaters[MAX_FLOATERS];
 }GameEntities;
+
+typedef struct{
+
+    Zone zone;
+
+    Entity* firstEntity;
+
+    int entityCount;
+
+    int gap;
+
+} Row;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

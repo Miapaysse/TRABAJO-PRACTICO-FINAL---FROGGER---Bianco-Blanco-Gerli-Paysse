@@ -82,8 +82,8 @@
   }
 
   void loadLevels(Game * game){
-    
-    loadZones(&(game->level));
+    createLevel1(game);
+    loadZones(&(game->level)); //ACA HAY ALGO RARO, ESTOY LODEANDO 2 VECES LAS ZONAS, PUEDO MEJORARLO
   }
 
 
@@ -122,45 +122,106 @@ static void loadZones(Level* level){
 
 static void createLevel1(Game * game)
 {
-    level1={
-        1,
-        &(game->entities),
-        {
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-        } 
-        
-    };
-
-    loadZones(&level1);
-}
-
-static void createLevel1(Game * game)
-{
     level1.id = LEVEL_1;
-    level1.entities = &(game->entities),
+    level1.entities = &(game->entities);
     loadZones(&level1);
+    loadLevel1Entities(&level1);
 }
 
+static void loadLevel1Entities(Level* level){
+    int i, j, k;
+    Entity * previousObstacle, previousFloater;
+    firstObstacle = level->entities->obstacles;
+    firstFloater = level->entities->floaters;
+    int x0 = 0;
+    int y0 = 0;
+    for(i=0; i<MAP_HEIGHT; i++){
+        switch(level->rows[i].zone){
+            case SAFE:
+                level->rows[i].entityCount = 0;
+                level->rows[i].gap = 0;
+                level->rows[i].firstEntity = NULL;
+            break;
+            case ROAD:
+                for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ // COUNT, FIRST: (SPEED, DIRECTION, LENGTH), GAP, 
+                    level->rows[i+j].entityCount = 3;
+                    level->rows[i+j].firstEntity = firstObstacle + (level->rows[i+j].entityCount)*j;
+                    if(ISEVEN((i+j))){
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).speed = 2;  //MEDIUM_SPEED
+                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_RIGHT;
+                        }
+                    }
+                    else{
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).speed = 1; //SLOW_SPEED
+                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_LEFT;
+                        }
 
-    level->id = LEVEL_1;
+                    }
 
-    loadLevel1Obstacles(game);
+                    if(j == 5){
+                        level->rows[i+j].gap = 4; //MAX_GAP
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).length = 2; // LENGTH_TRUCK
+                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
+                        }
+                        
+                    }
 
-    loadLevel1Floaters(game);
+                    else{
+                        level->rows[i+j].gap = 3; 
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).length = 1; //LENGHT_CAR 
+                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
+                        }
+                        
+                    }
+                }
+                i+=MAX_PLAYING_ZONE_HEIGHT-1;
+            break;
+            case WATER:
+                for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ // COUNT, FIRST: (SPEED, DIRECTION, LENGTH), GAP, 
+                    level->rows[i+j].entityCount = 3;
+                    level->rows[i+j].firstEntity = firstFloater + (level->rows[i+j].entityCount)*j;
+                    if(ISEVEN((i+j))){
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).speed = 2;  //MEDIUM_SPEED
+                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_RIGHT;
+                        }
+                    }
+                    else{
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).speed = 1; //SLOW_SPEED
+                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_LEFT;
+                        }
+
+                    }
+
+                    if(j == 5){
+                        level->rows[i+j].gap = 4; //MAX_GAP
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).length = 2; // LENGTH_TRUCK
+                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
+                        }
+                        
+                    }
+
+                    else{
+                        level->rows[i+j].gap = 3; 
+                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
+                            ((level->rows[i+j]).firstEntity[k]).length = 1; //LENGHT_CAR 
+                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
+                        }
+                        
+                    }
+                }
+                i+=MAX_PLAYING_ZONE_HEIGHT-1;
+            break;
+        }
+    }
+}
+
 
 /******************************************************************************/
  
