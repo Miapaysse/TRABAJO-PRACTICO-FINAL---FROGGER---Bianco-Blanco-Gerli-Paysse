@@ -26,11 +26,7 @@
 
 #define MAX_LIVES 3
 
-<<<<<<< HEAD
-#define MAP_WIDTH 13
-=======
 #define MAP_WIDTH 16
->>>>>>> 0838c65322d1cd4fbc8a878f07102639db0df6ce
 
 #define MAP_HEIGHT 16
 
