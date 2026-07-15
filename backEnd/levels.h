@@ -35,7 +35,7 @@ typedef enum{
 typedef struct {
     LevelId id;
     Row rows[MAP_HEIGHT];
-    GameEntities entities;
+    GameEntities* entities;
 } Level;
 
 typedef struct{
@@ -96,6 +96,7 @@ static void loadLevel1Obstacles(Game * game);
 
 static void loadLevel1Floaters(Game * game);
 
+/*
 static void configureObstacleRow(Game * game,
                                  uint8_t row,
                                  uint8_t entityCount,
@@ -111,6 +112,18 @@ static void configureFloaterRow(Game * game,
                                 uint8_t gap,
                                 uint16_t speed,
                                 Direction direction);
+
+*/ //ESTAS SE CAMBIAN POR:
+
+static void configureRow(Game *game,
+                         Zone zone,
+                         EntityType type,
+                         uint8_t row,
+                         uint8_t entityCount,
+                         uint8_t entityLength,
+                         uint8_t gap,
+                         uint16_t speed,
+                         Direction direction);
 
 static Entity createEntity(Position pos,
                            uint8_t length,

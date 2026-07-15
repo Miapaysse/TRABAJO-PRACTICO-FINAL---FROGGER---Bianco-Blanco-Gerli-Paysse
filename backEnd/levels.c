@@ -71,6 +71,7 @@
   }
 
   void loadLevels(Level* level, LevelId id){
+    loadZones(Level* level);
     switch(id){
         case LEVEL_1:
             createLevel1(level);
@@ -90,7 +91,52 @@
     }
   }
 
-  static void createLevel1(Level *level){
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+static void createLevel1(Game * game)
+{
+    (level->rows)[HEIGHT]={
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+    }
+}
+
+loadZones(Level* level){
+    level->rows[0].zone = START;
+    level->rows[1].zone = START;
+
+    level->rows[2].zone = ROAD;
+    level->rows[3].zone = ROAD;
+    level->rows[4].zone = ROAD;
+    level->rows[5].zone = ROAD;
+    level->rows[6].zone = ROAD;
+    level->rows[6].zone = ROAD;
+
+
+    level->rows[7].zone = SAFE;
+
+    level->rows[8].zone = WATER;
+    level->rows[9].zone = WATER;
+    level->rows[10].zone = WATER;
+    level->rows[11].zone = WATER;
+    level->rows[12].zone = WATER;
+    level->rows[12].zone = WATER;
+
+    level->rows[13].zone = SAFE;
+}
+
+
+static void createLevel1(Level *level){
     level->id = LEVEL_1;
 
     /* Inicializar zonas */
@@ -106,16 +152,8 @@
 
     /* Inicializar cantidad de entidades --> */
  }
-
-/*******************************************************************************
- *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/
 static void createLevel1(Game * game)
 {
-    Level * level = &game->level;
-
     level->id = LEVEL_1;
 
     loadLevel1Zones(level);
