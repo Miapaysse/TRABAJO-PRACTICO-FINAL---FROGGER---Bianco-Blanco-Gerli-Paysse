@@ -78,7 +78,7 @@
         //VALIDAR PUNTEROS
         //CHEQUEAR LIMITES DEL JUEGO
         
-            switch(game->currentZone){
+            switch((game->currentZone).type){
                 case ROAD:
                     if(runOverFrog(&(game->frog), (game->entities).obstacles)){
                         frogDies(&(game->lives), &((game->state).id));

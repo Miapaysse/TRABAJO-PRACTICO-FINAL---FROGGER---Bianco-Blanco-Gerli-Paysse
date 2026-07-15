@@ -1,3 +1,13 @@
 Frontend Allegro:
 1) frontendInit debería devolver un número, no void, así si
 hay un error podemos hacer un return y sale de la función
+
+
+
+
+Frontend raspi:
+1- Probar Display LED Menus
+2- Probar zones display
+3- Frog titila
+4- probar entities moviendose
+5- codear perdida vidas
