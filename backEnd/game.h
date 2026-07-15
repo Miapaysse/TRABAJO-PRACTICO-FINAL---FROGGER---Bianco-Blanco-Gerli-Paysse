@@ -37,6 +37,7 @@ typedef enum{
 } GameStateId;
 
 typedef enum{
+    MENU_TITLE,
     MENU_PLAY,
     MENU_POINTS,
     MENU_EXIT,
@@ -44,6 +45,7 @@ typedef enum{
 }MenuOption;
 
 typedef enum{
+    PAUSED_TITLE,
     PAUSED_MENU,
     PAUSED_PLAY, //DISTINTO SERIA REPLAY!!!!! MANTENER VIDAS 
     PAUSED_EXIT,
@@ -51,18 +53,21 @@ typedef enum{
 }PausedOption;
 
 typedef enum{
+    GAME_OVER_TITLE,
     GAME_OVER_MENU,
     GAME_OVER_EXIT,
     GAME_OVER_COUNT
 }GameOverOption;
 
 typedef enum{
+    VICTORY_TITLE,
     VICTORY_MENU,
     VICTORY_EXIT,
     VICTORY_COUNT
 }VictoryOption;
 
 typedef enum{
+    POINTS_TITLE,
     POINTS_MENU,
     POINTS_EXIT,
     POINTS_COUNT

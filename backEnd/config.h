@@ -42,8 +42,6 @@
 
 #define POINT_WEIGHT 50
 
-#define MAX_LEVELS 3
-
 #define MAX_SCORE 999
 
 

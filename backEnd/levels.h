@@ -25,6 +25,13 @@ typedef enum{
     START
 } ZoneType;
 
+typedef enum{
+    LEVEL_1,
+    LEVEL_2,
+    LEVEL_3,
+    LEVEL_COUNT
+} LevelId;
+
 typedef struct{
     int y0;
     int height;
@@ -32,9 +39,9 @@ typedef struct{
 }Zone;
 
 typedef struct {
+    LevelId id;
     Zone zones[MAX_ZONES];
     GameEntities entities;
-    int id;
 } Level;
 
 
