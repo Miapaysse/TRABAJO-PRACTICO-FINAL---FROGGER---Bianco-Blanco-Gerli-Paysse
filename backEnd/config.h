@@ -18,9 +18,13 @@
  ******************************************************************************/
 
 
-#define MAX_OBSTACLES 15
+#define MAX_OBSTACLES 5
 
-#define MAX_FLOATERS 15
+#define MIN_OBSTACLES 2
+
+#define MAX_FLOATERS 3
+
+#define MIN_FLOATERS 2
 
 #define MAX_ZONES 3
 
@@ -35,6 +39,8 @@
 #define X0 (MAP_WIDTH/2)
 
 #define Y0 0
+
+#define POINT_WEIGHT 50
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

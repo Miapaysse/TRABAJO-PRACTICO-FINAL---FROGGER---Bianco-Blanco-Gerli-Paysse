@@ -87,65 +87,97 @@ void frogDies(int* lives, GameStateId * id ){
   }
 }
 
-void createEntities(Game* p2game, GameEntities* p2GameEntities, Level* p2level){
+void createEntities(GameEntities* gameEntities, Level* level){
     //inicializamos para que no haya entidades activas en un principio
     int i, j, y;
     for (i=0; i<MAX_OBSTACLES; i++){
-        (p2GameEntities -> obstacles[i]).active = false;
+        (gameEntities -> obstacles[i]).active = false;
     }
     for (j=0; j<MAX_FLOATERS; j++){
-        (p2GameEntities -> floaters[j]).active = false;
+        (gameEntities -> floaters[j]).active = false;
     }
 
     //recorremos filas y vamos creando obstáculos en cada una
-    int num_level; //FALTA SABER DE DONDE SACO EL NRO DE NIVEL
-    for (int y = 0; y < MAP_HEIGHT; y++) {
+    
+      for (int y = 0; y < MAP_HEIGHT; y++) {
 
-        Zone zone_type = p2level -> zones[y]; //guardamos qué tipo de zona es esta fila particular
+        ZoneType zone_type = ((level -> zones)[y]).type; //guardamos qué tipo de zona es esta fila particular
 
-        if (zone_type == ROAD) {
-          int obs_base = 2 + (num_level / 2); 
-          int obs_variation = rand() % 2; //da 1 o 0
-          int num_obs = obs_base + obs_variation;
 
-          int space_btween = MAP_WIDTH / num_obs;
-          int obs_length = 1 + (rand() % 2);
+        switch(zone_type){
+          case ROAD:
 
-          //recorro arreglo de obstaculos
-          int t;
-          for (t=0; t<num_obs; t++){
-            (p2GameEntities->obstacles[t]).active = true;
-            (p2GameEntities->obstacles[t]).y = y;
-            (p2GameEntities->obstacles[t]).x = t + space_btween + 1;
-            (p2GameEntities->obstacles[t]).y = y;
-            (p2GameEntities->obstacles[t]).height = 1;
-            (p2GameEntities->obstacles[t]).length = obs_length;
-            (p2GameEntities->obstacles[t]).speed= 1 + (num_level/2);
-
-            //si la fila es nro. par los obstaculos van en un sentido, sino en el contrario
-            if (y/2){
-                (p2GameEntities->obstacles[t]).direction = DIR_LEFT;
-            }
-            else {
-                (p2GameEntities->obstacles[t]).direction = DIR_RIGHT;
-            }
-
-            (p2GameEntities->obstacles[t]).type = OBSTACLE;
-          }
+          break;
 
         } 
-        else if (zone_type == WATER) {
-            
-        }
-    }
+       
+      }
+}
+
+
+void initObstacles(Entity* obstacles, int levelId){
+    int num_obs = rand() % MAX_OBSTACLES + MIN_OBSTACLES; //da MIN_OBSTACLES o MAX_OBSTACLES
+    int obs_length = 1 + rand() % 2;
+    int space_btween = MAP_WIDTH / num_obs ;
+    
+
+    //recorro arreglo de obstaculos
+    int t;
+    for (t=0; t<MAX_OBSTACLES; t++){
+      (obstacles[t]).active = true;
+      (obstacles[t]).y = y;
+      (obstacles[t]).x = t + space_btween + 1;
+      (obstacles[t]).y = y;
+      (obstacles[t]).height = 1;
+      (obstacles[t]).length = obs_length;
+      (obstacles[t]).speed= 1 + (levelId/2);
+
+      //si la fila es nro. par los obstaculos van en un sentido, sino en el contrario
+              if (y/2){
+                  (obstacles[t]).direction = DIR_LEFT;
+              }
+              else {
+                  (obstacles[t]).direction = DIR_RIGHT;
+              }
+
+              (obstacles[t]).type = OBSTACLE;
+            }
+}
+
+
+void initObstacles(Entity* obstacles, int levelId){
+    int obs_base = 2 + (levelId / 2); 
+    int num_obs = rand() % MAX_OBSTACLES + obs_base; //da obs_base o MAX_OBSTACLES
+
+    int space_btween = MAP_WIDTH / num_obs ;
+    int obs_length = 1 + rand() % 2;
+
+    //recorro arreglo de obstaculos
+    int t;
+    for (t=0; t<num_obs; t++){
+      (obstacles[t]).active = true;
+      (obstacles[t]).y = y;
+      (obstacles[t]).x = t + space_btween + 1;
+      (obstacles[t]).y = y;
+      (obstacles[t]).height = 1;
+      (obstacles[t]).length = obs_length;
+      (obstacles[t]).speed= 1 + (levelId/2);
+
+      //si la fila es nro. par los obstaculos van en un sentido, sino en el contrario
+              if (y/2){
+                  (obstacles[t]).direction = DIR_LEFT;
+              }
+              else {
+                  (obstacles[t]).direction = DIR_RIGHT;
+              }
+
+              (obstacles[t]).type = OBSTACLE;
+            }
 }
 
 void updateEntities(){
-    for(i=0; i<MAX_OBSTACLES; i++){
-        if(collided(frog,&(obstacles[i])) ){
-            return 1;
-        }
-    }
+
+  
 }
 
 /*******************************************************************************
