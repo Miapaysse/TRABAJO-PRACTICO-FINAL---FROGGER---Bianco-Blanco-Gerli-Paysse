@@ -52,20 +52,25 @@ Input frontendGetInput(void) {
 
 
 void frontendRender(Game * game){
-	disp_clear();
+	int f = 0, c = 0, idxZones = 0;
 
 	switch(game->state.id) {
+	disp_clear(); //Para cada case empiezan todos los leds apagadas
 		case MENU:
 			break;
 
 		case PLAYING:
 
-			// Dibuja agua
-			check_zone(&(game->level).zones[i]);
+			// Dibuja zonas
+			for ( f = 0; f < MAX_ZONES; f++) {
+			drawZone(&(game->level).zones[idxZones]);
 
-			drawObstacles((game->entities).obstacles));
-			drawFloaters((game->entities).floaters));
+			//Dibuja obstaculos y floaters
+			drawObstacles(&(game->entities).obstacles));
+			drawFloaters(&(game->entities).floaters));
 
+			//Dibuja rana (titila)
+			drawFrog(&(game->frog));
 
 			break;
 
@@ -90,8 +95,9 @@ void frontendRender(Game * game){
 			        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 			};
 
-			for (int f = 0; f < 16; f++) {
-				for (int c = 0; c < 16; c++) {
+
+			for ( f = 0; f <  + 1; f++) {
+				for (int c = 0; c < MAP_WIDTH + 1; c++) {
 					disp_write((dcoord_t){.y = f, .x = c}, msg[f][c]);
 				}
 			}
@@ -118,9 +124,9 @@ void frontendRender(Game * game){
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 			};
 
-			for (int f = 0; f < 16; f++) {
-				for (int c = 0; c < 16; c++) {
-					disp_write((dcoord_t){.y = f, .x = c}, gameOver[f][c]);
+			for ( f = 0; f <  + 1; f++) {
+				for (int c = 0; c < MAP_WIDTH + 1; c++) {
+					disp_write((dcoord_t){.y = f, .x = c}, msg[f][c]);
 				}
 			}
 			break;
@@ -134,12 +140,12 @@ void frontendRender(Game * game){
 
 
 void drawObstacles(Entity obstacles[]){
-	int idx_obs = 0, len = 0;
-	for ( ; idx_obs <= MAX_OBSTACLES; idx_obs++){
-		if (obstacles[idx_obs].active){ //si existe obstaculo
-			for ( ;ht < (obstacles[idx_obs].height),ht++){ //itera por altura
-				for ( ; len < (obstacles[idx_obs].length), len++){ //itera por largo
-					entity_pos = {obstacles[idx_obs].x + len,(obstacles[idx_obs].y +ht};
+	int idxObs = 0, len = 0;
+	for ( ; idxObs <= MAX_OBSTACLES; idxObs ++){
+		if (obstacles[idxObs].active){ //si existe obstaculo
+			for ( ;ht < (obstacles[idxObs].height), ht++){ //itera por altura
+				for ( ; len < (obstacles[idxObs].length), len++){ //itera por largo
+					entity_pos = {obstacles[idxObs].x + len,(obstacles[idxObs].y +ht};
 					disp_write(entity_pos, D_ON); //Obstaculos prendidos. Calle apagada.
 				}
 			}
@@ -149,12 +155,12 @@ void drawObstacles(Entity obstacles[]){
 
 
 void drawFloaters(Entity floaters[]){
-	int idx_flo = 0, len = 0;
-	for ( ; idx_flo <= MAX_FLOATERS; idx_flo++){
-		if (floaters[flo].active){ //si existe obstaculo
-			for ( ; ht < (floaters[idx_flo].height), ht++){ //itera por altura
-				for ( ; len < (floaters[idx_flo].length), len++){ //itera por largo
-					entity_pos = {floaters[idx_flo].x + len),(floaters[idx_flo].y +ht};
+	int idxFlo = 0, len = 0;
+	for ( ; idxFlo  <= MAX_FLOATERS; idxFlo ++){
+		if (floaters[idxFlo ].active){ //si existe obstaculo
+			for ( ; ht < (floaters[idxFlo ].height), ht++){ //itera por altura
+				for ( ; len < (floaters[idxFlo ].length), len++){ //itera por largo
+					entity_pos = {floaters[idxFlo ].x + len),(floaters[idxFlo ].y +ht};
 					disp_write(entity_pos, D_OFF); //Floaters apagados. Agua prendida.
 				}
 			}
@@ -162,22 +168,68 @@ void drawFloaters(Entity floaters[]){
 	}
 }
 
-check_zone(const Zone * zone){
+void drawZone(const Zone * zone){
+	int f = 0, c = 0;
+
 	switch (zone->type){
-		case WATER: // Dibuja agua
-			for (int f = zone->y0; f < zone->height; f++) {
-				for (int c = 0; c < 16; c++) {
-					disp_write((dcoord_t){.y = f, .x = c},D_ON);
+
+		case WATER: // Dibuja agua (LEDs prendidos)
+			for (f = 0; f < zone->height; f++) {
+				for (c = 0; c <= MAP_WIDTH; c++) {
+					disp_write((dcoord_t){.y = f + (zone->y0), .x = c},D_ON);
 				}
 			}
 		break;
 
-		case ROAD: // Dibuja calle
-			for (int f = h_init; f < HEIGHT; f++) {
-				for (int c = 0; c < 16; c++) {
-					disp_write((dcoord_t){.y = f, .x = c},D_OFF);
+		case ROAD: // Dibuja calle (LEDs apagados)
+			for (f = 0 ; f < zone->height ; f++) {
+				for (c = 0 ; c <= MAP_WIDTH ; c++) {
+					disp_write((dcoord_t){.y = f + (zone->y0), .x = c}, D_OFF);
 				}
 			}
 		break;
+
+		case SAFE: // Dibuja safe zone (LEDs diagonales apuntando a izquierda)
+
+			 //height de safe es siempre 2 unidades
+
+			//Dibuja fila de abajo
+			for (f = 0 ; f < (zone->height) - 1 ; f++) {
+				for (c = 0 ; c <= MAP_WIDTH ; c++) {
+					disp_write((dcoord_t){.y = f + (zone->y0) , .x = c}, D_OFF);
+					c++; //Saltea un led, lo deja apagado por clear_disp
+				}
+			}
+
+			//Dibuja fila de arriba
+			for (f = 1 ; f < (zone->height) ; f++) {
+				for (c = 1 ; c <= MAP_WIDTH ; c++) { //Emppieza con columna defasada a la derecha.
+					disp_write((dcoord_t){.y = f + (zone->y0), .x = c}, D_OFF);
+					c++; //Saltea un led, lo deja apagado por clear_disp
+				}
+			}
+		break;
+
+		case START: // Dibuja safe zone (LEDs diagonales apuntando a derecha)
+
+			//height de safe es siempre 2 unidades
+
+			//Dibuja fila de abajo
+			for (f = 0 ; f < (zone->height) - 1 ; f++) {
+				for (c = 1 ; c <= MAP_WIDTH ; c++) {  //Empieza con columna defasada a la derecha.
+					disp_write((dcoord_t){.y = f + (zone->y0), .x = c}, D_OFF);
+					c++; //Saltea un led, lo deja apagado por clear_disp
+				}
+			}
+
+			//Dibuja fila de arriba
+			for (f = 1; f < (zone->height); f++) {
+				for (c = 0; c <= MAP_WIDTH; c++) {
+					disp_write((dcoord_t){.y = f + (zone->y0), .x = c},D_OFF);
+					c++; //Saltea un led, lo deja apagado por clear_disp
+				}
+			}
+		break;
+
 	}
 }
