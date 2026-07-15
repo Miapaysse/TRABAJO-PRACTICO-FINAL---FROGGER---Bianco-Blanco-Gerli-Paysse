@@ -23,7 +23,7 @@ typedef enum{
     SAFE,
     WATER,
     START
-} ZoneType;
+} Zone;
 
 typedef enum{
     LEVEL_1,
@@ -32,19 +32,29 @@ typedef enum{
     LEVEL_COUNT
 } LevelId;
 
-typedef struct{
-    int y0;
-    int height;
-    ZoneType type;
-}Zone;
-
 typedef struct {
     LevelId id;
-    Zone zones[MAX_ZONES];
+    Row rows[MAP_HEIGHT];
     GameEntities entities;
 } Level;
 
+typedef struct{
 
+    Zone zone;
+
+    uint8_t firstEntity;
+
+    uint8_t entityCount;
+
+    uint16_t speed;
+
+    Direction direction;
+
+    uint8_t gap;
+
+    uint8_t entityLength;
+
+} Row;
 
 
 /*******************************************************************************
@@ -77,6 +87,34 @@ bool arrivedAtFinishLine(int y);
  * @return Descripcion valor que devuelve
  */
 
-/******************************************************************************/
+/**************************PRIVATE****************************************************/
+static void createLevel1(Game * game);
+
+static void loadLevel1Zones(Level * level);
+
+static void loadLevel1Obstacles(Game * game);
+
+static void loadLevel1Floaters(Game * game);
+
+static void configureObstacleRow(Game * game,
+                                 uint8_t row,
+                                 uint8_t entityCount,
+                                 uint8_t entityLength,
+                                 uint8_t gap,
+                                 uint16_t speed,
+                                 Direction direction);
+
+static void configureFloaterRow(Game * game,
+                                uint8_t row,
+                                uint8_t entityCount,
+                                uint8_t entityLength,
+                                uint8_t gap,
+                                uint16_t speed,
+                                Direction direction);
+
+static Entity createEntity(Position pos,
+                           uint8_t length,
+                           Direction direction,
+                           EntityType type);
 
 #endif // _LEVELS_H_
