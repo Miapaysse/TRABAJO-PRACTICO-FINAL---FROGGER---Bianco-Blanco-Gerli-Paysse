@@ -14,12 +14,13 @@
 #include "entities.h"
 
 #define JOY_LIM 10 //Limite para detectar movimiento del joystic
+#define DIGITS 3
 
 static dcoord_t frog_pos = {MAP_WIDTH  >> 1, MAP_HEIGHT}; //Sse queda del lado izquierdo de la mitad vertical, abajo de todo
 static dcoord_t entity_pos;
 DISP msg; //Global para que inicialice en cero
 
-DISP menuBackground[16][16] = {
+DISP menuBackground[MAP_HEIGHT][MAP_WIDTH] = {
     {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -38,7 +39,7 @@ DISP menuBackground[16][16] = {
     {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}
 };
 //Defino digitos para display. 10 valores, c/u ocupa 5 filas y 3 columnas
-const int digito[10][5][3] = {
+const int digito[10][5][DIGITS] = {
 		// Nro 0
 		{ {0,0,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,0,0} },
 		// Nro 1
@@ -60,6 +61,8 @@ const int digito[10][5][3] = {
 		// Nro 9
 		{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }
 };
+
+int bufferDisplay[MAP_HEIGHT][MAP_WIDTH]; //Buffer para cargar lo que muestra finalmente
 
 void frontendInit(void) {
     joy_init();
@@ -94,11 +97,15 @@ Input frontendGetInput(void) {
 
 
 void frontendRender(Game * game){
-	int f = 0, c = 0, idxZones = 0;
+	int f = 0, c = 0, idxZones = 0, idxScore = 0;
 
 	switch(game->state.id) {
 	disp_clear(); //Para cada case empiezan todos los leds apagadas
 		case MENU:
+			for (idxScore = 0 ; idxScore <=  game.score.len){ //CAMBIAR ACORDE DELFI/MIO
+				drawScore(idxScore, game.score[idxScore]);
+			}
+
 			break;
 
 		case PLAYING:
@@ -274,4 +281,18 @@ void drawZone(const Zone * zone){
 		break;
 
 	}
+}
+
+
+void drawScore(int idxScore, int score) {
+    int f, c;
+
+    for (f = 0; f < MAP_HEIGHT; f++) { // Copia base a buffer
+        for (c = 0; c < MAP_WIDTH; c++) {
+        	bufferDisplay[f][c] = menuBackground[f][c];
+        }
+    }
+
+    int digits[DIGITS] = {}
+
 }
