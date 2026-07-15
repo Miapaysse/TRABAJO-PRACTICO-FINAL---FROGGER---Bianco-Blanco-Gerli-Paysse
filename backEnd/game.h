@@ -23,6 +23,7 @@ typedef enum{
    LEFT,
    RIGHT,
    SELECT,
+   NONE
 } Input;
 
 typedef enum{
@@ -36,13 +37,15 @@ typedef enum{
 } GameStateId;
 
 typedef enum{
+    MENU_TITLE,
     MENU_PLAY,
     MENU_POINTS,
     MENU_EXIT,
     MENU_COUNT
-} MenuOption;
+}MenuOption;
 
 typedef enum{
+    PAUSED_TITLE,
     PAUSED_MENU,
     PAUSED_PLAY, //DISTINTO SERIA REPLAY!!!!! MANTENER VIDAS 
     PAUSED_EXIT,
@@ -50,18 +53,21 @@ typedef enum{
 }PausedOption;
 
 typedef enum{
+    GAME_OVER_TITLE,
     GAME_OVER_MENU,
     GAME_OVER_EXIT,
     GAME_OVER_COUNT
 }GameOverOption;
 
 typedef enum{
+    VICTORY_TITLE,
     VICTORY_MENU,
     VICTORY_EXIT,
     VICTORY_COUNT
 }VictoryOption;
 
 typedef enum{
+    POINTS_TITLE,
     POINTS_MENU,
     POINTS_EXIT,
     POINTS_COUNT
@@ -116,12 +122,12 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
- void processInputPlaying(gameState * state, Input input);
- void processInputMenu(gameState * state, Input input);
- void processInputPaused(gameState * state, Input input);
- void processInputGameOver(gameState * state, Input input);
- void processInputVictory(gameState * state, Input input);
- void processInputPoints(gameState * state, Input input);
+ void processInputPlaying(GameState * state, Input input);
+ void processInputMenu(GameState * state, Input input);
+ void processInputPaused(GameState * state, Input input);
+ void processInputGameOver(GameState * state, Input input);
+ void processInputVictory(GameState * state, Input input);
+ void processInputPoints(GameState * state, Input input);
 
 
  void updateGame(Game * game, Input input);
