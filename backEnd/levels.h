@@ -22,7 +22,8 @@ typedef enum{
     ROAD,
     SAFE,
     WATER,
-    START
+    START,
+    DEFAULT
 } Zone;
 
 typedef enum{
@@ -34,25 +35,25 @@ typedef enum{
 
 typedef struct {
     LevelId id;
-    Row rows[MAP_HEIGHT];
     GameEntities* entities;
+    Row rows[MAP_HEIGHT];
 } Level;
 
 typedef struct{
 
     Zone zone;
 
-    uint8_t firstEntity;
+    Entity* firstEntity;
 
-    uint8_t entityCount;
+    int entityCount;
 
-    uint16_t speed;
+    int speed;
 
     Direction direction;
 
-    uint8_t gap;
+    int gap;
 
-    uint8_t entityLength;
+    int entityLength;
 
 } Row;
 

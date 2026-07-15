@@ -16,25 +16,28 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-
-
-#define MAX_OBSTACLES 15
-
-#define MAX_FLOATERS 15
-
-#define MAX_ZONES 3
-
-#define MAX_LIVES 3
-
+//MAP SETTINGS////////////////////////////////////////////////////////// 
 #define MAP_WIDTH 15
 
 #define MAP_HEIGHT 15
 
 #define FINISH_LINE MAP_HEIGHT
 
+#define MAX_ZONES 3
+
+//ENTITIES SETTINGS/////////////////////////////////////////////////////
+#define MAX_OBSTACLES 15
+
+#define MAX_FLOATERS 15
+
+//FROG SETTINGS//////////////////////////////////////////////////////////
+
 #define X0 (MAP_WIDTH/2)
 
 #define Y0 0
+
+//GAME SETTINGS/////////////////////////////////////////////////////////
+#define MAX_LIVES 3
 
 #define POINT_WEIGHT 50
 
