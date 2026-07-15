@@ -30,9 +30,9 @@
 
 #define MAX_LIVES 3
 
-#define MAP_WIDTH 15
+#define MAP_WIDTH 16
 
-#define MAP_HEIGHT 15
+#define MAP_HEIGHT 16
 
 #define FINISH_LINE MAP_HEIGHT
 
