@@ -23,6 +23,7 @@ typedef enum{
    LEFT,
    RIGHT,
    SELECT,
+   NONE
 } Input;
 
 typedef enum{
@@ -40,7 +41,7 @@ typedef enum{
     MENU_POINTS,
     MENU_EXIT,
     MENU_COUNT
-} MenuOption;
+}MenuOption;
 
 typedef enum{
     PAUSED_MENU,
@@ -116,12 +117,12 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
- void processInputPlaying(gameState * state, Input input);
- void processInputMenu(gameState * state, Input input);
- void processInputPaused(gameState * state, Input input);
- void processInputGameOver(gameState * state, Input input);
- void processInputVictory(gameState * state, Input input);
- void processInputPoints(gameState * state, Input input);
+ void processInputPlaying(GameState * state, Input input);
+ void processInputMenu(GameState * state, Input input);
+ void processInputPaused(GameState * state, Input input);
+ void processInputGameOver(GameState * state, Input input);
+ void processInputVictory(GameState * state, Input input);
+ void processInputPoints(GameState * state, Input input);
 
 
  void updateGame(Game * game, Input input);
