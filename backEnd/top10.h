@@ -14,14 +14,19 @@
   * INCLUDE HEADER FILES
   ******************************************************************************/
  #include <stdbool.h>
- #include "config.h"
+
  
  
  
  /*******************************************************************************
   * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
   ******************************************************************************/
- typedef enum {
+  #define TOP10_SIZE 10
+
+  #define TOP10_FILE "top10.txt"
+ 
+ 
+  typedef enum {
   TOP10_OK = 0,
   TOP10_FILE_NOT_FOUND,  // no existe el archivo todavia (primera ejecucion, no es un error)
   TOP10_READ_ERROR,      // el archivo existe pero esta corrupto/incompleto
