@@ -26,15 +26,15 @@
 #define MAX_PLAYING_ZONE_HEIGHT 6
 
 //ENTITIES SETTINGS/////////////////////////////////////////////////////
-#define MAX_OBSTACLES 15
+#define MAX_OBSTACLES 20
 
-#define MAX_FLOATERS 15
+#define MAX_FLOATERS 20
 
 //FROG SETTINGS//////////////////////////////////////////////////////////
 
-#define X0 (MAP_WIDTH/2)
+#define FROG_X0 (MAP_WIDTH/2)
 
-#define Y0 0
+#define FROG_Y0 0
 
 //GAME SETTINGS/////////////////////////////////////////////////////////
 #define MAX_LIVES 3
@@ -43,13 +43,21 @@
 
 #define MAX_SCORE 999
 
+#define MIN_SCORE 0
+
 #define TOP10_SIZE 10
 
 #define TOP10_FILE "top10.txt"
 
 ///////////////////////////////////////////////////////////////////////////////
 #define ISEVEN(x) ((x)%2==0)
-
+////////////////////////////////////////////////////////////////
+typedef enum{
+  ERR_MAX_OBSTACLES_EXCEEDED,
+  ERR_MAX_FLOATERS_EXCEEDED, 
+  ERR_INVALID_GAME_POINTER, 
+  ERR_INVALID_LEVEL_POINTER
+}ErrorType;
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/

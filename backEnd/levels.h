@@ -84,34 +84,17 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+ int initLevel(Game * game);
+ int checkLevel(Frog* frog, Level* level);
+ int goToNextLevel(Level* level);
+ int arrivedAtFinishLine(int y);
 
- void checkLevel(Frog* frog, Level* level);
- void goToNextLevel(Level* level);
- 
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-
-bool arrivedAtFinishLine(int y);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
- */
-
-/**************************PRIVATE****************************************************/
-static void initLevels(Game * game);
-s
-static void loadZones(Level * level);
-
-static void loadLevel(Game * game);
-
-static void loadLevelEntities(Game * game);
-
 
 
 #endif // _LEVELS_H_

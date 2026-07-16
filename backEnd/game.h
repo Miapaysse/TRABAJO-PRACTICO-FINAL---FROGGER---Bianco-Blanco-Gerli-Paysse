@@ -137,14 +137,8 @@ typedef struct {
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
- void endGame();
- /**
- * @brief TODO: ends the game
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
- void gameInit();
+
+ void gameInit(Game*game);
  /**
  * @brief TODO: initialize the game
  * @param param1 Descripcion parametro 1
