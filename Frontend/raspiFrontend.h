@@ -20,7 +20,7 @@
  ******************************************************************************/
 
 #define JOY_LIM 50 //Limite para detectar movimiento del joystic
-typedef int DISP[MAP_WIDTH][MAP_HEIGHT]; //matriz 2D que simula display
+typedef static int DISP[MAP_WIDTH][MAP_HEIGHT]; //matriz 2D que simula display
 
 
 //------ Macros para definir coordenadas score y espacio entre digitos del score -----
@@ -33,9 +33,6 @@ typedef int DISP[MAP_WIDTH][MAP_HEIGHT]; //matriz 2D que simula display
 
 #define SCORE_ID_YCOOR 11
 #define SCORE_ID_XCOOR 3
-
-//------ Macros para dibujar menus en matriz
-#define MAX_MENUS 10
 
 /***************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
