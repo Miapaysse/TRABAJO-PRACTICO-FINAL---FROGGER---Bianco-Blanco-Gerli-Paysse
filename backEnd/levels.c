@@ -135,47 +135,69 @@
  *******************************************************************************
  ******************************************************************************/
   int arrivedAtFinishLine(int y){
-        //VALIDAR PUNTEROS
-
         if (y==FINISH_LINE){
             return 1;
         }
         return 0;
   }
 
-  void checkLevel(Frog* frog, Level* level){
-      if (arrivedAtFinishLine(frog->y)){
-            goToNextLevel(level);
-            resetFrog(frog);
+  void checkLevel(Game * game){
+    
+      if (arrivedAtFinishLine((game->frog).y)){
+            goToNextLevel(game);
+            resetFrog(&(game->frog));
       }
   }
 
-  void goToNextLevel(Level* level){
-    level->id ++;
-    switch(game->level.id){
-        case LEVEL_1:
-            loadLevel(&level1);
-            *level=level1;
-        break;
+  int goToNextLevel(Game * game){
+    if(game != NULL){ 
+        switch((game->level).id){
+            case LEVEL_1:
+                game->level = level2;
+                game->level.entities = &game->entities;
+                if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+                    return errorType;
+                }
+                else{
+                    return 0;
+                }
+            break;
 
-        case LEVEL_2:
-            loadLevel(&level2);
-            *level=level2;
+            case LEVEL_2:
+                game->level = level3;
+                game->level.entities = &game->entities;
+                if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+                    return errorType;
+                }
+                else{
+                    return 0;
+                }
+            break;
 
-        break;
-
-        case LEVEL_3:
-            loadLevel(&level3);
-            *level=level3;
-
-        break;
+            default:
+                return;
+        }
+    }
+    else {
+        return ERR_INVALID_GAME_POINTER;
     }
   }
 
-  void initLevel(Game * game){
-    game->level->entities = &(game->entities);
-    loadLevel(&level1);
-    game->level=level1;
+  int initLevel(Game * game){
+    int errorType;
+    if(game != NULL){ //Validacion de puntero
+        game->level = level1;//Se inicializa el nivel con nivel1
+        game->level.entities = &game->entities;
+        if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+            return errorType;
+        }
+        else{
+            return 0;
+        }
+    }
+    else {
+        return ERR_INVALID_GAME_POINTER;
+    }
   }
 
 /*******************************************************************************
@@ -184,9 +206,21 @@
  *******************************************************************************
  ******************************************************************************/
 
-static void loadLevel(Level * level){
+static int loadLevel(Level * level){
+ if(level != NULL){ 
+    int errorType;
     loadLevelEntities(level);
-    checkLevelEntities(level);
+    if(errorType = checkLevelEntities(level)){
+        return errorType;
+    }
+
+    else {
+        return 0;
+    }
+ }
+ else {
+    return ERR_INVALID_LEVEL_POINTER;
+ }
 }
 
 
@@ -211,12 +245,12 @@ static void loadLevelEntities(Level* level){
 }
 
 
-static void loadRowEntities(Row* row, int row){
+static void loadRowEntities(Row* row, int rowNumber){
     int k;
     int x0 = 0;
     for(k = 0; k<(row->entityCount); k++){
         ((row->firstEntity)[k]).x = x0 + (row->entityLength+row->gap)*k;
-        ((row->firstEntity)[k]).y = row;
+        ((row->firstEntity)[k]).y = rowNumber;
         ((row->firstEntity)[k]).speed = row->speed;
         ((row->firstEntity)[k]).direction = row->direction;
         ((row->firstEntity)[k]).length = row->entityLength;
@@ -229,11 +263,12 @@ static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity){
     for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ 
         rows[zoneStart + j].firstEntity = current;
         current += rows[zoneStart + j].entityCount;
-        loadRowEntities(rows[zoneStart+j], zoneStart+j); 
+        loadRowEntities(&(rows[zoneStart+j]), zoneStart+j); 
     }
 }
 
-static int checkLevelEntities(){
+static int checkLevelEntities(Level* level){
+ if(level != NULL){ 
     int obstacleCount = 0;
     int floaterCount = 0;
 
@@ -247,6 +282,23 @@ static int checkLevelEntities(){
             floaterCount += level->rows[i].entityCount;
         }
     }
+
+    if(obstacleCount>MAX_OBSTACLES){
+        return  ERR_MAX_OBSTACLES_EXCEEDED;
+    }
+    if(floaterCount>MAX_FLOATERS){
+        return ERR_MAX_FLOATERS_EXCEEDED;
+    }
+
+    else{
+        return 0;
+    }
+ }
+
+ else {
+    return ERR_INVALID_LEVEL_POINTER;
+ }
+
 }
 
 

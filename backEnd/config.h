@@ -54,7 +54,8 @@
 ////////////////////////////////////////////////////////////////
 typedef enum{
   ERR_MAX_OBSTACLES_EXCEEDED,
-  ERR_MAX_FLOATERS_EXCEEDED
+  ERR_MAX_FLOATERS_EXCEEDED, 
+  ERR_INVALID_GAME_POINTER
 }ErrorType;
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
