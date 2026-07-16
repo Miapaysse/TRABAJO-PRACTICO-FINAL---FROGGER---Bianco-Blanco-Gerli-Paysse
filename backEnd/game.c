@@ -58,8 +58,6 @@
 
             updateEntities();
 
-            //updateZone();
-
             manageInteractions(game);
 
             checkLevel(&(game->frog), game->level);
@@ -83,14 +81,14 @@
     }
  }
 
- void endGame(){
-    deleteFrog();
-    deleteEntities();
-    deleteGame();
- }
  void gameInit(Game* game){
     initLevel(game);
     resetFrog(&(game->frog));
+    game->score=MIN_SCORE;
+    game->lives=MAX_LIVES;
+    game->currentZone = START;
+    (game->state).id = MENU;
+
  }
 
 ///////////////////////////////////////////MENUS///////////////

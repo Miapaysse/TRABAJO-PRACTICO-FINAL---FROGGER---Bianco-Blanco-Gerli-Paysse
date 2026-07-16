@@ -42,6 +42,7 @@
 #define POINT_WEIGHT 50
 
 #define MAX_SCORE 999
+#define MIN_SCORE 0
 
 #define TOP10_SIZE 10
 
