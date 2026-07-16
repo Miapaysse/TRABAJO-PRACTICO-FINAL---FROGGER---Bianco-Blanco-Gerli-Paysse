@@ -106,7 +106,7 @@
 
 
     bool collided(Frog* frog , Entity* entity){
-            if( (( (frog->x) > (entity->x - (entity->length)/2) ) || ( (frog->x) < (entity->x + (entity->length)/2) ) )&& ( frog->y == entity->y) ){
+            if( ( (frog->x) >= entity->x ) && ( (frog->x) <= (entity->x + entity->length) )){
                 return 1;
             }
 
@@ -117,7 +117,7 @@
 
     void updateScore(Frog * frog , int* score){
         if(frog->lastSafeSpot != frog->y){
-            (*score)++;
+            (*score)+=POINT_WEIGHT;
             frog->lastSafeSpot = frog->y;
         }
     }

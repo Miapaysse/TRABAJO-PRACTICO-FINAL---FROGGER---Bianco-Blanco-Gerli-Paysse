@@ -38,7 +38,7 @@ typedef struct{
     int x;
     int y;
     int length;
-    int height; 
+    //int height; 
     Speed speed;
     Direction direction;
     int type;
