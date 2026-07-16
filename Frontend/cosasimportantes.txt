@@ -1,6 +1,10 @@
 Frontend Allegro:
 1) frontendInit debería devolver un número, no void, así si
 hay un error podemos hacer un return y sale de la función
+2) Ojo que no existe opcion en la struct input para cuando el usuario cierra el display
+apretando la cruz, agregar al enum de game.h
+3)averiguar que es zona default y agregar case a drawZones
+4)de que largo pueden ser los camiones
 
 
 
