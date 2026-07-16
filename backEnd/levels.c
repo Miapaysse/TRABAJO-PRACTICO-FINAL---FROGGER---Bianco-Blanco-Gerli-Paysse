@@ -109,8 +109,11 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static void falta_envido (int);+
+    static void loadLevel(Level * level);
 
+    static void loadLevelEntities(Level* level);
+    static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity);
+    static void loadRowEntities(Row* row, int row);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -131,7 +134,7 @@
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-  bool arrivedAtFinishLine(int y){
+  int arrivedAtFinishLine(int y){
         //VALIDAR PUNTEROS
 
         if (y==FINISH_LINE){
@@ -151,18 +154,28 @@
     level->id ++;
     switch(game->level.id){
         case LEVEL_1:
-            break;
+            loadLevel(&level1);
+            *level=level1;
+        break;
 
         case LEVEL_2:
-            break;
+            loadLevel(&level2);
+            *level=level2;
+
+        break;
 
         case LEVEL_3:
-            break;
+            loadLevel(&level3);
+            *level=level3;
+
+        break;
     }
   }
 
-  void loadLevels(Game * game){
-    loadLevel1(game, &level1);
+  void initLevel(Game * game){
+    game->level->entities = &(game->entities);
+    loadLevel(&level1);
+    game->level=level1;
   }
 
 /*******************************************************************************
@@ -171,9 +184,7 @@
  *******************************************************************************
  ******************************************************************************/
 
-static void loadLevel(Game * game, Level * level)
-{
-    level->entities = &(game->entities);
+static void loadLevel(Level * level){
     loadLevelEntities(level);
 }
 
@@ -198,12 +209,16 @@ static void loadLevelEntities(Level* level){
     }
 }
 
-static void loadRowEntities(Entity* firstEntity, int entityCount, int row, RowGap gap, int length){
+
+static void loadRowEntities(Row* row, int row){
     int k;
     int x0 = 0;
-    for(k = 0; k<(entityCount); k++){
-        (firstEntity[k]).x = x0 + (length+gap)*k;
-        (firstEntity[k]).y = row;
+    for(k = 0; k<(row->entityCount); k++){
+        ((row->firstEntity)[k]).x = x0 + (row->entityLength+row->gap)*k;
+        ((row->firstEntity)[k]).y = row;
+        ((row->firstEntity)[k]).speed = row->speed;
+        ((row->firstEntity)[k]).direction = row->direction;
+        ((row->firstEntity)[k]).length = row->entityLength;
     }
 }
 
@@ -213,7 +228,7 @@ static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity){
     for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ 
         rows[zoneStart + j].firstEntity = current;
         current += rows[zoneStart + j].entityCount;
-        loadRowEntities(rows[zoneStart+j].firstEntity, rows[zoneStart+j].entityCount, zoneStart+j,rows[zoneStart+j].gap, rows[zoneStart+j].entityLength); 
+        loadRowEntities(rows[zoneStart+j], zoneStart+j); 
     }
 }
 

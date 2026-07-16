@@ -62,7 +62,7 @@
 
             manageInteractions(game);
 
-            checkLevel(&(game->frog), &(game->level));
+            checkLevel(&(game->frog), game->level);
 
         break;
         case PAUSE:
@@ -88,10 +88,9 @@
     deleteEntities();
     deleteGame();
  }
- void gameInit(){
-    createGame();
-    createFrog();
-    createEntities();
+ void gameInit(Game* game){
+    initLevel(game);
+    resetFrog(&(game->frog));
  }
 
 ///////////////////////////////////////////MENUS///////////////
@@ -253,9 +252,6 @@ void processInputPlaying(gameState * state, Input input, Frog * frog){
     }
 }
 
-////////////////////////ZONES & SCORES
-
-void updateZone();
 
 /*******************************************************************************
  *******************************************************************************

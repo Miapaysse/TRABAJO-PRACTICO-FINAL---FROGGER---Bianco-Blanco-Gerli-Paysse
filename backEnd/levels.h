@@ -16,11 +16,6 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef enum{
-    SLOW=1,
-    MEDIUM_SPEED,
-    FAST
-}Speed
 
 typedef enum{
     SMALL=2,
@@ -54,17 +49,6 @@ typedef enum{
     LEVEL_COUNT
 } LevelId;
 
-typedef struct{
-
-    Zone zone;
-
-    Entity* firstEntity;
-
-    int entityCount;
-
-    RowGap gap;
-
-}Row;
 
 typedef struct{
 
@@ -73,12 +57,14 @@ typedef struct{
     Zone zone;
 
     int entityCount;
-
-    int speed;
 
     int entityLength;
 
-    int gap;
+    RowGap gap;
+
+    Speed speed;
+
+    Direction direction;
 
 }Row;
 
@@ -99,9 +85,7 @@ typedef struct {
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
- void createLevel();
- void deleteLevel();
- void checkLevel();
+ void checkLevel(Frog* frog, Level* level);
  void goToNextLevel(Level* level);
  
 /**
@@ -120,42 +104,14 @@ bool arrivedAtFinishLine(int y);
  */
 
 /**************************PRIVATE****************************************************/
-static void createLevel1(Game * game);
+static void initLevels(Game * game);
 s
 static void loadZones(Level * level);
 
-static void loadLevel1Obstacles(Game * game);
+static void loadLevel(Game * game);
 
-static void loadLevel1Floaters(Game * game);
+static void loadLevelEntities(Game * game);
 
-/*
-static void configureObstacleRow(Game * game,
-                                 uint8_t row,
-                                 uint8_t entityCount,
-                                 uint8_t entityLength,
-                                 uint8_t gap,
-                                 uint16_t speed,
-                                 Direction direction);
-
-static void configureFloaterRow(Game * game,
-                                uint8_t row,
-                                uint8_t entityCount,
-                                uint8_t entityLength,
-                                uint8_t gap,
-                                uint16_t speed,
-                                Direction direction);
-
-*/ //ESTAS SE CAMBIAN POR:
-
-static void configureRow(Game *game,
-                         Zone zone,
-                         EntityType type,
-                         uint8_t row,
-                         uint8_t entityCount,
-                         uint8_t entityLength,
-                         uint8_t gap,
-                         uint16_t speed,
-                         Direction direction);
 
 
 #endif // _LEVELS_H_
