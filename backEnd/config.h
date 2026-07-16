@@ -42,6 +42,7 @@
 #define POINT_WEIGHT 50
 
 #define MAX_SCORE 999
+
 #define MIN_SCORE 0
 
 #define TOP10_SIZE 10
@@ -52,7 +53,8 @@
 #define ISEVEN(x) ((x)%2==0)
 ////////////////////////////////////////////////////////////////
 typedef enum{
-  
+  ERROR_TOO_MANY_OBSTACLES,
+  ERROR_TOO_MANY_FLOATERS
 }ErrorType;
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
