@@ -16,7 +16,28 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+typedef enum{
+    SLOW=1,
+    MEDIUM_SPEED,
+    FAST
+}Speed
 
+typedef enum{
+    SMALL=2,
+    MEDIUM,
+    LARGE
+}FloaterLength
+
+typedef enum{
+    CAR_LENGTH=1,
+    TRUCK_LENGTH
+}ObstacleLength
+
+typedef enum{
+    MIN_GAP=1,
+    MEDIUM_GAP,
+    MAX_GAP
+}RowGap
 
 typedef enum{
     ROAD,
@@ -40,6 +61,22 @@ typedef struct{
     Entity* firstEntity;
 
     int entityCount;
+
+    RowGap gap;
+
+}Row;
+
+typedef struct{
+
+    Entity* firstEntity;
+
+    Zone zone;
+
+    int entityCount;
+
+    int speed;
+
+    int entityLength;
 
     int gap;
 

@@ -8,15 +8,95 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-// +Incluir el header propio (ej: #include "template.h")+
-
+#include "levels.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-    Level level1;
-    Level level2;
-    Level level3;
+
+    static Level level1={
+        LEVEL_1,
+        NULL, 
+        {
+            {NULL, START, 0, 0, 0, 0 },
+            {NULL, START, 0, 0, 0, 0 },
+
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+            {NULL,ROAD,3,TRUCK_LENGTH,MAX_GAP,MEDIUM_SPEED,DIR_LEFT},
+
+            {NULL, SAFE, 0, 0, 0, 0 },
+
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,SMALL,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
+
+            {NULL, SAFE, 0, 0, 0, 0 },
+
+        }
+    };
+
+    static Level level2={
+        LEVEL_2,
+        NULL, 
+        {
+            {NULL, START, 0, 0, 0, 0 },
+            {NULL, START, 0, 0, 0, 0 },
+
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+            {NULL,ROAD,3,TRUCK_LENGTH,MAX_GAP,MEDIUM_SPEED,DIR_LEFT},
+
+            {NULL, SAFE, 0, 0, 0, 0 },
+
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,SMALL,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
+
+            {NULL, SAFE, 0, 0, 0, 0 },
+
+        }
+    };
+
+    static Level level3={
+        LEVEL_3,
+        NULL, 
+        {
+            {NULL, START, 0, 0, 0, 0 },
+            {NULL, START, 0, 0, 0, 0 },
+
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+            {NULL,ROAD,3,TRUCK_LENGTH,MAX_GAP,MEDIUM_SPEED,DIR_LEFT},
+
+            {NULL, SAFE, 0, 0, 0, 0 },
+
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,SMALL,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
+            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
+            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
+
+            {NULL, SAFE, 0, 0, 0, 0 },
+
+        }
+    };
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -82,11 +162,8 @@
   }
 
   void loadLevels(Game * game){
-    createLevel1(game);
-    loadZones(&(game->level)); //ACA HAY ALGO RARO, ESTOY LODEANDO 2 VECES LAS ZONAS, PUEDO MEJORARLO
+    loadLevel1(game, &level1);
   }
-
-
 
 /*******************************************************************************
  *******************************************************************************
@@ -94,133 +171,54 @@
  *******************************************************************************
  ******************************************************************************/
 
-
-static void loadZones(Level* level){
-    level->rows[1].zone = START;
-    level->rows[0].zone = START;
-    
-    level->rows[2].zone = ROAD;
-    level->rows[3].zone = ROAD;
-    level->rows[4].zone = ROAD;
-    level->rows[5].zone = ROAD;
-    level->rows[6].zone = ROAD;
-    level->rows[7].zone = ROAD;
-
-
-    level->rows[8].zone = SAFE;
-
-    level->rows[9].zone = WATER;
-    level->rows[10].zone = WATER;
-    level->rows[11].zone = WATER;
-    level->rows[12].zone = WATER;
-    level->rows[13].zone = WATER;
-    level->rows[14].zone = WATER;
-
-    level->rows[15].zone = SAFE;
-}
-
-
-static void createLevel1(Game * game)
+static void loadLevel(Game * game, Level * level)
 {
-    level1.id = LEVEL_1;
-    level1.entities = &(game->entities);
-    loadZones(&level1);
-    loadLevel1Entities(&level1);
+    level->entities = &(game->entities);
+    loadLevelEntities(level);
 }
 
-static void loadLevel1Entities(Level* level){
-    int i, j, k;
-    Entity * previousObstacle, previousFloater;
+
+static void loadLevelEntities(Level* level){
+    int i;
+    Entity * firstObstacle;
+    Entity * firstFloater;
     firstObstacle = level->entities->obstacles;
     firstFloater = level->entities->floaters;
-    int x0 = 0;
-    int y0 = 0;
     for(i=0; i<MAP_HEIGHT; i++){
         switch(level->rows[i].zone){
-            case SAFE:
-                level->rows[i].entityCount = 0;
-                level->rows[i].gap = 0;
-                level->rows[i].firstEntity = NULL;
-            break;
             case ROAD:
-                for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ // COUNT, FIRST: (SPEED, DIRECTION, LENGTH), GAP, 
-                    level->rows[i+j].entityCount = 3;
-                    level->rows[i+j].firstEntity = firstObstacle + (level->rows[i+j].entityCount)*j;
-                    if(ISEVEN((i+j))){ //LAS FILAS PARES 
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).speed = 2;  //MEDIUM_SPEED
-                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_RIGHT;
-                        }
-                    }
-                    else{ //LAS IMPARES
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).speed = 1; //SLOW_SPEED
-                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_LEFT;
-                        }
-
-                    }
-
-                    if(j == 5){//ULTIMA FILA
-                        level->rows[i+j].gap = 4; //MAX_GAP
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).length = 2; // LENGTH_TRUCK
-                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
-                        }
-                        
-                    }
-
-                    else{//PRIMERAS FILAS 
-                        level->rows[i+j].gap = 3; 
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).length = 1; //LENGHT_CAR 
-                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
-                        }
-                        
-                    }
-                }
+                loadZoneEntities(level->rows, i, firstObstacle);
                 i+=MAX_PLAYING_ZONE_HEIGHT-1;
             break;
             case WATER:
-                for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ // COUNT, FIRST: (SPEED, DIRECTION, LENGTH), GAP, 
-                    level->rows[i+j].entityCount = 3;
-                    level->rows[i+j].firstEntity = firstFloater + (level->rows[i+j].entityCount)*j;
-                    if(ISEVEN((i+j))){
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).speed = 2;  //MEDIUM_SPEED
-                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_RIGHT;
-                        }
-                    }
-                    else{
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).speed = 1; //SLOW_SPEED
-                            ((level->rows[i+j]).firstEntity[k]).direction = DIR_LEFT;
-                        }
-
-                    }
-
-                    if(j == 5){
-                        level->rows[i+j].gap = 4; //MAX_GAP
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).length = 2; // LENGTH_TRUCK
-                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
-                        }
-                        
-                    }
-
-                    else{
-                        level->rows[i+j].gap = 3; 
-                        for(k = 0; k<(level->rows[i+j].entityCount); k++){
-                            ((level->rows[i+j]).firstEntity[k]).length = 1; //LENGHT_CAR 
-                            ((level->rows[i+j]).firstEntity[k]).x = x0 + (((level->rows[i+j]).firstEntity[k]).length+level->rows[i+j].gap)*k;
-                        }
-                        
-                    }
-                }
+                loadZoneEntities(level->rows, i, firstFloater);
                 i+=MAX_PLAYING_ZONE_HEIGHT-1;
             break;
         }
     }
 }
+
+static void loadRowEntities(Entity* firstEntity, int entityCount, int row, RowGap gap, int length){
+    int k;
+    int x0 = 0;
+    for(k = 0; k<(entityCount); k++){
+        (firstEntity[k]).x = x0 + (length+gap)*k;
+        (firstEntity[k]).y = row;
+    }
+}
+
+static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity){
+    int j;
+    Entity *current = firstEntity;
+    for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ 
+        rows[zoneStart + j].firstEntity = current;
+        current += rows[zoneStart + j].entityCount;
+        loadRowEntities(rows[zoneStart+j].firstEntity, rows[zoneStart+j].entityCount, zoneStart+j,rows[zoneStart+j].gap, rows[zoneStart+j].entityLength); 
+    }
+}
+
+
+
 
 
 /******************************************************************************/

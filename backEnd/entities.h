@@ -22,6 +22,12 @@ typedef enum{
     DIR_RIGHT
 } Direction;
 
+typedef enum{
+    SLOW=1,
+    MEDIUM_SPEED,
+    FAST
+}Speed
+
 typedef struct{
     int x;
     int y;
@@ -33,7 +39,7 @@ typedef struct{
     int y;
     int length;
     int height; 
-    int speed;
+    Speed speed;
     Direction direction;
     int type;
     bool active;
@@ -44,17 +50,7 @@ typedef struct{
     Entity floaters[MAX_FLOATERS];
 }GameEntities;
 
-typedef struct{
 
-    Zone zone;
-
-    Entity* firstEntity;
-
-    int entityCount;
-
-    int gap;
-
-} Row;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
