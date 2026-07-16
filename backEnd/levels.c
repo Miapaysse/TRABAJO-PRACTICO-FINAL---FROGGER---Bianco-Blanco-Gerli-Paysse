@@ -186,6 +186,7 @@
 
 static void loadLevel(Level * level){
     loadLevelEntities(level);
+    checkLevelEntities(level);
 }
 
 
@@ -232,7 +233,21 @@ static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity){
     }
 }
 
+static int checkLevelEntities(){
+    int obstacleCount = 0;
+    int floaterCount = 0;
 
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+
+        if (level->rows[i].zone == ROAD){
+            obstacleCount += level->rows[i].entityCount;
+        }
+
+        if (level->rows[i].zone == WATER){
+            floaterCount += level->rows[i].entityCount;
+        }
+    }
+}
 
 
 
