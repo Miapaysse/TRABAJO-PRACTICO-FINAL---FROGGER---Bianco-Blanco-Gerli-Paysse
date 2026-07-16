@@ -5,9 +5,16 @@ hay un error podemos hacer un return y sale de la función
 
 
 
-Frontend raspi:
-1- Probar Display LED Menus
-2- Probar zones display
-3- Frog titila
-4- probar entities moviendose
-5- codear perdida vidas
+
+-------------------------------------------
+        FRONTEND RASPI
+-------------------------------------------
+
+- Probar Display LED Menus
+- Probar zones display
+- codear perdida vidas (cartel "💔" o " - 1❤ ")
+- Divido codigo en dif archivos? tengo + de mil lineas de codigo 
+
+//Cuando definamos timer/velocidades:
+- Frog titila
+- probar entities moviendose
