@@ -1,7 +1,14 @@
+/***************************************************************************//**
+  @file     +top10.c+
+  @brief    +Manejo del ranking de los 10 mejores puntajes+
+  @author   +Bianco-Blanco-Gerli-Paysse+
+ ******************************************************************************/
+
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
 #include <stdio.h>
 #include <stdint.h>
-
-
 #include <time.h>
 #include <unistd.h>
 
@@ -12,6 +19,9 @@
 #include "config.h"
 #include "levels.h"
 #include "entities.h"
+#include "raspiFrontend.h"
+
+
 
 #define JOY_LIM 10 //Limite para detectar movimiento del joystic
 #define DIGITS 3
@@ -20,49 +30,73 @@ static dcoord_t frog_pos = {MAP_WIDTH  >> 1, MAP_HEIGHT}; //Sse queda del lado i
 static dcoord_t entity_pos;
 DISP msg; //Global para que inicialice en cero
 
-DISP menuBackground[MAP_HEIGHT][MAP_WIDTH] = {
-    {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}
+//Macros para definir coordenadas score y espacio entre digitos del score
+#define SCORE_YCOORD 4
+#define SCORE_XCOORD 2
+#define SPACE_DIGITS 1
+#define SCORE_ID_YCOOR 11
+#define SCORE_ID_XCOOR 3
+int idxScore = 0;
+
+
+DISP menuBackground = {
+	{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}
 };
 //Defino digitos para display. 10 valores, c/u ocupa 5 filas y 3 columnas
-const int digito[10][5][DIGITS] = {
-		// Nro 0
-		{ {0,0,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,0,0} },
-		// Nro 1
-		{ {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1} },
-		// Nro 2
-		{ {0,0,0}, {1,1,0}, {0,0,0}, {0,1,1}, {0,0,0} },
-		// Nro 3
-		{ {0,0,0}, {1,1,0}, {0,0,0}, {1,1,0}, {0,0,0} },
-		// Nro 4
-		{ {0,1,0}, {0,1,0}, {0,0,0}, {1,1,0}, {1,1,0} },
-		// Nro 5
-		{ {0,0,0}, {0,1,1}, {0,0,0}, {1,1,0}, {0,0,0} },
-		// Nro 6
-		{ {0,0,0}, {0,1,1}, {0,0,0}, {0,1,0}, {0,0,0} },
-		// Nro 7
-		{ {0,0,0}, {1,1,0}, {1,1,0}, {1,1,0}, {1,1,0} },
-		// Nro 8
-		{ {0,0,0}, {0,1,0}, {0,0,0}, {0,1,0}, {0,0,0} },
-		// Nro 9
-		{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }
+const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = {
+	// Nro 0
+	{ {0,0,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,0,0} },
+	// Nro 1
+	{ {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1} },
+	// Nro 2
+	{ {0,0,0}, {1,1,0}, {0,0,0}, {0,1,1}, {0,0,0} },
+	// Nro 3
+	{ {0,0,0}, {1,1,0}, {0,0,0}, {1,1,0}, {0,0,0} },
+	// Nro 4
+	{ {0,1,0}, {0,1,0}, {0,0,0}, {1,1,0}, {1,1,0} },
+	// Nro 5
+	{ {0,0,0}, {0,1,1}, {0,0,0}, {1,1,0}, {0,0,0} },
+	// Nro 6
+	{ {0,0,0}, {0,1,1}, {0,0,0}, {0,1,0}, {0,0,0} },
+	// Nro 7
+	{ {0,0,0}, {1,1,0}, {1,1,0}, {1,1,0}, {1,1,0} },
+	// Nro 8
+	{ {0,0,0}, {0,1,0}, {0,0,0}, {0,1,0}, {0,0,0} },
+	// Nro 9
+	{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }
 };
 
-int bufferDisplay[MAP_HEIGHT][MAP_WIDTH]; //Buffer para cargar lo que muestra finalmente
+static DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
+
+/*******************************************************************************
+ * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// Todas las q intervienen con el display no pueden usarse por otros archivos
+static void drawScore(int idxScore, int score);
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        GLOBAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
 
 void frontendInit(void) {
     joy_init();
@@ -102,9 +136,29 @@ void frontendRender(Game * game){
 	switch(game->state.id) {
 	disp_clear(); //Para cada case empiezan todos los leds apagadas
 		case MENU:
-			for (idxScore = 0 ; idxScore <=  game.score.len){ //CAMBIAR ACORDE DELFI/MIO
-				drawScore(idxScore, game.score[idxScore]);
+			//...
+			break;
+
+		case POINTS:
+			joy = joy_read(); //lee continuamente joystick
+
+			if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
+				usleep(100000); //ANTIREBOTE BLOQUEANTE
+				while(joy_read().y > JOY_LIM);
+				idxScore--;
+				drawScore(idxScore, scores[idxScore]);
+
+			}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
+				usleep(100000); //ANTIREBOTE BLOQUEANTE
+				while(joy_read().y < -JOY_LIM);
+				idxScore++;
+				drawScore(idxScore, scores[idxScore]);
 			}
+
+			break;
+
+		case PAUSED:
+			//...
 
 			break;
 
@@ -112,7 +166,8 @@ void frontendRender(Game * game){
 
 			// Dibuja zonas
 			for ( f = 0; f < MAX_ZONES; f++) {
-			drawZone(&(game->level).zones[idxZones]);
+				drawZone(&(game->level).zones[idxZones]);
+			}
 
 			//Dibuja obstaculos y floaters
 			drawObstacles(&(game->entities).obstacles));
@@ -146,7 +201,7 @@ void frontendRender(Game * game){
 
 
 			for ( f = 0; f <  + 1; f++) {
-				for (int c = 0; c < MAP_WIDTH + 1; c++) {
+				for (int c = 0; c < MAP_WIDTH; c++) {
 					disp_write((dcoord_t){.y = f, .x = c}, msg[f][c]);
 				}
 			}
@@ -174,7 +229,7 @@ void frontendRender(Game * game){
 			};
 
 			for ( f = 0; f <  + 1; f++) {
-				for (int c = 0; c < MAP_WIDTH + 1; c++) {
+				for (int c = 0; c < MAP_WIDTH; c++) {
 					disp_write((dcoord_t){.y = f, .x = c}, msg[f][c]);
 				}
 			}
@@ -285,14 +340,49 @@ void drawZone(const Zone * zone){
 
 
 void drawScore(int idxScore, int score) {
-    int f, c;
+	int f, c, d, id;
 
-    for (f = 0; f < MAP_HEIGHT; f++) { // Copia base a buffer
-        for (c = 0; c < MAP_WIDTH; c++) {
-        	bufferDisplay[f][c] = menuBackground[f][c];
-        }
-    }
+	for (f = 0; f < MAP_HEIGHT; f++) { // Copia base a buffer
+		for (c = 0; c < MAP_WIDTH; c++) {
+			bufferDisplay[f][c] = menuBackground[f][c];
+		}
+	}
 
-    int digits[DIGITS] = {}
+	int d1 = (score/100), d2 = (score%100)/10, d3 = (score%10);
+	int scoreDigits[DIGITS] = {d1,d2,d3};
+	int currentDigit = 0, x_offset = 0, y_offset = 0;
 
+	for (d = 0; d < DIGITS; d++) { // Recorremos digito por digito el score actual
+		currentDigit = scoreDigits[d];
+		// Establecemos cursor en x
+		x_offset = SCORE_XCOORD + d*(DIGIT_WIDTH + SPACE_DIGITS);
+		// si d es cero, cursor queda en el x init
+		// si d es uno, dezplaza 1 space + 3 ancho de digito desde x init
+		// si d es dos, dezplaza 2*1 space + 2*3 ancho de digito desde x init
+		y_offset = SCORE_YCOORD; // Cursor en y está arriba siempre
+
+		for (f = 0; f < DIGIT_HEIGHT; f++) { // Copia digito actual a buffer
+			for (c = 0; c < DIGIT_WIDTH; c++) {
+				// Usamos offsets en x e y para el lugar de copiado en el display
+				bufferDisplay[f + y_offset][c + x_offset] = digits[currentDigit][f][c];
+			}
+		}
+
+	}
+
+	for (f = 0; f < MAP_HEIGHT; f++) { //Paso buffer display
+		for (c = 0; c < MAP_WIDTH; c++) {
+			if(bufferDisplay[f][c]){
+				disp_write((dcoord_t){.y = f, .x = c}, D_ON);
+			} else {
+				disp_write((dcoord_t){.y = f, .x = c}, D_OFF);
+			}
+		}
+	}
+
+	for(id = 0; id <= idxScore; id++){
+		disp_write((dcoord_t){.y = SCORE_ID_YCOOR, .x = SCORE_ID_XCOOR + id}, D_OFF);
+	}
+
+	disp_update();
 }
