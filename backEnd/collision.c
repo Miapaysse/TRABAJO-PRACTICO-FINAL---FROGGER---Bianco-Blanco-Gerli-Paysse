@@ -51,10 +51,10 @@
  *******************************************************************************
  ******************************************************************************/
 
-    bool runOverFrog(Frog* frog, Entity  obstacles[MAX_OBSTACLES]){
+    int runOverFrog(Frog *frog, Entity *obstacles, int obstacleCount){
         //VALIDAR PUNTEROS
         int i;
-        for(i=0; i<MAX_OBSTACLES; i++){
+        for(i=0; i<obstacleCount; i++){
             if(collided(frog,&(obstacles[i])) ){
                 return 1;
             }
@@ -62,10 +62,10 @@
         return 0;
     }
 
-    Entity * frogOnFloater(Frog* frog, Entity  floaters[MAX_FLOATERS]){
+    Entity *frogOnFloater(Frog *frog, Entity *floaters, int floaterCount){
         //VALIDAR PUNTEROS
         int i;
-        for(i=0; i<MAX_FLOATERS; i++){
+        for(i=0; i<floaterCount; i++){
             if(collided(frog,&(floaters[i])) ){
                 return &(floaters[i]);
             }
@@ -74,39 +74,44 @@
     }
 
 
-    void manageInteractions(Game* game){
-        //VALIDAR PUNTEROS
-        //CHEQUEAR LIMITES DEL JUEGO
-        
-            switch((game->currentZone).type){
-                case ROAD:
-                    if(runOverFrog(&(game->frog), (game->entities).obstacles)){
-                        frogDies(&(game->lives), &((game->state).id));
-                    }
-                break;
+    void manageInteractions(Game *game){
+        Row *currentRow = &(game->level.rows[game->frog.y]);
+
+        switch(currentRow->zone){
+
+            case ROAD:
+
+                if(runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount)){
+                    frogDies(&(game->lives), &((game->state).id));
+                }
+
+            break;
+
+            case WATER:
             
-                case WATER:
-                    Entity* floaterP = frogOnFloater(&(game->frog), (game->entities).floaters);
-                    if( floaterP != NULL){
-                        moveFrogWithFloater(&(game->frog), floaterP);
-                    }
-                    else{
-                        frogDies(&(game->lives), &((game->state).id));
-                    }
-                break;
+                Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
 
-                case SAFE:
-                    updateScore(&(game->frog), &(game->score));
-                break;
-            }
-        
+                if(floaterP != NULL){
+                    moveFrogWithFloater(&(game->frog), floaterP);
+                }
+                else{
+                    frogDies(&(game->lives), &((game->state).id));
+                }
+            
+            break;
 
+            case SAFE:
+                updateScore(&(game->frog), &(game->score));
+            break;
 
+            case START:
+            break;
+        }
     }
 
 
-    bool collided(Frog* frog , Entity* entity){
-            if( ( (frog->x) >= entity->x ) && ( (frog->x) <= (entity->x + entity->length) )){
+    int collided(Frog* frog , Entity* entity){
+            if( ( (frog->x) >= entity->x ) && ( (frog->x) <= (entity->x + entity->length - 1) )){
                 return 1;
             }
 

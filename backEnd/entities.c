@@ -73,6 +73,7 @@ void moveFrogWithFloater(Frog * frog , Entity* floater){
 void resetFrog(Frog * frog){
   (frog->y)=FROG_Y0;
   (frog->x)=FROG_X0;
+  frog->lastSafeSpot=frog->y;
 }
 
 void frogDies(int* lives, GameStateId * id ){
