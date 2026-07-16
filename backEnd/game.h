@@ -106,8 +106,6 @@ typedef struct {
 
    Level level;
 
-   Zone currentZone;
-
    GameState state;
    
 } Game;
