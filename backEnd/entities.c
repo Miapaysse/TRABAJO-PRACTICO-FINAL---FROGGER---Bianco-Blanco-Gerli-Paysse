@@ -71,8 +71,8 @@ void moveFrogWithFloater(Frog * frog , Entity* floater){
 }
 
 void resetFrog(Frog * frog){
-  (frog->y)=Y0;
-  (frog->x)=X0;
+  (frog->y)=FROG_Y0;
+  (frog->x)=FROG_X0;
 }
 
 void frogDies(int* lives, GameStateId * id ){
@@ -86,20 +86,7 @@ void frogDies(int* lives, GameStateId * id ){
   }
 }
 
-void initEntities(){
-}
 
-void initObstacles(Entity* obstacles, Level * level){
-
-}
-
-
-void initFloaters(Entity* obstacles, int levelId){
-
-}
-
-void updateEntities(){
-}
 
 /*******************************************************************************
  *******************************************************************************

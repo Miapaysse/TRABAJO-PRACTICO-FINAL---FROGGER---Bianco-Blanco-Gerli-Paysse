@@ -32,9 +32,9 @@
 
 //FROG SETTINGS//////////////////////////////////////////////////////////
 
-#define X0 (MAP_WIDTH/2)
+#define FROG_X0 (MAP_WIDTH/2)
 
-#define Y0 0
+#define FROG_Y0 0
 
 //GAME SETTINGS/////////////////////////////////////////////////////////
 #define MAX_LIVES 3
@@ -55,7 +55,8 @@
 typedef enum{
   ERR_MAX_OBSTACLES_EXCEEDED,
   ERR_MAX_FLOATERS_EXCEEDED, 
-  ERR_INVALID_GAME_POINTER
+  ERR_INVALID_GAME_POINTER, 
+  ERR_INVALID_LEVEL_POINTER
 }ErrorType;
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
