@@ -313,8 +313,8 @@ static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = {
 static void drawScore(int idxScore, int score);
 static void drawObstacles(Entity obstacles[]);
 static void drawFloaters(Entity floaters[]);
-static void drawZone(const Zone * zone);
 static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
+static void drawZone(Zone currentZone, int r);
 
 /*******************************************************************************
  *******************************************************************************
@@ -352,10 +352,11 @@ Input frontendGetInput(void) {
 }
 
 void frontendRender(Game * game){
-	int f = 0, c = 0, idxZones = 0;
+	int r = 0, c = 0;
 
 	switch(game->state.id) {
-	disp_clear(); //Para cada case empiezan todos los leds apagadas
+	disp_clear();
+
 		case MENU:
 			//...
 			break;
@@ -386,8 +387,8 @@ void frontendRender(Game * game){
 		case PLAYING:
 
 			// Dibuja zonas
-			for ( f = 0; f < MAX_ZONES; f++) {
-				drawZone(&(game->level).zones[idxZones]);
+			for (r = 0; r <= MAP_HEIGHT; r++) { //for afuera xq capaz divido por water y road
+				drawZone(&(game->level), int r)
 			}
 
 			//Dibuja obstaculos y floaters
@@ -446,72 +447,30 @@ static void drawFloaters(Entity floaters[]){
 	}
 }
 
-static void drawZone(const Zone * zone){
-	int f = 0, c = 0;
-
-	switch (zone->type){
-
+static void drawZone(const int currentZone, const int r){
+	int r_disp = ROW(r); //Traduce a indice disp
+	switch (currentZone){
 		case WATER: // Dibuja agua (LEDs prendidos)
-			for (f = 0; f < zone->height; f++) {
-				for (c = 0; c <= MAP_WIDTH; c++) {
-					disp_write((dcoord_t){.y = f + (zone->y0), .x = c},D_ON);
-				}
+			for (c = 0; c <= MAP_WIDTH; c++) {
+				disp_write((dcoord_t){.y = r_disp, .x = c},D_ON);
 			}
 		break;
 
 		case ROAD: // Dibuja calle (LEDs apagados)
-			for (f = 0 ; f < zone->height ; f++) {
-				for (c = 0 ; c <= MAP_WIDTH; c++) {
-					disp_write((dcoord_t){.y = f + (zone->y0), .x = c}, D_OFF);
-				}
+			for (c = 0 ; c <= MAP_WIDTH; c++) {
+				disp_write((dcoord_t){.y = r_disp, .x = c}, D_OFF);
 			}
 		break;
 
-		case SAFE: // Dibuja safe zone (LEDs diagonales apuntando a izquierda)
-
-			 //height de safe es siempre 2 unidades
-
-			//Dibuja fila de abajo
-			for (f = 0 ; f < (zone->height) - 1 ; f++) {
-				for (c = 0 ; c <= MAP_WIDTH ; c++) {
-					disp_write((dcoord_t){.y = f + (zone->y0) , .x = c}, D_OFF);
-					c++; //Saltea un led, lo deja apagado por clear_disp
-				}
-			}
-
-			//Dibuja fila de arriba
-			for (f = 1 ; f < (zone->height) ; f++) {
-				for (c = 1 ; c <= MAP_WIDTH ; c++) { //Emppieza con columna defasada a la derecha.
-					disp_write((dcoord_t){.y = f + (zone->y0), .x = c}, D_OFF);
-					c++; //Saltea un led, lo deja apagado por clear_disp
-				}
+		case SAFE:
+		case START: //Dibuja safe zones y start con patron On/off/on/off/...
+			for (c = 0 ; c < MAP_WIDTH ; c++) {
+				disp_write((dcoord_t){.y = r , .x = c++}, D_ON);
+				disp_write((dcoord_t){.y = r , .x = c}, D_OFF); //apaga un led y va al siguiente
 			}
 		break;
-
-		case START: // Dibuja safe zone (LEDs diagonales apuntando a derecha)
-
-			//height de safe es siempre 2 unidades
-
-			//Dibuja fila de abajo
-			for (f = 0 ; f < (zone->height) - 1 ; f++) {
-				for (c = 1 ; c <= MAP_WIDTH ; c++) {  //Empieza con columna defasada a la derecha.
-					disp_write((dcoord_t){.y = f + (zone->y0), .x = c}, D_OFF);
-					c++; //Saltea un led, lo deja apagado por clear_disp
-				}
-			}
-
-			//Dibuja fila de arriba
-			for (f = 1; f < (zone->height); f++) {
-				for (c = 0; c <= MAP_WIDTH; c++) {
-					disp_write((dcoord_t){.y = f + (zone->y0), .x = c},D_OFF);
-					c++; //Saltea un led, lo deja apagado por clear_disp
-				}
-			}
-		break;
-
 	}
 }
-
 
 static void drawScore(int idxScore, int score) {
 	int f, c, d, id;
