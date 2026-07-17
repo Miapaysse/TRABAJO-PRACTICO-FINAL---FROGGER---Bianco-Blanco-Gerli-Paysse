@@ -51,31 +51,10 @@
  *******************************************************************************
  ******************************************************************************/
 
-    int runOverFrog(Frog *frog, Entity *obstacles, int obstacleCount){
-        //VALIDAR PUNTEROS
-        int i;
-        for(i=0; i<obstacleCount; i++){
-            if(collided(frog,&(obstacles[i])) ){
-                return 1;
-            }
-        }
-        return 0;
-    }
+    int manageInteractions(Game *game){
+     if(game!=NULL){
+        int errorType;
 
-    Entity *frogOnFloater(Frog *frog, Entity *floaters, int floaterCount){
-        //VALIDAR PUNTEROS
-        int i;
-        for(i=0; i<floaterCount; i++){
-            if(collided(frog,&(floaters[i])) ){
-                return &(floaters[i]);
-            }
-        }
-        return NULL;
-    }
-
-
-    void manageInteractions(Game *game){
-        
         if (frogOutOfBounds(&game->frog)) {
             frogDies(&(game->lives), &game->state.id);
             return;
@@ -88,8 +67,11 @@
 
             case ROAD:
 
-                if(runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount)){
+                if(errorType = runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount)==1){
                     frogDies(&(game->lives), &((game->state).id));
+                }
+                else if(errorType){
+                    return errorType;
                 }
 
             break;
@@ -114,27 +96,77 @@
             case START:
             break;
         }
+
+     }
+     else{
+        return ERR_INVALID_GAME_POINTER;
+     }
     }
 
 
-    int collided(Frog* frog , Entity* entity){
-            if( ( (frog->x) >= entity->x ) && ( (frog->x) <= (entity->x + entity->length - 1) )){
-                return 1;
-            }
 
-            else{
-                return 0;
-            }
-    }
 
-    void updateScore(Frog * frog , int* score){
-        if(frog->lastSafeSpot != frog->y){
-            (*score)+=POINT_WEIGHT;
-            frog->lastSafeSpot = frog->y;
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+    static int runOverFrog(Frog *frog, Entity *obstacles, int obstacleCount){
+        if(frog==NULL){
+            return ERR_INVALID_FROG_POINTER;
+        }
+        if(obstacles==NULL){
+            return ERR_INVALID_OBSTACLE_POINTER;
+        }
+        else{
+            int i;
+            for(i=0; i<obstacleCount; i++){
+                if(collided(frog,&(obstacles[i])) ){
+                    return 1;
+                }
+            }
+            return 0;
         }
     }
 
-    int frogOutOfBounds(Frog *frog){
+    static Entity *frogOnFloater(Frog *frog, Entity *floaters, int floaterCount){
+        //VALIDAR PUNTEROS
+        int i;
+        for(i=0; i<floaterCount; i++){
+            if(collided(frog,&(floaters[i])) ){
+                return &(floaters[i]);
+            }
+        }
+        return NULL;
+    }
+
+
+    static int collided(Frog* frog , Entity* entity){
+        if( ( (frog->x) >= entity->x ) && ( (frog->x) <= (entity->x + entity->length - 1) )){
+            return 1;
+        }
+
+        else{
+            return 0;
+        }
+    }
+
+    void updateScore(Frog * frog , int* score){
+        if(frog==NULL){
+            return ERR_INVALID_FROG_POINTER;
+        }
+        if(score==NULL){
+            return ERR_INVALID_SCORE_POINTER;
+        }
+        else{
+            if(frog->lastSafeSpot != frog->y){
+                (*score)+=POINT_WEIGHT;
+                frog->lastSafeSpot = frog->y;
+            }
+        }
+    }
+
+    static int frogOutOfBounds(Frog *frog){
         if (frog == NULL){
             return ERR_INVALID_LEVEL_POINTER;
         }   
@@ -157,13 +189,6 @@
 
         return 0;
     }
-
-
-/*******************************************************************************
- *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/
 
 
 
