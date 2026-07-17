@@ -9,6 +9,7 @@
  ******************************************************************************/
 #include "entities.h"
 #include "game.h"
+#include "config.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -78,6 +79,9 @@
             processInputPoints(&(game->state), input);
         break;
 
+        case EXIT: //tira warning si no lo ponemos
+            //no hace nada, main lo lee y termina programa
+        break;
     }
  }
 
@@ -86,7 +90,23 @@
     intFrog(&(game->frog));
     game->score=MIN_SCORE;
     game->lives=MAX_LIVES;
+    
     (game->state).id = MENU;
+
+    // Menu principal
+    game->state.menu = (MenuState){ MENU_TITLE, MENU_COUNT };
+
+    // Pausa
+    game->state.paused = (MenuState){ PAUSED_TITLE, PAUSED_COUNT };
+
+    // Game Over
+    game->state.gameOver = (MenuState){ GAME_OVER_TITLE, GAME_OVER_COUNT };
+
+    // Victory
+    game->state.victory = (MenuState){ VICTORY_TITLE, VICTORY_COUNT };
+
+    // Puntos (Top 10)
+    game->state.points = (MenuState){ POINTS_TITLE, POINTS_COUNT };
 
  }
 
@@ -128,6 +148,10 @@ void processInputMenu(GameState * state, Input input){
                 case DOWN:
                     menuNext(&((state->menu)));
                 break;
+                
+                case NONE: case RIGHT: case LEFT: default: //tira warning si no lo ponemos
+                //se queda en el mismo menu, no hace nada
+                break;
         }
 }
 
@@ -154,6 +178,10 @@ void processInputPaused(GameState * state, Input input){
                 case DOWN:
                     menuNext(&(state->paused));
                 break;
+
+                case NONE: case RIGHT: case LEFT: default:
+                //se queda en el mismo menu, no hace nada
+                break;
     }
 }
 
@@ -176,6 +204,10 @@ void processInputGameOver(GameState * state, Input input){
 
                 case DOWN:
                     menuNext(&(state->gameOver));
+                break;
+
+                case NONE: case RIGHT: case LEFT: default:
+                //se queda en el mismo menu, no hace nada
                 break;
     }
 }
@@ -200,6 +232,10 @@ void processInputVictory(GameState * state, Input input){
                 case DOWN:
                     menuNext(&(state->victory));
                 break;
+
+                case NONE: case RIGHT: case LEFT: default:
+                //se queda en el mismo menu, no hace nada
+                break;
     }
 }
 //////////////////////////////////////////////////////////POINTS
@@ -221,6 +257,10 @@ void processInputPoints(GameState * state, Input input){
 
                 case DOWN:
                     menuNext(&(state->points));
+                break;
+
+                case NONE: case RIGHT: case LEFT: default:
+                //se queda en el mismo menu, no hace nada
                 break;
     }
 }
