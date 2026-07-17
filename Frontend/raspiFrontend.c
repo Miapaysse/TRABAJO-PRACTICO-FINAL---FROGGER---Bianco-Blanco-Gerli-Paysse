@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #include "disdrv.h"
 #include "joydrv.h"
@@ -28,7 +29,9 @@
 
 static dcoord_t frog_pos = {(MAP_WIDTH + 1)  >> 1, MAP_HEIGHT + 1}; //Sse queda del lado izquierdo de la mitad vertical, abajo de todo
 static dcoord_t entity_pos;
-
+joyinfo_t joy;
+int joy_locked_x = 0;
+int joy_locked_y = 0;
 
 static enum msgs { //Enum apara signarle indice a las opciones de mensajes
 	HOME,
@@ -335,7 +338,7 @@ void frontendDestroy(void) {
 }
 
 Input frontendGetInput(void) {
-    joyinfo_t joy = joy_read();
+   	joy = joy_read();
     if (joy.sw == J_PRESS) {
 		return SELECT;
     } else if (joy.y > JOY_LIM){
@@ -362,18 +365,9 @@ void frontendRender(Game * game){
 			break;
 
 		case POINTS:
-			joy = joy_read(); //lee continuamente joystick
 
-			if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
-				usleep(100000); //ANTIREBOTE BLOQUEANTE
-				while(joy_read().y > JOY_LIM);
-				idxScore--;
-				drawScore(idxScore, scores[idxScore]);
-
-			}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
-				usleep(100000); //ANTIREBOTE BLOQUEANTE
-				while(joy_read().y < -JOY_LIM);
-				idxScore++;
+			//VER QUE HACER PARA COORDINAR CON BACKEND
+			if (changeOption() == true){
 				drawScore(idxScore, scores[idxScore]);
 			}
 
@@ -545,4 +539,25 @@ static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]){
 			}
 		}
 	}
+}
+
+
+bool changeOptio(void){
+	joy = joy_read(); //lee continuamente joystick
+	usingJoyX = false;
+	usingJoyY = false;
+	if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
+		usleep(100000); //ANTIREBOTE BLOQUEANTE
+		while(joy_read().y > JOY_LIM);
+		idxScore--;
+		
+
+	}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
+		usleep(100000); //ANTIREBOTE BLOQUEANTE
+		while(joy_read().y < -JOY_LIM);
+		idxScore++;
+		drawScore(idxScore, scores[idxScore]);
+	}
+
+		
 }
