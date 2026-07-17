@@ -135,26 +135,25 @@
  *******************************************************************************
  ******************************************************************************/
   int arrivedAtFinishLine(uint8_t  y){
-        if (y==FINISH_LINE){
+        if (y==FINISH_LINE){ //Detectamos si la rana llego a la linea de meta 
             return 1;
         }
         return 0;
   }
 
-  void checkLevel(Game * game){
-    
+  void checkLevel(Game * game){ //Si llego a la linea de meta avanza al siguiente nivel
       if (arrivedAtFinishLine((game->frog).y)){
             goToNextLevel(game);
             resetFrog(&(game->frog));
       }
   }
 
-  int goToNextLevel(Game * game){
+  int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
     if(game != NULL){ 
         switch((game->level).id){
             case LEVEL_1:
-                game->level = level2;
-                game->level.entities = &game->entities;
+                game->level = level2; //Igualamos el nivel a la estrucutra predeterminada del nivel correspondiente
+                game->level.entities = &game->entities; //Apuntamos el puntero de entidades a las entidades del juego
                 if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
                     return errorType;
                 }
@@ -186,8 +185,8 @@
   int initLevel(Game * game){
     int errorType;
     if(game != NULL){ //Validacion de puntero
-        game->level = level1;//Se inicializa el nivel con nivel1
-        game->level.entities = &game->entities;
+        game->level = level1;//Igualamos el nivel a la estrucutra predeterminada del nivel correspondiente
+        game->level.entities = &game->entities; //Apuntamos las entidades del nivel a las entidades del juego
         if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
             return errorType;
         }
@@ -209,8 +208,8 @@
 static int loadLevel(Level * level){
  if(level != NULL){ 
     int errorType;
-    loadLevelEntities(level);
-    if(errorType = checkLevelEntities(level)){
+    loadLevelEntities(level); //Cargamos las entidades con las caracteristicas del nivel
+    if(errorType = checkLevelEntities(level)){ //Chequeamos que no excedamos el maximo de entidades
         return errorType;
     }
 
@@ -230,13 +229,13 @@ static void loadLevelEntities(Level* level){
     Entity * firstFloater;
     firstObstacle = level->entities->obstacles;
     firstFloater = level->entities->floaters;
-    for(i=0; i<MAP_HEIGHT; i++){
+    for(i=0; i<MAP_HEIGHT; i++){ //Recorremos las filas del mapa 
         switch(level->rows[i].zone){
-            case ROAD:
+            case ROAD: //Si estamos en la calle cargamos los obstaculos 
                 loadZoneEntities(level->rows, i, firstObstacle);
                 i+=MAX_PLAYING_ZONE_HEIGHT-1;
             break;
-            case WATER:
+            case WATER: //Si estamos en la calle cargamos los obstaculos 
                 loadZoneEntities(level->rows, i, firstFloater);
                 i+=MAX_PLAYING_ZONE_HEIGHT-1;
             break;
@@ -248,7 +247,7 @@ static void loadLevelEntities(Level* level){
 static void loadRowEntities(Row* row, uint8_t rowNumber){
     uint8_t  k;
     int x0 = 0;
-    for(k = 0; k<(row->entityCount); k++){
+    for(k = 0; k<(row->entityCount); k++){ //Inicializamos cada entidad de la fila con las caracteristicas del nivel
         ((row->firstEntity)[k]).x = x0 + (row->entityLength+row->gap)*k;
         ((row->firstEntity)[k]).y = rowNumber;
         ((row->firstEntity)[k]).speed = row->speed;
@@ -261,13 +260,13 @@ static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity)
     uint8_t  j;
     Entity *current = firstEntity;
     for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ 
-        rows[zoneStart + j].firstEntity = current;
+        rows[zoneStart + j].firstEntity = current; //Apuntamos el primer elemento de la fila segun los ultimos de las otras 
         current += rows[zoneStart + j].entityCount;
-        loadRowEntities(&(rows[zoneStart+j]), zoneStart+j); 
+        loadRowEntities(&(rows[zoneStart+j]), zoneStart+j); //Cargamos los elementos de la fila
     }
 }
 
-static int checkLevelEntities(Level* level){
+static int checkLevelEntities(Level* level){ //Chequeamos que no nos excedimos del maximo de cada tipo de entidad al disenar el nivel 
 
     if(level != NULL){
             uint8_t  i; 
