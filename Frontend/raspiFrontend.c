@@ -367,7 +367,17 @@ void frontendRender(Game * game){
 		case POINTS:
 
 			//VER QUE HACER PARA COORDINAR CON BACKEND
-			if (changeOption() == true){
+			joy = joy_read(); //lee continuamente joystick
+			if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
+				usleep(100000); //ANTIREBOTE BLOQUEANTE
+				while(joy_read().y > JOY_LIM);
+				idxScore--;
+				
+
+			}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
+				usleep(100000); //ANTIREBOTE BLOQUEANTE
+				while(joy_read().y < -JOY_LIM);
+				idxScore++;
 				drawScore(idxScore, scores[idxScore]);
 			}
 
@@ -541,23 +551,3 @@ static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]){
 	}
 }
 
-
-bool changeOptio(void){
-	joy = joy_read(); //lee continuamente joystick
-	usingJoyX = false;
-	usingJoyY = false;
-	if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
-		usleep(100000); //ANTIREBOTE BLOQUEANTE
-		while(joy_read().y > JOY_LIM);
-		idxScore--;
-		
-
-	}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
-		usleep(100000); //ANTIREBOTE BLOQUEANTE
-		while(joy_read().y < -JOY_LIM);
-		idxScore++;
-		drawScore(idxScore, scores[idxScore]);
-	}
-
-		
-}
