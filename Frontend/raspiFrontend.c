@@ -27,29 +27,36 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
+ //---------- Entities ----------------------
+ static dcoord_t entity_pos;
+
 static dcoord_t frog_pos = {(MAP_WIDTH + 1)  >> 1, MAP_HEIGHT + 1}; //Sse queda del lado izquierdo de la mitad vertical, abajo de todo
-static dcoord_t entity_pos;
 joyinfo_t joy;
 int joy_locked_x = 0;
 int joy_locked_y = 0;
 
-static enum msgs { //Enum apara signarle indice a las opciones de mensajes
-	HOME,
-	PAUSE,
-	TOP_10,
-	PLAY,
-	GO_HOME,
-	DESPAUSE,
-	GO_TOP_10,
-	GO_BACK,
-	EXIT_OP,
-	GAME_OVER,
-	YOU_WIN,
-	MAX_MENUS
+
+// ----------------------- Menus -------------------
+
+static Input ultimo_input = NONE;
+
+enum msgs { //Defino index para los distintos mensajes
+	MSG_HOME,
+	MSG_PAUSE,
+	MSG_TOP_10,
+	MSG_PLAY,
+	MSG_GO_HOME,
+	MSG_DESPAUSE,
+	MSG_GO_TOP_10,
+	MSG_GO_BACK,
+	MSG_EXIT,
+	MSG_GAME_OVER,
+	MSG_YOU_WIN,
+	MSG_MAX_MENUS
 };
 
 // Defino arreglo de bitmaps con distintos mensajes
-static uint16_t msgs[MAX_MENUS][MAP_HEIGHT + 1] = {
+static uint16_t msgs[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 		{//Home title
 			0b0000000100000000,
 			0b0000001110000000,
@@ -134,7 +141,7 @@ static uint16_t msgs[MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111011111111,
 			0b1111110001111111,
 			0b1111100000111111,
-			0b11110000000111111,
+			0b1111000000111111,
 			0b1110000000001111,
 			0b1111001110011111,
 			0b1111001110011111,
@@ -260,7 +267,7 @@ static uint16_t msgs[MAX_MENUS][MAP_HEIGHT + 1] = {
 		}
 };
 
-//--------- Variables para mostrar los scores en TOP 10 ------------
+//..... Variables para mostrar los scores en menu TOP 10 ......
 static int idxScore = 0;
 
 DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
@@ -339,72 +346,84 @@ void frontendDestroy(void) {
 }
 
 Input frontendGetInput(void) {
-   	joy = joy_read();
+    Input input_actual = NONE;
+    joy = joy_read();
+
     if (joy.sw == J_PRESS) {
-		return SELECT;
-    } else if (joy.y > JOY_LIM){
-    	return UP;
-    }  else if (joy.y < -JOY_LIM){
-    	return DOWN;
-    }  else if (joy.x > JOY_LIM){
-    	return RIGTH;
-    }  else if (joy.x < JOY_LIM){
-    	return LEFT;
-    } else { // Esta normal
-    	return NONE;
+        input_actual = SELECT;
+    } else if (joy.y > JOY_LIM) {
+        input_actual = UP;
+    } else if (joy.y < -JOY_LIM) {
+        input_actual = DOWN;
+    } else if (joy.x > JOY_LIM) {
+        input_actual = RIGHT;
+    } else if (joy.x < -JOY_LIM) {
+        input_actual = LEFT;
+    } else {
+        input_actual = NONE;
+    }
+
+    if (input_actual != ultimo_input) {
+        ultimo_input = input_actual;
+        return input_actual;
+    } else {
+        return NONE; 
     }
 }
 
 void frontendRender(Game * game){
-	int r = 0, c = 0;
-	GameState gameState = game->state; //Obtengo state actual
+	int r = 0, c = 0, option = 0;
 	disp_clear();
 
-	switch(gameState.id) {
+	switch((game->state).id) {
 		case MENU:
-			drawMSG(msgs[HOME]);
+			option = (game->state).menu.selected;
+			if(option == MENU_TITLE){
+				drawMSG(msgs[MSG_HOME]);
+			} else if(option == MENU_PLAY){
+				drawMSG(msgs[MSG_PLAY]);
+			} else if(option == MENU_POINTS){
+				drawMSG(msgs[MSG_GO_TOP_10]);
+			} else if(option == MENU_EXIT){
+				drawMSG(msgs[MSG_EXIT]);
+			} else {
+				printf("Error en Menu");
+			}
 			break;
 
 		case POINTS:
-
-			//VER QUE HACER PARA COORDINAR CON BACKEND
-			joy = joy_read(); //lee continuamente joystick
-			if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
-				usleep(100000); //ANTIREBOTE BLOQUEANTE
-				while(joy_read().y > JOY_LIM);
-				idxScore--;
-				
-
-			}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
-				usleep(100000); //ANTIREBOTE BLOQUEANTE
-				while(joy_read().y < -JOY_LIM);
-				idxScore++;
-				drawScore(idxScore, scores[idxScore]);
-			}
-
+            option = (game->state).points.selected;
+            if (option == POINTS_TITLE){
+                navigateScores(&(game->state), frontendGetInput(), scores);
+            } else if(option == POINTS_MENU){
+                drawMSG(msgs[MSG_GO_HOME]);
+            } else if(option == POINTS_EXIT){
+                drawMSG(msgs[MSG_EXIT]);
+            } else {
+                printf("Error");
+            }
 			break;
 
 		case PAUSED:
-			int option = gameState.paused.optionCount;
-			if(option = PAUSED_TITLE){
-				drawMSG(msgs[PAUSE]);
-			} else if(option = PAUSED_MENU){
-				drawMSG(msgs[GO_HOME]);
-			} else if(option = PAUSED_PLAY){
-				drawMSG(msgs[DESPAUSE]);
-			} else if(option = PAUSED_EXIT){
-				drawMSG(msgs[EXIT_OP]);
+			option = (game->state).paused.selected;
+			if(option == PAUSED_TITLE){
+				drawMSG(msgs[MSG_PAUSE]);
+			} else if(option == PAUSED_MENU){
+				drawMSG(msgs[MSG_GO_HOME]);
+			} else if(option == PAUSED_PLAY){
+				drawMSG(msgs[MSG_DESPAUSE]);
+			} else if(option == PAUSED_EXIT){
+				drawMSG(msgs[MSG_EXIT]);
 			} else {
-				printf("Errororororo");
-				//MANEJAAAAAAAAAAAAAAAAAAR
+				printf("Error");
 			}
-
 			break;
+
 
 		case PLAYING:
 
 			// Dibuja zonas
-			 drawZone((game->level).rows);
+			drawZone((game->level).rows);
 
 			//Dibuja obstaculos y floaters
 			drawObstacles(&(game->entities).obstacles));
@@ -416,15 +435,11 @@ void frontendRender(Game * game){
 			break;
 
 		case GAME_OVER:
-
-			drawMSG(msgs[GAME_OVER]);
-
+			drawMSG(msgs[MSG_GAME_OVER]);
 			break;
 
 		case VICTORY:
-
-			drawMSG(msgs[YOU_WIN]);
-			
+			drawMSG(msgs[MSG_YOU_WIN]);
 			break;
 
 		default:
@@ -503,6 +518,36 @@ static void drawZone(const Row * rows) {
     }
 }
 
+void navigateScores(GameState * state, Input input, int scores[]){
+    switch(input){
+            case UP:
+                idxScore++;
+                if(idxScore >= 10)
+                menuNext(&(state->points));
+            
+            break;
+
+            case DOWN:
+                if(idxScore == 0){
+                    drawMSG(msgs[MSG_TOP_10]);
+                    idxScore = -1;  
+                } else{
+                    idxScore--;
+                }
+
+            break;
+
+            case SELECT: case NONE: case RIGHT: case LEFT: default:
+            //se queda en el mismo menu, no hace nada
+            break;
+
+    }
+
+    if(idxScore >= 0 && idxScore < 10) {
+    	drawScore(idxScore, scores[idxScore]);
+    }
+}
+
 static void drawScore(int idxScore, int score) {
 	int f, c, d, id;
 
@@ -547,15 +592,13 @@ static void drawScore(int idxScore, int score) {
 	for(id = 0; id <= idxScore; id++){
 		disp_write((dcoord_t){.y = SCORE_ID_YCOOR, .x = SCORE_ID_XCOOR + id}, D_OFF);
 	}
-
-	disp_update();
 }
 
-static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]){
+static void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){
 	int f, c, ledState = 0;
 	for (f = 0; f <= MAP_HEIGHT; f++) {
 		for (c = 0; c <= MAP_WIDTH; c++) {
-			ledState = bitmap[f] >> (MAP_HEIGHT - c) & 1; // Obtengo bit a bit
+			ledState = msg[f] >> (MAP_HEIGHT - c) & 1; // Obtengo bit a bit
 			if(ledState){
 				disp_write((dcoord_t){.y = f, .x = c}, D_ON);
 			} else {
