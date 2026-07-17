@@ -1,19 +1,10 @@
 FALTA:
-1- Niveles: COMMENTS EL RESTO FINIQUITADO!!!!!!
 
 2- Movimiento de los obstaculos
-    CAMBIAR CENTRO DE MASA A INICIO DE ENTITY + LENGTH. 
-
-3- Movimiento rana 
-    CAMBIAR LOGICA DE COLISION Y DE MOVE WITH FLOATER, EN VEZ DE QUE TENGAN LA MISMA X O Y, QUE SE MUEVAN CON LA MISMA VELOCIDAD 
-
-4- Colisiones
-    CAMBIAR LOGICA CONSIDERANDO ROWS
-
-3- Codear INITS: setear estado inicial de game  
+    CAMBIAR CENTRO DE MASA A INICIO DE ENTITY + LENGTH.  
 
 7- Acomodar .h y .c, tipos de datos y funciones
-8- Validacion de datos, punteros y enums
+8- Validacion de datos, punteros y enums, COMMENTS
 
 
 FLOATERS:

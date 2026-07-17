@@ -147,9 +147,6 @@ typedef struct {
 void menuNext(MenuState *menu);
 void menuPrevious(MenuState *menu);
 
-void updateScore();
-
-void updateZone();
 
 
 

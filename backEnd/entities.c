@@ -66,8 +66,8 @@ void moveFrog(Frog * frog , Input input){
   }
 }
 void moveFrogWithFloater(Frog * frog , Entity* floater){
-  (frog->y)=(floater->y);
-  (frog->x)=(floater->x);
+  frog->speed = floater->speed;
+  frog->direction = floater->direction;
 }
 
 void resetFrog(Frog * frog){

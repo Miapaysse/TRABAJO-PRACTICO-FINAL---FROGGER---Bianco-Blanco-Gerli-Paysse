@@ -75,7 +75,14 @@
 
 
     void manageInteractions(Game *game){
+        
+        if (frogOutOfBounds(&game->frog)) {
+            frogDies(&(game->lives), &game->state.id);
+            return;
+        }
+
         Row *currentRow = &(game->level.rows[game->frog.y]);
+
 
         switch(currentRow->zone){
 
@@ -125,6 +132,30 @@
             (*score)+=POINT_WEIGHT;
             frog->lastSafeSpot = frog->y;
         }
+    }
+
+    int frogOutOfBounds(Frog *frog){
+        if (frog == NULL){
+            return ERR_INVALID_LEVEL_POINTER;
+        }   
+
+        if (frog->x < 0){
+            return 1;
+        }
+
+        if (frog->x >= MAP_WIDTH){
+            return 1;
+        }
+
+        if (frog->y < 0){
+            return 1;
+        }
+
+        if (frog->y >= MAP_HEIGHT){
+            return 1;
+        }
+
+        return 0;
     }
 
 

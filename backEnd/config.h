@@ -53,10 +53,14 @@
 #define ISEVEN(x) ((x)%2==0)
 ////////////////////////////////////////////////////////////////
 typedef enum{
-  ERR_MAX_OBSTACLES_EXCEEDED,
+  ERR_MAX_OBSTACLES_EXCEEDED=2,
   ERR_MAX_FLOATERS_EXCEEDED, 
   ERR_INVALID_GAME_POINTER, 
-  ERR_INVALID_LEVEL_POINTER
+  ERR_INVALID_LEVEL_POINTER,
+  ERR_INVALID_FROG_POINTER,
+  ERR_INVALID_OBSTACLE_POINTER,
+  ERR_INVALID_FLOATER_POINTER
+
 }ErrorType;
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
