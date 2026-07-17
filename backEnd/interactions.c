@@ -52,7 +52,7 @@
         int errorType;
 
         if (frogOutOfBounds(&game->frog)) { //Chequeamos que la rana siga en los limites del juego, sino muere
-            frogDies(&(game->lives), &game->state.id);
+            frogDies(&(game->frog),&(game->lives), &game->state.id);
             return 0;
         }
 
@@ -65,7 +65,7 @@
                 case ROAD://Si la rana esta en la calle lo unico que le puede pasar es que sea atropellada por un obstaculo
 
                     if(errorType = runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount)==1){ 
-                        frogDies(&(game->lives), &((game->state).id)); //Si fue atropellada muere
+                        frogDies(&(game->frog), &(game->lives), &((game->state).id)); //Si fue atropellada muere
                     }
                     else if(errorType){
                         return errorType;
@@ -89,7 +89,7 @@
                             moveFrogWithFloater(&(game->frog), floaterP); //Si la rana esta sobre un flotador debe moverse con este, a la misma velocidad y en la misma direccion
                         }
                         else{
-                            frogDies(&(game->lives), &((game->state).id)); //Si no esta en un flotador, esta en el agua, por ende se muere
+                            frogDies(&(game->frog),&(game->lives), &((game->state).id)); //Si no esta en un flotador, esta en el agua, por ende se muere
                         }
                     }
                 

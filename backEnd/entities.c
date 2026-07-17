@@ -89,7 +89,7 @@ int resetFrog(Frog * frog){
   }
 
   else{
-    (frog->y)=FROG_Y0; //Ubicamos la rana en sus coordenadas iniciales
+    (frog->y)=FROG_Y0; //Ubicamos la rana en sus coordenadas iniciales y reseteamos su ultima zona segura
     (frog->x)=FROG_X0; 
     frog->lastSafeSpot=frog->y;
   }
@@ -106,7 +106,7 @@ int initFrog(Frog * frog){
   }
 }
 
-int frogDies(uint8_t* lives, GameStateId* id ){
+int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
   if(lives == NULL){
     return ERR_INVALID_LIVES_POINTER;
   }
@@ -118,11 +118,11 @@ int frogDies(uint8_t* lives, GameStateId* id ){
   else{
     if(*lives > 1){   //Si la rana no perdio todas sus vidas, le quitamos una 
       (*lives)--;   
-      resetFrog();
+      resetFrog(frog);
     }
     else{
       *id = GAME_OVER; //Si la rana perdio todas sus vidas el juego se termina
-      resetFrog();
+      resetFrog(frog);
     }
     return 0;
   }

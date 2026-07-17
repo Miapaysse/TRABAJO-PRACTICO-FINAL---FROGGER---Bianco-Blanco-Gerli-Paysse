@@ -104,7 +104,7 @@ int updateEntities();
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-int frogDies(uint8_t* lives, GameStateId* id );
+int frogDies(Frog * frog, uint8_t* lives, GameStateId* id);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
