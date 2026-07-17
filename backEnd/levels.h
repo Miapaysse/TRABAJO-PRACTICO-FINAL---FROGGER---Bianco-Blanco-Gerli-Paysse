@@ -23,18 +23,18 @@ typedef enum{
     SMALL=2,
     MEDIUM,
     LARGE
-}FloaterLength
+}FloaterLength;
 
 typedef enum{
     CAR_LENGTH=1,
     TRUCK_LENGTH
-}ObstacleLength
+}ObstacleLength;
 
 typedef enum{
     MIN_GAP=1,
     MEDIUM_GAP,
     MAX_GAP
-}RowGap
+}RowGap;
 
 typedef enum{
     ROAD,

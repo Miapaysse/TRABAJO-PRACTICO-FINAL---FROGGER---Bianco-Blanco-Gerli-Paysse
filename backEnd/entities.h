@@ -28,7 +28,7 @@ typedef enum{
     SLOW=1,
     MEDIUM_SPEED,
     FAST
-}Speed
+}Speed;
 
 typedef struct{
     uint8_t  x;

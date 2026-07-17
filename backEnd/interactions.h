@@ -4,8 +4,8 @@
   @author   +Bianco-Blanco-Gerli-Paysse+
  ******************************************************************************/
 
-#ifndef _COLLISION_H_
-#define _COLLISION_H_
+ #ifndef _INTERACTIONS_H_
+ #define _INTERACTIONS_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
@@ -48,4 +48,4 @@ int updateScore(Frog * frog , uint8_t* score);
 
 /******************************************************************************/
 
-#endif // _COLLISION_H_
+#endif // _INTERACTIONS_H_
