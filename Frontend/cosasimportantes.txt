@@ -15,10 +15,12 @@ apretando la cruz, agregar al enum de game.h
 -------------------------------------------
 
 - Probar Display LED Menus
-- Probar zones display
 - codear perdida vidas (cartel "💔" o " - 1❤ ")
 - Divido codigo en dif archivos? tengo + de mil lineas de codigo 
 
 //Cuando definamos timer/velocidades:
 - Frog titila
 - probar entities moviendose
+
+Errores a validar:
+ - error no encuentra  options para cada menu

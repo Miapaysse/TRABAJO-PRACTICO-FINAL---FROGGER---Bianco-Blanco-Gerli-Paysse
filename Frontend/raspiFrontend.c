@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #include "disdrv.h"
 #include "joydrv.h"
@@ -28,7 +29,9 @@
 
 static dcoord_t frog_pos = {(MAP_WIDTH + 1)  >> 1, MAP_HEIGHT + 1}; //Sse queda del lado izquierdo de la mitad vertical, abajo de todo
 static dcoord_t entity_pos;
-
+joyinfo_t joy;
+int joy_locked_x = 0;
+int joy_locked_y = 0;
 
 static enum msgs { //Enum apara signarle indice a las opciones de mensajes
 	HOME,
@@ -310,11 +313,12 @@ static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = {
  ******************************************************************************/
 
 // Todas las q intervienen con el display no pueden usarse por otros archivos
-static void drawScore(int idxScore, int score);
-static void drawObstacles(Entity obstacles[]);
-static void drawFloaters(Entity floaters[]);
+static void drawZone(const Row * rows);
+static void drawObstacles(const Entity obstacles[]);
+static void drawFloaters(const Entity floaters[]);
+
 static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
-static void drawZone(Zone currentZone, int r);
+static void drawScore(int idxScore, int score);
 
 /*******************************************************************************
  *******************************************************************************
@@ -335,7 +339,7 @@ void frontendDestroy(void) {
 }
 
 Input frontendGetInput(void) {
-    joyinfo_t joy = joy_read();
+   	joy = joy_read();
     if (joy.sw == J_PRESS) {
 		return SELECT;
     } else if (joy.y > JOY_LIM){
@@ -353,22 +357,23 @@ Input frontendGetInput(void) {
 
 void frontendRender(Game * game){
 	int r = 0, c = 0;
-
-	switch(game->state.id) {
+	GameState gameState = game->state; //Obtengo state actual
 	disp_clear();
 
+	switch(gameState.id) {
 		case MENU:
-			//...
+			drawMSG(msgs[HOME]);
 			break;
 
 		case POINTS:
-			joy = joy_read(); //lee continuamente joystick
 
+			//VER QUE HACER PARA COORDINAR CON BACKEND
+			joy = joy_read(); //lee continuamente joystick
 			if (joy.y > JOY_LIM && idxScore > 0){ //Si joy arriba y no llego al primer puntaje, sube
 				usleep(100000); //ANTIREBOTE BLOQUEANTE
 				while(joy_read().y > JOY_LIM);
 				idxScore--;
-				drawScore(idxScore, scores[idxScore]);
+				
 
 			}  else if (joy.y < -JOY_LIM && idxScore < TOP10_SIZE-1){ //Si joy abajo y no llego a ultimo puntaje, baja
 				usleep(100000); //ANTIREBOTE BLOQUEANTE
@@ -380,16 +385,26 @@ void frontendRender(Game * game){
 			break;
 
 		case PAUSED:
-			//...
+			int option = gameState.paused.optionCount;
+			if(option = PAUSED_TITLE){
+				drawMSG(msgs[PAUSE]);
+			} else if(option = PAUSED_MENU){
+				drawMSG(msgs[GO_HOME]);
+			} else if(option = PAUSED_PLAY){
+				drawMSG(msgs[DESPAUSE]);
+			} else if(option = PAUSED_EXIT){
+				drawMSG(msgs[EXIT]);
+			} else {
+				printf("Errororororo");
+				//MANEJAAAAAAAAAAAAAAAAAAR
+			}
 
 			break;
 
 		case PLAYING:
 
 			// Dibuja zonas
-			for (r = 0; r <= MAP_HEIGHT; r++) { //for afuera xq capaz divido por water y road
-				drawZone(&(game->level), int r)
-			}
+			 drawZone((game->level).rows);
 
 			//Dibuja obstaculos y floaters
 			drawObstacles(&(game->entities).obstacles));
@@ -408,6 +423,7 @@ void frontendRender(Game * game){
 
 		case VICTORY:
 
+			drawMSG(msgs[YOU_WIN]);
 			
 			break;
 
@@ -447,29 +463,44 @@ static void drawFloaters(Entity floaters[]){
 	}
 }
 
-static void drawZone(const int currentZone, const int r){
-	int r_disp = ROW(r); //Traduce a indice disp
-	switch (currentZone){
-		case WATER: // Dibuja agua (LEDs prendidos)
-			for (c = 0; c <= MAP_WIDTH; c++) {
-				disp_write((dcoord_t){.y = r_disp, .x = c},D_ON);
-			}
-		break;
+static void drawZone(const Row * rows) {
+    int r_disp, r, c;
 
-		case ROAD: // Dibuja calle (LEDs apagados)
-			for (c = 0 ; c <= MAP_WIDTH; c++) {
-				disp_write((dcoord_t){.y = r_disp, .x = c}, D_OFF);
-			}
-		break;
-
-		case SAFE:
-		case START: //Dibuja safe zones y start con patron On/off/on/off/...
-			for (c = 0 ; c < MAP_WIDTH ; c++) {
-				disp_write((dcoord_t){.y = r , .x = c++}, D_ON);
-				disp_write((dcoord_t){.y = r , .x = c}, D_OFF); //apaga un led y va al siguiente
-			}
-		break;
-	}
+    for (r = 0; r <= MAP_HEIGHT; r++) { 
+        r_disp = ROW(r); // Traduce a índice disp
+        
+        switch (rows[r].zone) {
+            case WATER: // Dibuja agua (LEDs prendidos)
+                for (c = 0; c <= MAP_WIDTH; c++) { 
+                    disp_write((dcoord_t){.y = r_disp, .x = c}, D_ON); 
+                }
+                break;
+                
+            case ROAD: // Dibuja calle (LEDs apagados)
+                for (c = 0; c <= MAP_WIDTH; c++) { 
+                    disp_write((dcoord_t){.y = r_disp, .x = c}, D_OFF); 
+                }
+                break;
+                
+            case SAFE:
+            case START: // Dibuja safe zones y start con patrón ajedrez
+                for (c = 0; c <= MAP_WIDTH; c++) { 
+                    if ((c + r_disp) % 2 == 0) {
+                        disp_write((dcoord_t){.y = r_disp, .x = c}, D_ON); 
+                    } else {
+                        disp_write((dcoord_t){.y = r_disp, .x = c}, D_OFF); 
+                    }
+                }
+                break;
+                
+            default:
+                for (c = 0; c <= MAP_WIDTH; c++) {
+                    // CORRECCIÓN: Se usó 'r_disp' en lugar de 'y_disp'
+                    disp_write((dcoord_t){.y = r_disp, .x = c}, D_OFF); 
+                }
+                break;
+        }
+    }
 }
 
 static void drawScore(int idxScore, int score) {
@@ -533,3 +564,4 @@ static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]){
 		}
 	}
 }
+
