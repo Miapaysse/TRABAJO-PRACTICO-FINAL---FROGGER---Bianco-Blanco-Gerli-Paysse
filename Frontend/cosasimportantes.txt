@@ -18,7 +18,7 @@ llama a funcion de input, un while que siga llamando a esa funcion hasta que ret
         FRONTEND RASPI
 -------------------------------------------
 
-- Probar Display LED Menus
+- Menus a probar: top 10 navigate, victory, game over
 - codear perdida vidas (cartel "💔" o " - 1❤ ")
 - Divido codigo en dif archivos? tengo + de mil lineas de codigo 
 
@@ -27,4 +27,4 @@ llama a funcion de input, un while que siga llamando a esa funcion hasta que ret
 - probar entities moviendose
 
 Errores a validar:
- - error no encuentra  options para cada menu
+ - error no encuentra options para cada menu
