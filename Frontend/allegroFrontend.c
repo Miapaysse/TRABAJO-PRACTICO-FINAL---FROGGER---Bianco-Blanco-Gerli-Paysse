@@ -1,7 +1,21 @@
-#define ALLEGRO_NO_MAGIC_MAIN //sino se rompe todo 1
+/***************************************************************************//**
+  @file     +allegroFrontend.c+
+  @brief    +Descripcion del archivo+
+  @author   +Bianco-Blanco-Gerli-Paysse+
+ ******************************************************************************/
+
+ #define ALLEGRO_NO_MAGIC_MAIN //sino se rompe todo 1
+
+ /*******************************************************************************
+  * INCLUDE HEADER FILES
+  ******************************************************************************/
+
+
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <stdbool.h> 
+#include <allegro5/allegro_font.h> //manejo de fonts
+#include <allegro5/allegro_ttf.h> //manejo de ttfs
 #include "frontend.h"   
 #include "game.h"   
 #include "levels.h"
@@ -13,14 +27,26 @@
 //Variables locales
 static ALLEGRO_EVENT_QUEUE *queue = NULL;
 static ALLEGRO_DISPLAY* display;
-
+static ALLEGRO_BITMAP* floater = NULL;
+static ALLEGRO_BITMAP* car = NULL;
+static ALLEGRO_BITMAP* truck = NULL;
+static ALLEGRO_BITMAP* frog = NULL;
+static ALLEGRO_BITMAP* game_over = NULL;
+static ALLEGRO_BITMAP* victory = NULL;
+static ALLEGRO_BITMAP* main_menu = NULL;
+static ALLEGRO_FONT* big_font = NULL;
+static ALLEGRO_FONT* medium_font = NULL;
 
 //Prototipos funciones internas
 
-void drawZones(Game * p2game);
-void drawCars(Game * p2game);
-void drawFloaters(Game * p2game);
-void drawFrog(Game * p2game);
+static void drawZones(Game * p2game);
+static void drawObstacles(Game * p2game);
+static void drawFrog(Game * p2game);
+static void loadFiles (void);
+static void drawMainMenu (Game* p2game);
+static void drawGameOver (Game* p2game);
+static void drawPaused (Game* p2game);
+static void drawScores (Game* p2game);
 
 
 void frontendInit(void) {
@@ -54,15 +80,20 @@ void frontendInit(void) {
     if (al_init_font_addon() == false) {
         fprintf(stderr, "Error: No se pudo cargar el addon.\n");
     }
-    ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-    //void al_register_event_source(ALLEGRO_EVENT_QUEUE *queue, ALLEGRO_EVENT_SOURCE *source);
-    //void al_register_event_source(ALLEGRO_EVENT_QUEUE *queue, ALLEGRO_EVENT_SOURCE *source);
+
+    al_init_font_addon(); // initialize the font addon
+    al_init_ttf_addon(); // initialize the ttf (True Type Font) addon
+
+    queue = al_create_event_queue();
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
+
+    //cargamos pngs
+    loadPng();
 }
 
 
-//mal el if
+
 Input frontendGetInput(void){
     ALLEGRO_EVENT event;
     
@@ -77,11 +108,14 @@ Input frontendGetInput(void){
                 default: return NONE;
             }
         }
-        else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+        /*else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             al_destroy_event_queue(queue);
             al_destroy_display(display);
-            return NONE; //OJO QUE NO EXISTE EN LA STRUCT ESTE CASO
-        }
+            return ...; //OJO QUE NO EXISTE EN LA STRUCT ESTE CASO
+        } */
+       else {
+        return NONE;
+       }
     }
 
     else {
@@ -99,16 +133,35 @@ void frontendRender(Game * game){
 
    switch (game_state){
     case MENU:
+    drawMainMenu(game);
+    break;
+
     case PLAYING:
     drawZones(game);
+    drawObstacles(game);
+    drawFrog(game);
+    break;
 
     case GAME_OVER:
+    drawGameOver(game);
+    break;
+
     case VICTORY:
+    drawVictory(game);
+    break;
+
     case POINTS:
-    case EXIT:
+    drawScores(game);
+
+    case PAUSED:
+    drawPaused(game);
+    break;
+
     default:
-        break;
+    break;
    }
+
+   al_flip_display();
 }
 
 void frontendDestroy(void){
@@ -117,11 +170,14 @@ void frontendDestroy(void){
 
 //Definiciones de funciones locales
 
-void drawZone(Game * p2game){ //FALTA UN CASO DEFAULT?
+static void drawZones(Game * p2game){ //FALTA UN CASO DEFAULT?
     
     int i, y1, y2;
     int x1 = MARGIN;
     int x2 = MARGIN + MAP_WIDTH*SCALE;
+    ALLEGRO_COLOR road_colour = al_map_rgb(45, 45, 48);
+    ALLEGRO_COLOR water_colour = al_map_rgb(0, 119, 190);
+    ALLEGRO_COLOR safe_colour = al_map_rgb(46, 139, 87);
 
     for (i=0 ; i<MAP_HEIGHT ; i++){
 
@@ -130,18 +186,15 @@ void drawZone(Game * p2game){ //FALTA UN CASO DEFAULT?
 
         switch (p2game->level.rows[i].zone){
             case ROAD:
-            ALLEGRO_COLOR road_colour = al_map_rgb(45, 45, 48);
             al_draw_filled_rectangle(x1, y1, x2, y2, road_colour);
             break;
 
             case WATER:
-            ALLEGRO_COLOR water_colour = al_map_rgb(0, 119, 190);
             al_draw_filled_rectangle(x1, y1, x2, y2, water_colour);
             break;
 
             case START:
             case SAFE:
-            ALLEGRO_COLOR safe_colour = al_map_rgb(46, 139, 87);
             al_draw_filled_rectangle(x1, y1, x2, y2, safe_colour);
             break;
 
@@ -152,10 +205,10 @@ void drawZone(Game * p2game){ //FALTA UN CASO DEFAULT?
 
 }
 
-//en los png los vehículos apuntan para la izquierda
-void drawVehicles( Game* p2game){
+static void drawObstacles( Game* p2game){
 
-    int i, x, y;
+    int i, x, y, new_lenght, new_height;
+    int flag_direction = 0; //flag para rotar el dibujo
 
     //Bucle generador de vehículos
     for (i=0 ; i<MAX_OBSTACLES ; i++){
@@ -164,12 +217,20 @@ void drawVehicles( Game* p2game){
             x = (p2game -> entities.obstacles[i].x)*SCALE + MARGIN;
             y = (p2game -> entities.obstacles[i].y)*SCALE;
 
-            //if (p2game -> entities.obstacles[i].length == )
-                //al_draw_bitmap(png_correspondiente, x, y, 0);
+            //en los png los vehículos apuntan para la izquierda
+            if ((p2game -> entities.obstacles[i].direction) == DIR_LEFT){
+                flag_direction = 0;
+            }
+            else {
+                flag_direction = ALLEGRO_FLIP_HORIZONTAL;
+            }
 
-                // Mostramos los cambios en el monitor
-                al_flip_display();
-
+            if (p2game -> entities.obstacles[i].length == CAR_LENGTH){
+                al_draw_bitmap(car, x, y, flag_direction);
+            }
+            else { //es camión
+                al_draw_bitmap(truck, x, y, flag_direction);
+            }
         }
 
     }
@@ -180,14 +241,138 @@ void drawVehicles( Game* p2game){
         if (p2game -> entities.floaters[i].active){
             x = (p2game -> entities.floaters[i].x)*SCALE + MARGIN;
             y = (p2game -> entities.floaters[i].y)*SCALE;
-
-            if ((p2game -> entities.floaters[i].length) == 2){
-
-                //al_draw_scaled_bitmap(car, 0, 0, ...);
-                al_flip_display();
-            }
-
+            new_lenght = (p2game -> entities.floaters[i].length)*SCALE;
+            new_height = SCALE;
+          
+            //Dibujamos el tronco con el largo correspondiente
+            al_draw_scaled_bitmap(floater, 0, 0, al_get_bitmap_width(floater),
+                al_get_bitmap_height(floater), x, y, new_lenght, new_height, 0);
         }
 
     }
+}
+
+static void drawFrog(Game * p2game){
+    int x = (p2game -> frog.x)*SCALE + MARGIN;
+    int y = (p2game -> frog.y)*SCALE;
+    al_draw_bitmap (frog, x, y, 0);
+}
+
+static void loadFiles (void){
+    floater = al_load_bitmap("floater.png");
+    car = al_load_bitmap("car.png");
+    truck = al_load_bitmap("truck.png");
+    frog = al_load_bitmap("frog.png");
+    game_over = al_load_bitmap("game_over.png");
+    victory = al_load_bitmap("victory.png");
+    main_menu = al_load_bitmap("main_menu.png");
+    big_font = al_load_ttf_font("Tiny5-Regular.ttl", 48, 0);
+    medium_font = al_load_ttf_font("Tiny5-Regular.ttl", 25, 0);
+}
+
+//FALTA DEFINIR COORDENADAS
+static void drawMainMenu (Game* p2game){
+    ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR green = al_map_rgb(86, 176, 0);
+    ALLEGRO_COLOR color;
+    int option_selected = (p2game -> state.menu.selected);
+
+    al_draw_text(big_font, white, x, y, ALLEGRO_ALIGN_CENTER, "MENU");
+
+    color = (option_selected == MENU_PLAY)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Play");
+
+    color = (option_selected == MENU_POINTS)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Best scores");
+
+    color = (option_selected == MENU_EXIT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Exit");
+}
+
+//COORDENADAS
+static void drawGameOver (Game* p2game){
+    ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR green = al_map_rgb(86, 176, 0);
+    ALLEGRO_COLOR color;
+
+    int option_selected = (p2game -> state.gameOver.selected);
+
+    al_draw_text(big_font, white, x, y, ALLEGRO_ALIGN_CENTER, "GAME OVER");
+
+    color = (option_selected == GAME_OVER_MENU)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Back to menu");
+
+    color = (option_selected == GAME_OVER_COUNT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Best scores");
+
+    color = (option_selected == GAME_OVER_EXIT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Exit");
+}
+
+//COORDENADAS
+static void drawVictory(Game* p2game){
+    ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR green = al_map_rgb(86, 176, 0);
+    ALLEGRO_COLOR color;
+
+    int option_selected = (p2game -> state.victory.selected);
+
+    al_draw_text(big_font, white, x, y, ALLEGRO_ALIGN_CENTER, "YOU WON");
+
+    color = (option_selected == VICTORY_MENU)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Back to menu");
+
+    color = (option_selected == VICTORY_COUNT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Best scores");
+
+    color = (option_selected == VICTORY_EXIT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Exit");
+}
+
+//COORDENADAS
+static void drawPaused (Game* p2game){
+    ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR green = al_map_rgb(86, 176, 0);
+    ALLEGRO_COLOR color;
+
+    int option_selected = (p2game -> state.paused.selected);
+
+    al_draw_text(big_font, white, x, y, ALLEGRO_ALIGN_CENTER, "GAME PAUSED");
+
+    color = (option_selected == PAUSED_PLAY)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Continue");
+
+    color = (option_selected == PAUSED_COUNT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Best scores");
+
+    color = (option_selected == PAUSED_EXIT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Exit");
+}
+
+//INCOMPLETA LA PARTE DE OBTENER LOS PUNTAJES Y LAS COORDENADAS
+static void drawScores(Game* p2game){
+    char* scores[10];
+
+    //agregamos el #1, 2 3,... antes del score
+
+    int i;
+    int option_selected = (p2game -> state.points.selected);
+    ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR green = al_map_rgb(86, 176, 0);
+    ALLEGRO_COLOR color = white;
+
+    al_draw_text(big_font, white, x, y, ALLEGRO_ALIGN_CENTER, "TOP 10");
+
+    for (i=0 ; i<10 ; i++){
+        int x;
+        int y;
+        al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, scores[i]);
+    }
+
+    color = (option_selected == POINTS_MENU)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Back to menu");
+
+    color = (option_selected == POINTS_EXIT)? green : white;
+    al_draw_text(medium_font, color, x, y, ALLEGRO_ALIGN_LEFT, "Exit");
+
 }
