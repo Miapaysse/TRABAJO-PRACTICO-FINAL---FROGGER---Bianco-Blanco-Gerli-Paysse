@@ -10,9 +10,10 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
-#include "entities.h"
-
+  #include "entities.h"
+  #include "config.h"
+  #include "game.h"
+  
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
@@ -56,9 +57,9 @@ typedef struct{
 
     Zone zone;
 
-    int entityCount;
+    uint8_t  entityCount;
 
-    int entityLength;
+    int  entityLength;
 
     RowGap gap;
 
@@ -87,7 +88,7 @@ typedef struct {
  int initLevel(Game * game);
  int checkLevel(Frog* frog, Level* level);
  int goToNextLevel(Level* level);
- int arrivedAtFinishLine(int y);
+ int arrivedAtFinishLine(uint8_t  y);
 
 /**
  * @brief TODO: completar descripcion
