@@ -49,7 +49,7 @@
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-int moveFrog(Frog * frog , Input input){
+int moveFrog(Frog * frog , Input input){ //Cambiamos las coordenadas de la rana segun las indicaciones del jugador 
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
   }
@@ -71,7 +71,7 @@ int moveFrog(Frog * frog , Input input){
   }
 }
 
-int  moveFrogWithFloater(Frog * frog , Entity* floater){
+int  moveFrogWithFloater(Frog * frog , Entity* floater){ //Para que la rana se mueva con el flotador tiene que tener su misma velocidad y direccion 
 
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
@@ -89,9 +89,10 @@ int resetFrog(Frog * frog){
   }
 
   else{
-    (frog->y)=FROG_Y0; //Ubicamos la rana en sus coordenadas iniciales y reseteamos su ultima zona segura
+    (frog->y)=FROG_Y0; //Ubicamos la rana en sus coordenadas iniciales, reseteamos su ultima zona segura y su velocidad
     (frog->x)=FROG_X0; 
     frog->lastSafeSpot=frog->y;
+    frog->speed = 0;
   }
 }
 
@@ -101,7 +102,6 @@ int initFrog(Frog * frog){
   }
   else{
     resetFrog(frog); //Ubicamos la rana en sus coordenadas iniciales
-    frog->speed = 0; //Establecemos la velocidad de la rana en 0
     return 0;
   }
 }
