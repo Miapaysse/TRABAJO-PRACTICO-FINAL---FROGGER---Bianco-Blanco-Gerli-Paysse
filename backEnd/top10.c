@@ -65,7 +65,7 @@ Top10Status status = TOP10_OK;
     }
     topScores[i] =value;
  }
- fcloes(file);
+ fclose(file);
  sortdescending(topScores);
 
  return status;

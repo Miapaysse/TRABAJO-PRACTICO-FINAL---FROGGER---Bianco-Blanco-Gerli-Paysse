@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 #include "levels.h"
+#include <stddef.h>
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -109,12 +110,11 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-    static void loadLevel(Level * level);
-
+    static int loadLevel(Level * level);
     static void loadLevelEntities(Level* level);
     static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity);
-    static void loadRowEntities(Row* row, uint8_t  row);
-
+    static void loadRowEntities(Row* row, uint8_t  rowNumber);
+    static int checkLevelEntities(Level* level);
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -154,7 +154,7 @@
             case LEVEL_1:
                 game->level = level2; //Igualamos el nivel a la estrucutra predeterminada del nivel correspondiente
                 game->level.entities = &game->entities; //Apuntamos el puntero de entidades a las entidades del juego
-                if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+                if(errorType =loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
                     return errorType;
                 }
                 else{
@@ -165,7 +165,7 @@
             case LEVEL_2:
                 game->level = level3;
                 game->level.entities = &game->entities;
-                if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+                if(errorType = loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
                     return errorType;
                 }
                 else{

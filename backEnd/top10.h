@@ -43,7 +43,7 @@
  /*******************************************************************************
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
   ******************************************************************************/
- Top10Status loadTop10(int topScores[TOP10_SIZE]);
+ Top10Status LoadTop10(int topScores[TOP10_SIZE]);
 
 /**
  * @brief Carga el top 10 desde TOP10_FILE. Si el archivo no existe o esta
@@ -53,7 +53,7 @@
  * @return TOP10_OK, TOP10_FILE_NOT_FOUND o TOP10_READ_ERROR
  */
 
-bool updateTop10(int topScores[TOP10_SIZE], int newScore);
+bool UpdateTop10(int topScores[TOP10_SIZE], int newScore);
 
  /**
  * @brief Inserta newScore en el ranking si corresponde, manteniendo el
