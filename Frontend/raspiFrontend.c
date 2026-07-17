@@ -42,7 +42,7 @@ static enum msgs { //Enum apara signarle indice a las opciones de mensajes
 	DESPAUSE,
 	GO_TOP_10,
 	GO_BACK,
-	EXIT,
+	EXIT_OP,
 	GAME_OVER,
 	YOU_WIN,
 	MAX_MENUS
@@ -344,7 +344,7 @@ Input frontendGetInput(void) {
 		return SELECT;
     } else if (joy.y > JOY_LIM){
     	return UP;
-    }  else if joy.y < -JOY_LIM){
+    }  else if (joy.y < -JOY_LIM){
     	return DOWN;
     }  else if (joy.x > JOY_LIM){
     	return RIGTH;
@@ -393,7 +393,7 @@ void frontendRender(Game * game){
 			} else if(option = PAUSED_PLAY){
 				drawMSG(msgs[DESPAUSE]);
 			} else if(option = PAUSED_EXIT){
-				drawMSG(msgs[EXIT]);
+				drawMSG(msgs[EXIT_OP]);
 			} else {
 				printf("Errororororo");
 				//MANEJAAAAAAAAAAAAAAAAAAR

@@ -7,7 +7,7 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
+#include "entities.h"
 #include "game.h"
 
 /*******************************************************************************
@@ -63,7 +63,7 @@
             checkLevel(&(game->frog), game->level);
 
         break;
-        case PAUSE:
+        case PAUSED:
             processInputPaused(&(game->state), input);
         break;
         case VICTORY:
@@ -106,7 +106,7 @@ void menuNext(MenuState *menu){
 }
 
 /////////////////////////////////////////////////////////////////MENU
-void processInputMenu(gameState * state, Input input){
+void processInputMenu(GameState * state, Input input){
         switch(input){
                 case SELECT:
                     switch ( (state->menu).selected ){
@@ -132,7 +132,7 @@ void processInputMenu(gameState * state, Input input){
 }
 
 ////////////////////////////////////////////////////////////////////////PAUSED
-void processInputPaused(gameState * state, Input input){
+void processInputPaused(GameState * state, Input input){
     switch(input){
                 case SELECT:
                     switch ( (state->paused).selected ){
@@ -158,7 +158,7 @@ void processInputPaused(gameState * state, Input input){
 }
 
 ///////////////////////////////////////////////////////////GAME OVER
-void processInputGameOver(gameState * state, Input input){
+void processInputGameOver(GameState * state, Input input){
         switch(input){
                 case SELECT:
                     switch ( (state->gameOver).selected ){
@@ -181,7 +181,7 @@ void processInputGameOver(gameState * state, Input input){
 }
 
 ///////////////////////////////////////////////////////////VICTORY
-void processInputVictory(gameState * state, Input input){
+void processInputVictory(GameState * state, Input input){
         switch(input){
                 case SELECT:
                     switch ( (state->victory).selected ){
@@ -203,7 +203,7 @@ void processInputVictory(gameState * state, Input input){
     }
 }
 //////////////////////////////////////////////////////////POINTS
-void processInputPoints(gameState * state, Input input){
+void processInputPoints(GameState * state, Input input){
         switch(input){
                 case SELECT:
                     switch ( (state->points).selected ){
@@ -225,7 +225,7 @@ void processInputPoints(gameState * state, Input input){
     }
 }
 /////////////////////////////GAME LOGIC///////////////////////
-void processInputPlaying(gameState * state, Input input, Frog * frog){
+void processInputPlaying(GameState * state, Input input, Frog * frog){
     switch(input){
                 case SELECT:
                     state->id = PAUSED;
