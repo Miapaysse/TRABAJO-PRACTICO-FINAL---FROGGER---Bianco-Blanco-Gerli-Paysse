@@ -313,11 +313,12 @@ static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = {
  ******************************************************************************/
 
 // Todas las q intervienen con el display no pueden usarse por otros archivos
-static void drawScore(int idxScore, int score);
+static void drawZone(const Row * rows);
 static void drawObstacles(const Entity obstacles[]);
 static void drawFloaters(const Entity floaters[]);
+
 static void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
-static void drawZone(const Row * rows);
+static void drawScore(int idxScore, int score);
 
 /*******************************************************************************
  *******************************************************************************
@@ -356,12 +357,12 @@ Input frontendGetInput(void) {
 
 void frontendRender(Game * game){
 	int r = 0, c = 0;
-
-	switch(game->state.id) {
+	GameState gameState = game->state; //Obtengo state actual
 	disp_clear();
 
+	switch(gameState.id) {
 		case MENU:
-			//...
+			drawMSG(msgs[HOME]);
 			break;
 
 		case POINTS:
@@ -384,7 +385,19 @@ void frontendRender(Game * game){
 			break;
 
 		case PAUSED:
-			//...
+			int option = gameState.paused.optionCount;
+			if(option = PAUSED_TITLE){
+				drawMSG(msgs[PAUSE]);
+			} else if(option = PAUSED_MENU){
+				drawMSG(msgs[GO_HOME]);
+			} else if(option = PAUSED_PLAY){
+				drawMSG(msgs[DESPAUSE]);
+			} else if(option = PAUSED_EXIT){
+				drawMSG(msgs[EXIT]);
+			} else {
+				printf("Errororororo");
+				//MANEJAAAAAAAAAAAAAAAAAAR
+			}
 
 			break;
 
@@ -410,6 +423,7 @@ void frontendRender(Game * game){
 
 		case VICTORY:
 
+			drawMSG(msgs[YOU_WIN]);
 			
 			break;
 
