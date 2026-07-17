@@ -12,6 +12,8 @@
  ******************************************************************************/
 #include "config.h"
 #include "game.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS

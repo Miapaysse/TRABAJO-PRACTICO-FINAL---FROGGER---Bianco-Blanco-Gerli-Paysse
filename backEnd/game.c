@@ -9,7 +9,8 @@
  ******************************************************************************/
 #include "game.h"
 #include "config.h"
-
+#include "interactions.h"
+#include "levels.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS

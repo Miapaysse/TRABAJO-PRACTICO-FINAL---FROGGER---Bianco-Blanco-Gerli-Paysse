@@ -1,3 +1,6 @@
+#include "backend/game.h"
+#include "frontend/frontend.h"
+
 int main(void)
 {
     Game game;
