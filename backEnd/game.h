@@ -75,9 +75,9 @@ typedef enum{
 
 typedef struct{
 
-    int selected;
+    uint8_t  selected;
 
-    int optionCount;
+    uint8_t  optionCount;
 
 } MenuState;
 
@@ -100,9 +100,9 @@ typedef struct {
 
    GameEntities entities;
 
-   int score;
+   uint8_t score;
 
-   int lives;
+   uint8_t  lives;
 
    Level level;
 

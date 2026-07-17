@@ -112,8 +112,8 @@
     static void loadLevel(Level * level);
 
     static void loadLevelEntities(Level* level);
-    static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity);
-    static void loadRowEntities(Row* row, int row);
+    static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity);
+    static void loadRowEntities(Row* row, uint8_t  row);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -134,7 +134,7 @@
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-  int arrivedAtFinishLine(int y){
+  int arrivedAtFinishLine(uint8_t  y){
         if (y==FINISH_LINE){
             return 1;
         }
@@ -225,7 +225,7 @@ static int loadLevel(Level * level){
 
 
 static void loadLevelEntities(Level* level){
-    int i;
+    uint8_t  i;
     Entity * firstObstacle;
     Entity * firstFloater;
     firstObstacle = level->entities->obstacles;
@@ -245,8 +245,8 @@ static void loadLevelEntities(Level* level){
 }
 
 
-static void loadRowEntities(Row* row, int rowNumber){
-    int k;
+static void loadRowEntities(Row* row, uint8_t rowNumber){
+    uint8_t  k;
     int x0 = 0;
     for(k = 0; k<(row->entityCount); k++){
         ((row->firstEntity)[k]).x = x0 + (row->entityLength+row->gap)*k;
@@ -257,8 +257,8 @@ static void loadRowEntities(Row* row, int rowNumber){
     }
 }
 
-static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity){
-    int j;
+static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity){
+    uint8_t  j;
     Entity *current = firstEntity;
     for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ 
         rows[zoneStart + j].firstEntity = current;
@@ -268,32 +268,34 @@ static void loadZoneEntities(Row* rows, int zoneStart, Entity* firstEntity){
 }
 
 static int checkLevelEntities(Level* level){
- if(level != NULL){ 
-    int obstacleCount = 0;
-    int floaterCount = 0;
 
-    for (int i = 0; i < MAP_HEIGHT; i++) {
+    if(level != NULL){
+            uint8_t  i; 
+            uint8_t  obstacleCount = 0;
+            uint8_t  floaterCount = 0;
 
-        if (level->rows[i].zone == ROAD){
-            obstacleCount += level->rows[i].entityCount;
-        }
+            for ( i = 0; i < MAP_HEIGHT; i++) {
 
-        if (level->rows[i].zone == WATER){
-            floaterCount += level->rows[i].entityCount;
-        }
+                if (level->rows[i].zone == ROAD){
+                    obstacleCount += level->rows[i].entityCount;
+                }
+
+                if (level->rows[i].zone == WATER){
+                    floaterCount += level->rows[i].entityCount;
+                }
+            }
+
+            if(obstacleCount>MAX_OBSTACLES){
+                return  ERR_MAX_OBSTACLES_EXCEEDED;
+            }
+            if(floaterCount>MAX_FLOATERS){
+                return ERR_MAX_FLOATERS_EXCEEDED;
+            }
+
+            else{
+                return 0;
+            }
     }
-
-    if(obstacleCount>MAX_OBSTACLES){
-        return  ERR_MAX_OBSTACLES_EXCEEDED;
-    }
-    if(floaterCount>MAX_FLOATERS){
-        return ERR_MAX_FLOATERS_EXCEEDED;
-    }
-
-    else{
-        return 0;
-    }
- }
 
  else {
     return ERR_INVALID_LEVEL_POINTER;

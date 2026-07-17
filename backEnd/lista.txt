@@ -1,10 +1,9 @@
 FALTA:
 
-2- Movimiento de los obstaculos
-    CAMBIAR CENTRO DE MASA A INICIO DE ENTITY + LENGTH.  
-
-7- Acomodar .h y .c, tipos de datos y funciones
-8- Validacion de datos, punteros y enums, COMMENTS
+2- Movimiento de los obstaculos: UpdateEntities()
+7- Acomodar .h y .c
+8- COMMENTS
+-  Chequear que cuando se pierde o se gana, victory o gameO se reseteen las vidas y el puntaje, y no cuando se pausa
 
 
 FLOATERS:

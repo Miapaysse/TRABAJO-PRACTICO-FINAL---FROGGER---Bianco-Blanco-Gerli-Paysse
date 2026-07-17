@@ -10,8 +10,8 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
-
+#include "config.h"
+#include "game.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -29,15 +29,16 @@ typedef enum{
 }Speed
 
 typedef struct{
-    int x;
-    int y;
-    int lastSafeSpot;
+    uint8_t  x;
+    uint8_t  y;
+    Speed speed;
+    uint8_t  lastSafeSpot;
 } Frog;
 
 typedef struct{
-    int x;
-    int y;
-    int length;
+    uint8_t  x;
+    uint8_t  y;
+    uint8_t  length;
     //int height; 
     Speed speed;
     Direction direction;
@@ -62,7 +63,14 @@ typedef struct{
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-void createFrog();
+int initFrog(Frog * frog);
+/**
+ * @brief TODO: Inicializamos la rana, la ubicamos en su posicion inical 
+ * @param frog Recibimos un puntero a la rana del juego para settear sus condiciones iniciales
+ * @return Devuelve un entero para manejo de errores
+*/
+
+int resetFrog(Frog * frog);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -70,7 +78,7 @@ void createFrog();
  * @return Descripcion valor que devuelve
 */
 
-void resetFrog();
+int moveFrog(Frog * frog , Input input);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -78,7 +86,7 @@ void resetFrog();
  * @return Descripcion valor que devuelve
 */
 
-void moveFrog();
+int moveFrogWithFloater(Frog * frog , Entity* floater);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -86,17 +94,7 @@ void moveFrog();
  * @return Descripcion valor que devuelve
 */
 
-void moveFrogWithFloater();
-
-void createEntities();
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
-
-void updateEntities();
+int updateEntities();
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1

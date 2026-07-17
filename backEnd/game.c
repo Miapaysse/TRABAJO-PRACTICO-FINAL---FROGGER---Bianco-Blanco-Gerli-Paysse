@@ -7,9 +7,9 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-#include "entities.h"
 #include "game.h"
 #include "config.h"
+
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -87,7 +87,7 @@
 
  void gameInit(Game* game){
     initLevel(game);
-    intFrog(&(game->frog));
+    initFrog(&(game->frog));
     game->score=MIN_SCORE;
     game->lives=MAX_LIVES;
     

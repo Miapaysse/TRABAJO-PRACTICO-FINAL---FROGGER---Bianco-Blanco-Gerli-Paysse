@@ -9,7 +9,6 @@
  ******************************************************************************/
 
 #include "entities.h"
-#include <time.h>   
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -49,46 +48,82 @@
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-void moveFrog(Frog * frog , Input input){
-  switch(input){
-    case UP:
-      (frog->y)++;
-    break;
-    case DOWN:
-      (frog->y)--;
-    break;
-    case RIGHT:
-      (frog->x)++;
-    break;
-    case LEFT:
-      (frog->x)--;
-    break;
-  }
-}
-void moveFrogWithFloater(Frog * frog , Entity* floater){
-  frog->speed = floater->speed;
-  frog->direction = floater->direction;
-}
-
-void resetFrog(Frog * frog){
-  (frog->y)=FROG_Y0;
-  (frog->x)=FROG_X0;
-  frog->lastSafeSpot=frog->y;
-}
-
-void intFrog(Frog * frog){
-  resetFrog(frog);
-  frog->speed = 0;
-}
-
-void frogDies(int* lives, GameStateId * id ){
-  if(*lives > 1){
-    (*lives)--;
-    resetFrog();
+int moveFrog(Frog * frog , Input input){
+  if(frog == NULL){
+    return ERR_INVALID_FROG_POINTER;
   }
   else{
-    *id = GAME_OVER;
-    resetFrog();
+      switch(input){
+        case UP:
+          (frog->y)++;
+        break;
+        case DOWN:
+          (frog->y)--;
+        break;
+        case RIGHT:
+          (frog->x)++;
+        break;
+        case LEFT:
+          (frog->x)--;
+        break;
+      }
+  }
+}
+
+int  moveFrogWithFloater(Frog * frog , Entity* floater){
+
+  if(frog == NULL){
+    return ERR_INVALID_FROG_POINTER;
+  }
+  if(floater == NULL){
+    return ERR_INVALID_FLOATER_POINTER;
+  }
+    frog->speed = floater->speed;
+    frog->direction = floater->direction;
+}
+
+int resetFrog(Frog * frog){
+  if(frog == NULL){
+    return ERR_INVALID_FROG_POINTER;
+  }
+
+  else{
+    (frog->y)=FROG_Y0;
+    (frog->x)=FROG_X0;
+    frog->lastSafeSpot=frog->y;
+  }
+}
+
+int initFrog(Frog * frog){
+  if(frog == NULL){
+    return ERR_INVALID_FROG_POINTER;
+  }
+  else{
+    resetFrog(frog); //Ubicamos la rana en sus coordenadas iniciales
+    frog->speed = 0; //Establecemos la velocidad de la rana en 0
+    return 0;
+  }
+}
+
+int frogDies(uint8_t* lives, GameStateId* id ){
+  if(lives == NULL){
+    return ERR_INVALID_LIVES_POINTER;
+  }
+
+  if(id == NULL){
+    return ERR_INVALID_ID_POINTER;
+  }
+
+  else{
+    if(*lives > 1){
+      (*lives)--;
+      resetFrog();
+    }
+    else{
+      *id = GAME_OVER;
+      resetFrog();
+    }
+    return 0;
   }
 }
 
