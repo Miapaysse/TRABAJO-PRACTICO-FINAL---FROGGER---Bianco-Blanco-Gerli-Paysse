@@ -59,7 +59,8 @@ typedef enum{
   ERR_INVALID_LEVEL_POINTER,
   ERR_INVALID_FROG_POINTER,
   ERR_INVALID_OBSTACLE_POINTER,
-  ERR_INVALID_FLOATER_POINTER
+  ERR_INVALID_FLOATER_POINTER,
+  ERR_INVALID_SCORE_POINTER
 
 }ErrorType;
 /*******************************************************************************
