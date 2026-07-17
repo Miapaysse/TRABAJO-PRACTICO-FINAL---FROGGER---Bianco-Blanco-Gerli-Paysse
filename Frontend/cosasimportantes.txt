@@ -4,7 +4,11 @@ hay un error podemos hacer un return y sale de la función
 2) Ojo que no existe opcion en la struct input para cuando el usuario cierra el display
 apretando la cruz, agregar al enum de game.h
 3)averiguar que es zona default y agregar case a drawZones
-4)de que largo pueden ser los camiones
+4)ver al final si el juego anda fluido, es podible que halla que agregar un bucle al main para cdo 
+llama a funcion de input, un while que siga llamando a esa funcion hasta que retorne no input
+(A CHEQUEAR)
+5)Terminar manejo de errores en init
+4)redimensionar vehículos
 
 
 
