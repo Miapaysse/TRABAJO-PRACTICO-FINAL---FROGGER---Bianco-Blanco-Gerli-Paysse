@@ -83,10 +83,9 @@
 
  void gameInit(Game* game){
     initLevel(game);
-    resetFrog(&(game->frog));
+    intFrog(&(game->frog));
     game->score=MIN_SCORE;
     game->lives=MAX_LIVES;
-    game->currentZone = START;
     (game->state).id = MENU;
 
  }

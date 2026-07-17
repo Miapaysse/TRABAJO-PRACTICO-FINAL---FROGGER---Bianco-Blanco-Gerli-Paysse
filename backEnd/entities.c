@@ -76,6 +76,11 @@ void resetFrog(Frog * frog){
   frog->lastSafeSpot=frog->y;
 }
 
+void intFrog(Frog * frog){
+  resetFrog(frog);
+  frog->speed = 0;
+}
+
 void frogDies(int* lives, GameStateId * id ){
   if(*lives > 1){
     (*lives)--;
