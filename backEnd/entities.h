@@ -34,6 +34,7 @@ typedef struct{
     uint8_t  x;
     uint8_t  y;
     Speed speed;
+    Direction direction;
     uint8_t  lastSafeSpot;
 } Frog;
 
