@@ -64,7 +64,8 @@
 
                 case ROAD://Si la rana esta en la calle lo unico que le puede pasar es que sea atropellada por un obstaculo
 
-                    if(errorType = runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount)==1){ 
+                    errorType = runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
+                    if (errorType == 1){ 
                         frogDies(&(game->frog), &(game->lives), &((game->state).id)); //Si fue atropellada muere
                     }
                     else if(errorType){
@@ -74,19 +75,16 @@
                 break;
 
                 case WATER://Si la rana esta en el agua lo unico que le puede pasar es que se mueva con un flotador, sino se muere
-                    if(frog == NULL){
-                        return ERR_INVALID_FROG_POINTER;
-                    } 
-                    if(floaters == NULL){
-                        return ERR_INVALID_FLOATER_POINTER;
-                    }
-                    
-                    else{
 
+                    {
                         Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount); //Si esta en un flotador necesitamos saber en cual
 
                         if(floaterP != NULL){
-                            moveFrogWithFloater(&(game->frog), floaterP); //Si la rana esta sobre un flotador debe moverse con este, a la misma velocidad y en la misma direccion
+                            // Usar la velocidad/direccion de la fila (row) porque moveRow usa row->speed/row->direction
+                            game->frog.speed = currentRow->speed;
+                            game->frog.direction = currentRow->direction;
+                            // Si prefieren que la entidad mantenga speed/direction, actualizar las entidades al inicializarlas.
+                            // moveFrogWithFloater(&(game->frog), floaterP); // opcional si entidades tienen speed/direction válidos
                         }
                         else{
                             frogDies(&(game->frog),&(game->lives), &((game->state).id)); //Si no esta en un flotador, esta en el agua, por ende se muere
@@ -113,6 +111,7 @@
         return ERR_INVALID_GAME_POINTER;
      }
     }
+
 
     int updateScore(Frog * frog , uint8_t * score){ //Si es la primera vez que la rana llega a esa zona segura, se le suman puntos 
         if(frog==NULL){
