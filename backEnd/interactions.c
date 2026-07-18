@@ -193,10 +193,6 @@
             return 1;
         }
 
-        if (frog->y >= MAP_HEIGHT){
-            return 1;
-        }
-
         return 0;
     }
 
