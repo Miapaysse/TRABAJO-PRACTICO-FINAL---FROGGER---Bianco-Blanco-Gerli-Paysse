@@ -70,6 +70,16 @@ typedef enum{
 
 typedef enum{
     POINTS_TITLE,
+    POINT_1,
+    POINT_2,
+    POINT_3,
+    POINT_4,
+    POINT_5,
+    POINT_6,
+    POINT_7,
+    POINT_8,
+    POINT_9,
+    POINT_10,
     POINTS_MENU,
     POINTS_EXIT,
     POINTS_COUNT
