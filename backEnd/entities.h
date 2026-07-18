@@ -97,7 +97,7 @@ int moveFrogWithFloater(Frog * frog , Entity* floater);
  * @return Descripcion valor que devuelve
 */
 
-int updateEntities(Game* game);
+int updateEntities(Game* game);//coment
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
