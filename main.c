@@ -13,5 +13,7 @@ int main(void)
         updateGame(&game, input);
         frontendRender(&game);
     }
+
+    frontendDestroy();
     return 0;
 }
