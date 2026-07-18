@@ -30,6 +30,8 @@
 
 #define MAX_FLOATERS 20
 
+#define ENTITY_UPDATE_PERIOD 0.10
+
 //FROG SETTINGS//////////////////////////////////////////////////////////
 
 #define FROG_X0 (MAP_WIDTH/2)

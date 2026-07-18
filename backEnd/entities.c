@@ -135,8 +135,67 @@ int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+static int entityUpdateRequired(Game *game){
+    clock_t now = clock();
 
+    double elapsed = (double)(now - game->lastEntityUpdate) /CLOCKS_PER_SEC;
 
+    if(elapsed >= ENTITY_UPDATE_PERIOD){
+        game->lastEntityUpdate = now;
+        return 1;
+    }
+
+    return 0;
+}
+
+void updateEntities(Game *game){
+    int i;
+
+    if(!entityUpdateRequired(game))
+        return;
+
+    for(i=0; i<MAP_HEIGHT; i++)
+    {
+        Row *row = &(game->level.rows[i]);
+
+        if(row->entityCount > 0)
+        {
+            moveRow(row);
+        }
+    }
+}
+
+static void moveRow(Row *row){
+    int i;
+    for(i=0; i<row->entityCount; i++){
+        if(row->direction == DIR_RIGHT){
+            row->firstEntity[i].x += row->speed;
+        }
+        else{
+            row->firstEntity[i].x -= row->speed;
+        }
+
+        wrapEntity(&(row->firstEntity[i]));
+    }
+}
+
+static void wrapEntity(Entity *entity)
+{
+    if(entity->direction == DIR_RIGHT)
+    {
+        if(entity->x >= MAP_WIDTH)
+        {
+            entity->x = -entity->length;
+        }
+    }
+    else
+    {
+        if(entity->x + entity->length < 0)
+        {
+            entity->x = MAP_WIDTH;
+        }
+    }
+}
 
 /******************************************************************************/
  

@@ -13,7 +13,8 @@
 #include "entities.h"
 #include <stdint.h>
 #include "levels.h"
-
+#include <time.h>
+#include "config.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -108,6 +109,8 @@ typedef struct {
    Level level;
 
    GameState state;
+
+   clock_t lastEntityUpdate;
    
 } Game;
 
