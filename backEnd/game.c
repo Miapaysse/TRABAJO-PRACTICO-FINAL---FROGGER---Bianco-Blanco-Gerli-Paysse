@@ -62,7 +62,7 @@
 
             manageInteractions(game);
 
-            checkLevel(&(game->frog), game->level);
+            checkLevel(&(game->frog), &(game->level));
 
         break;
         case PAUSED:
@@ -141,6 +141,7 @@ void processInputMenu(GameState * state, Input input){
                             state->id = EXIT;
                         break;
                     }
+                    
                 break;
                 case UP:
                     menuPrevious(&((state->menu)));
