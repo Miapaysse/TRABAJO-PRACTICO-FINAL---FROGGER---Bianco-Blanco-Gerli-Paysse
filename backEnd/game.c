@@ -49,7 +49,7 @@
 void updateGame(Game * game, Input input){
     switch ((game->state).id){
         case MENU: 
-            processInputMenu(&(game->state), input);
+            processInputMenu(game, input);
         break;
         case PLAYING:
             processInputPlaying(&(game->state),input, &(game->frog));
@@ -117,34 +117,35 @@ void menuNext(MenuState *menu){
 }
 
 /////////////////////////////////////////////////////////////////MENU
-void processInputMenu(GameState * state, Input input){
-        switch(input){
-            case SELECT:
-                switch ( (state->menu).selected ){
-                    case MENU_POINTS: 
-                        state->id = POINTS;
-                    break;
-                    case MENU_PLAY:
-                        state->id = PLAYING;
-                    break;
-                    case MENU_EXIT:
-                        state->id = EXIT;
-                    break;
-                }
-                (state->menu).selected = MENU_TITLE; //reseteo menu
-            break;
-            case UP:
-                menuPrevious(&((state->menu)));
-            break;
-
-            case DOWN:
-                menuNext(&((state->menu)));
-            break;
-
-            case NONE: case RIGHT: case LEFT: default:
-            //se queda en el mismo menu, no hace nada
-            break;
-        }
+void processInputMenu(Game * game, Input input){
+    MenuState *menu = &game->state.menu;
+    switch(input){
+        case SELECT:
+            switch(menu->selected){
+                case MENU_PLAY:
+                    gameInit(game);
+                    game->state.id = PLAYING;
+                break;
+                case MENU_POINTS:
+                    game->state.id = POINTS;
+                break;
+                case MENU_EXIT:
+                    game->state.id = EXIT;
+                break;
+                default:
+                break;
+            }
+            menu->selected = MENU_TITLE;
+        break;
+        case UP:
+            menuPrevious(menu);
+        break;
+        case DOWN:
+            menuNext(menu);
+        break;
+        case NONE: case RIGHT: case LEFT: default:
+        break;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////PAUSED

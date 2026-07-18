@@ -118,7 +118,7 @@ typedef struct Game {
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
  void processInputPlaying(GameState *state, Input input, Frog *frog);
- void processInputMenu(GameState * state, Input input);
++void processInputMenu(Game * game, Input input);
  void processInputPaused(GameState * state, Input input);
  void processInputGameOver(GameState * state, Input input);
  void processInputVictory(GameState * state, Input input);
