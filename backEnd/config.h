@@ -67,8 +67,27 @@ typedef enum{
   ERR_INVALID_ID_POINTER,
   ERR_INVALID_FLOATER_COUNT,
   ERR_INVALID_OBSTACLE_COUNT
-
 }ErrorType;
+
+typedef enum{
+   UP,
+   DOWN,
+   LEFT,
+   RIGHT,
+   SELECT,
+   NONE
+} Input;
+
+typedef enum{
+   MENU,
+   PLAYING,
+   PAUSED,
+   VICTORY,
+   GAME_OVER,
+   POINTS,
+   EXIT
+} GameStateId;
+
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/

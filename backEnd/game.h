@@ -21,25 +21,6 @@
  ******************************************************************************/
 
 typedef enum{
-   UP,
-   DOWN,
-   LEFT,
-   RIGHT,
-   SELECT,
-   NONE
-} Input;
-
-typedef enum{
-   MENU,
-   PLAYING,
-   PAUSED,
-   VICTORY,
-   GAME_OVER,
-   POINTS,
-   EXIT
-} GameStateId;
-
-typedef enum{
     MENU_TITLE,
     MENU_PLAY,
     MENU_POINTS,
