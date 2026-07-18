@@ -334,9 +334,10 @@ static void drawMainMenu (Game* p2game){
 
     al_draw_text(very_big_font, white, x_center, 150, ALLEGRO_ALIGN_CENTER, "FROGGER");
 
-    al_draw_text(big_font, white, x_menu, y_menu, ALLEGRO_ALIGN_LEFT, "MENU");
+    color = (option_selected == MENU_TITLE)? green : white;
+    al_draw_text(big_font, color, x_menu, y_menu, ALLEGRO_ALIGN_LEFT, "MENU");
 
-    color = ((option_selected == MENU_PLAY) || (option_selected == MENU_TITLE))? green : white;
+    color = (option_selected == MENU_PLAY)? green : white;
     al_draw_text(medium_font, color, x_menu, y_option1, ALLEGRO_ALIGN_LEFT, "Play");
 
     color = (option_selected == MENU_POINTS)? green : white;
