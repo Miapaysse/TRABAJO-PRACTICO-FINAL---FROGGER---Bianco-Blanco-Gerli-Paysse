@@ -1,16 +1,16 @@
 CC:= gcc
 OPTIONS := -g -Wall 
 # Le decimos al compilador en qué carpetas buscar los archivos .h
-INCLUDES = -Iconfig -Ibackend -Ifrontend -Idata
+INCLUDES = -Ibackend -Ifrontend -Ifrontend/raspi -Ifrontend/raspi/libs
 
 # Flags necesarias para poder usar Allegro
-ALLEGRO_FLAGS = $(shell pkg-config --libs allegro-5.0 allegro_font-5.0 allegro_primitives-5.0 allegro_audio-5.0 allegro_acodec-5.0 allegro_image-5.0)
+ALLEGRO_FLAGS = $(shell pkg-config --cflags --libs allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_audio-5 allegro_acodec-5 allegro_image-5)
 
 # Objetos del backend (compartidos por ambas plataformas)
-BACKEND_OBJS := backend/game.o backend/entities.o backend/collision.o backend/levels.o
+BACKEND_OBJS := backend/game.o backend/entities.o backend/interactions.o backend/levels.o backend/top10.o
 
 # Objetos comunes (menús, puntaje, persistencia)
-COMMON_OBJS := main.o data/score.o data/top10.o
+COMMON_OBJS := main.o
 
 .PHONY: allegro raspi backend clean
 
@@ -18,46 +18,45 @@ COMMON_OBJS := main.o data/score.o data/top10.o
 
 backend: ${BACKEND_OBJS}
 
-backend/collision.o: backend/collision.c backend/collision.h backend/entities.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c backend/collision.c -o backend/collision.o
+backend/interactions.o: backend/interactions.c backend/interactions.h backend/entities.h
+	$(CC) $(OPTIONS) $(INCLUDES) -c backend/interactions.c -o backend/interactions.o
 
-backend/entities.o: backend/entities.c backend/entities.h config/config.h
+backend/entities.o: backend/entities.c backend/entities.h backend/config.h
 	$(CC) $(OPTIONS) $(INCLUDES) -c backend/entities.c -o backend/entities.o
 
-backend/levels.o: backend/levels.c backend/levels.h config/config.h
+backend/levels.o: backend/levels.c backend/levels.h backend/config.h
 	$(CC) $(OPTIONS) $(INCLUDES) -c backend/levels.c -o backend/levels.o
 
-backend/game.o: backend/game.c backend/game.h backend/entities.h backend/collision.h backend/levels.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c backend/game.c -o backend/game.o
+backend/game.o: backend/game.c backend/game.h backend/entities.h backend/interactions.h backend/levels.h
+	$(CC) $(OPTIONS) $(INCLUDES) -include backend/interactions.h -c backend/game.c -o backend/game.o
 
 # --- Datos: puntaje y top10 ---
 
-data/score.o: data/score.c data/score.h backend/game.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c data/score.c -o data/score.o
-
-data/top10.o: data/top10.c data/top10.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c data/top10.c -o data/top10.o
-
+backend/top10.o: backend/top10.c backend/top10.h backend/config.h
+	$(CC) $(OPTIONS) $(INCLUDES) -c backend/top10.c -o backend/top10.o
 
 # --- main.c ---
-main.o: main.c backend/game.h frontend/frontend.h config/config.h
+main.o: main.c backend/game.h frontend/frontend.h backend/config.h
 	${CC} ${OPTIONS} -c main.c -o main.o
 
 
 # --- Frontend (Allegro) ---
 allegro: $(BACKEND_OBJS) $(COMMON_OBJS) frontend/allegroFrontend.o
-	$(CC) $(OPTIONS) $(BACKEND_OBJS) main.o data/score.o data/top10.o frontend/allegroFrontend.o -o pc $(ALLEGRO_FLAGS)
+	$(CC) $(OPTIONS) $(BACKEND_OBJS) main.o frontend/allegroFrontend.o -o pc $(ALLEGRO_FLAGS)
 
 frontend/allegroFrontend.o: frontend/allegroFrontend.c frontend/frontend.h backend/game.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c frontend/allegroFrontend.c -o frontend/allegroFrontend.o
+	$(CC) $(OPTIONS) $(INCLUDES) $(ALLEGRO_FLAGS) -c frontend/allegroFrontend.c -o frontend/allegroFrontend.o
 
 # --- Frontend Raspi---
-raspi: $(BACKEND_OBJS) main.o data/score.o data/top10.o frontend/raspiFrontend.o frontend/disdrv.o frontend/joydrv.o
-	$(CC) $(OPTIONS) $(BACKEND_OBJS) main.o data/score.o data/top10.o frontend/raspiFrontend.o frontend/disdrv.o frontend/joydrv.o -o raspi -lpthread
+raspi: $(BACKEND_OBJS) main.o frontend/raspi/raspiFrontend.o frontend/raspi/raspiDraw.o
+	$(CC) $(OPTIONS) $(BACKEND_OBJS) main.o frontend/raspi/raspiFrontend.o frontend/raspi/raspiDraw.o frontend/raspi/libs/disdrv.o frontend/raspi/libs/joydrv.o -o raspi -lpthread
 
-frontend/raspiFrontend.o: frontend/raspiFrontend.c frontend/frontend.h backend/game.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c frontend/raspiFrontend.c -o frontend/raspiFrontend.o
+frontend/raspi/raspiFrontend.o: frontend/raspi/raspiFrontend.c frontend/raspi/raspiFrontend.h frontend/raspi/raspiDraw.h backend/game.h
+	$(CC) $(OPTIONS) $(INCLUDES) -c frontend/raspi/raspiFrontend.c -o frontend/raspi/raspiFrontend.o
+
+frontend/raspi/raspiDraw.o: frontend/raspi/raspiDraw.c frontend/raspi/raspiDraw.h frontend/raspi/raspiFrontend.h
+	$(CC) $(OPTIONS) $(INCLUDES) -c frontend/raspi/raspiDraw.c -o frontend/raspi/raspiDraw.o
 
 # --- Limpieza ---
 clean:
-	rm -f pc raspi main.o backend/*.o data/*.o frontend/*.o
+	rm -f pc raspi main.o backend/*.o frontend/*.o frontend/raspi/*.o
