@@ -151,6 +151,7 @@
   int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
     int errorType;
     if(game != NULL){ 
+        game->lastEntityUpdate = clock();
         switch((game->level).id){
             case LEVEL_1:
                 game->level = level2; //Igualamos el nivel a la estrucutra predeterminada del nivel correspondiente

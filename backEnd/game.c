@@ -58,7 +58,7 @@
 
             processInputPlaying(&(game->state),input, &(game->frog));
 
-            updateEntities();
+            updateEntities(game);
 
             manageInteractions(game);
 
@@ -91,7 +91,8 @@
     initFrog(&(game->frog));
     game->score=MIN_SCORE;
     game->lives=MAX_LIVES;
-    
+    game->lastEntityUpdate = clock();
+
     (game->state).id = MENU;
 
     // Menu principal
