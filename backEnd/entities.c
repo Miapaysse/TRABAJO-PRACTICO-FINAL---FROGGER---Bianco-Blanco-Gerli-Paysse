@@ -136,6 +136,14 @@ int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del 
     int i;
 
     if(entityUpdateRequired(game)){
+
+      if ((game->frog).speed) { //Si la rana esta sobre un floater, se mueve con el mismo sentido y velocidad que ese
+        if ((game->frog).direction == DIR_RIGHT) {
+          (game->frog).x += (game->frog).speed;
+        } else {
+          (game->frog).x -= (game->frog).speed;
+        }
+      }
       for(i=0; i<MAP_HEIGHT; i++){
           Row *row = &(game->level.rows[i]);
           if(row->entityCount > 0){

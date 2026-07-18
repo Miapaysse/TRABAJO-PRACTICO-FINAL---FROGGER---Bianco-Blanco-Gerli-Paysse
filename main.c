@@ -1,5 +1,6 @@
-#include "backend/game.h"
-#include "frontend/frontend.h"
+#include "raspiFrontend.h"
+#include "allegroFrontend.h"
+#include "game.h"
 
 int main(void)
 {
