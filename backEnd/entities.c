@@ -131,6 +131,7 @@ int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
     }
     else{
       *id = GAME_OVER; //Si la rana perdio todas sus vidas el juego se termina
+      *lives = MAX_LIVES; //Reseteamos las vidas para la proxima partida
       resetFrog(frog);
     }
     return 0;
