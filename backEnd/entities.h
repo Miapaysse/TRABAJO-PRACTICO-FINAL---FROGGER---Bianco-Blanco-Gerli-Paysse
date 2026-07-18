@@ -17,7 +17,7 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef struct Game Game;
+typedef struct Game Game; //necesario aca 
 
 typedef enum{
     DIR_LEFT,
@@ -31,16 +31,16 @@ typedef enum{
 }Speed;
 
 typedef struct{
-    uint8_t  x;
-    uint8_t  y;
+    int  x; //int para x negativos
+    int  y;
     Speed speed;
     Direction direction;
-    uint8_t  lastSafeSpot;
+    int  lastSafeSpot;
 } Frog;
 
 typedef struct{
-    uint8_t  x;
-    uint8_t  y;
+    int  x; //int para x negativos
+    int  y;
     uint8_t  length;
     //int height; 
     Speed speed;

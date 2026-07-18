@@ -69,7 +69,8 @@ typedef enum{
   ERR_INVALID_OBSTACLE_COUNT
 }ErrorType;
 
-typedef enum{
+
+typedef enum{ //con esto aca funco entites.h con rapsi
    UP,
    DOWN,
    LEFT,
@@ -78,7 +79,7 @@ typedef enum{
    NONE
 } Input;
 
-typedef enum{
+typedef enum{ //con esto aca funco entites.h con rapsi
    MENU,
    PLAYING,
    PAUSED,

@@ -10,15 +10,15 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-  #include "entities.h"
-  #include "config.h"
-  #include <stdint.h>
+#include "entities.h"
+#include "config.h"
+#include <stdint.h>
   
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef struct Game Game;
+typedef struct Game Game; //va aca
 
 typedef enum{
     SMALL=2,
@@ -87,10 +87,10 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
- int initLevel(Game * game);
- int checkLevel(Frog* frog, Level* level);
- int goToNextLevel(Level* level);
- int arrivedAtFinishLine(uint8_t  y);
+int initLevel(Game * game);
+int checkLevel(Game * game);
+int goToNextLevel(Game * game);
+int arrivedAtFinishLine(uint8_t  y);
 
 /**
  * @brief TODO: completar descripcion

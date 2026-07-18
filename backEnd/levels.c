@@ -7,98 +7,93 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
 #include "levels.h"
 #include "game.h"
 #include <stddef.h>
+#include <string.h>
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-    static Level level1={
-        LEVEL_1,
-        NULL, 
-        {
-            {NULL, START, 0, 0, 0, 0 },
-            {NULL, START, 0, 0, 0, 0 },
+static Level level1={
+    LEVEL_1,
+    NULL, 
+    {
+        {NULL, START, 0, 0, 0, 0, DIR_LEFT},
+        {NULL, START, 0, 0, 0, 0, DIR_LEFT},
 
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_RIGHT},
 
-            {NULL, SAFE, 0, 0, 0, 0 },
-            {NULL, SAFE, 0, 0, 0, 0 },
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
 
-            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,WATER,3,SMALL,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            
-            {NULL, SAFE, 0, 0, 0, 0 },
-            {NULL, SAFE, 0, 0, 0, 0 },
+        {NULL, WATER, 3, MEDIUM, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, WATER, 3, SMALL, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, WATER, 3, MEDIUM, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
-        }
-    };
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
+    }
+};
 
-    static Level level2={
-        LEVEL_2,
-        NULL, 
-        {
-            {NULL, START, 0, 0, 0, 0 },
-            {NULL, START, 0, 0, 0, 0 },
+static Level level2={
+    LEVEL_2,
+    NULL, 
+    {
+        {NULL, START, 0, 0, 0, 0, DIR_LEFT},
+        {NULL, START, 0, 0, 0, 0, DIR_LEFT},
 
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_RIGHT},
 
-            {NULL, SAFE, 0, 0, 0, 0 },
-            {NULL, SAFE, 0, 0, 0, 0 },
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
 
-            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,WATER,3,SMALL,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            
-            {NULL, SAFE, 0, 0, 0, 0 },
-            {NULL, SAFE, 0, 0, 0, 0 },
+        {NULL, WATER, 3, MEDIUM, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, WATER, 3, SMALL, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, WATER, 3, MEDIUM, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
-        }
-    };
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
+    }
+};
 
-    static Level level3={
-        LEVEL_3,
-        NULL, 
-        {
-            {NULL, START, 0, 0, 0, 0 },
-            {NULL, START, 0, 0, 0, 0 },
+static Level level3={
+    LEVEL_3,
+    NULL, 
+    {
+        {NULL, START, 0, 0, 0, 0, DIR_LEFT},
+        {NULL, START, 0, 0, 0, 0, DIR_LEFT},
 
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,ROAD,3,CAR_LENGTH,MEDIUM_GAP,MEDIUM_SPEED,DIR_RIGHT},
-            
-            {NULL, SAFE, 0, 0, 0, 0 },
-            {NULL, SAFE, 0, 0, 0, 0 },
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_RIGHT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, ROAD, 3, CAR_LENGTH, MEDIUM_GAP, MEDIUM_SPEED, DIR_RIGHT},
 
-            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,WATER,3,SMALL,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            {NULL,WATER,3,MEDIUM,MEDIUM_GAP,SLOW,DIR_RIGHT},
-            {NULL,WATER,3,LARGE,MEDIUM_GAP,MEDIUM_SPEED,DIR_LEFT},
-            
-            {NULL, SAFE, 0, 0, 0, 0 },
-            {NULL, SAFE, 0, 0, 0, 0 },
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
 
-        }
-    };
+        {NULL, WATER, 3, MEDIUM, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, WATER, 3, SMALL, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+        {NULL, WATER, 3, MEDIUM, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
+
+        {NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
+    }
+};
+
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -110,12 +105,12 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
+static int loadLevel(Level * level);
+static void loadLevelEntities(Level* level);
+static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity);
+static void loadRowEntities(Row* row, uint8_t  rowNumber);
+static int checkLevelEntities(Level* level);
 
-    static int loadLevel(Level * level);
-    static void loadLevelEntities(Level* level);
-    static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity);
-    static void loadRowEntities(Row* row, uint8_t  rowNumber);
-    static int checkLevelEntities(Level* level);
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -157,50 +152,45 @@
             case LEVEL_1:
                 game->level = level2; //Igualamos el nivel a la estrucutra predeterminada del nivel correspondiente
                 game->level.entities = &game->entities; //Apuntamos el puntero de entidades a las entidades del juego
-                if(errorType =loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+                if((errorType = loadLevel(&game->level))){ //Se inicializan las entidades del juego con las caracteristicas del nivel
                     return errorType;
                 }
-                else{
-                    return 0;
-                }
+                return 0;
             break;
 
             case LEVEL_2:
                 game->level = level3;
                 game->level.entities = &game->entities;
-                if(errorType = loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+                if((errorType = loadLevel(&game->level))){ //Se inicializan las entidades del juego con las caracteristicas del nivel
                     return errorType;
                 }
-                else{
-                    return 0;
-                }
+                return 0;
             break;
 
             default:
-                return;
+                return 0;
         }
     }
     else {
         return ERR_INVALID_GAME_POINTER;
     }
-  }
+}
 
-  int initLevel(Game * game){
+int initLevel(Game * game){
     int errorType;
     if(game != NULL){ //Validacion de puntero
+        initFrog(&game->frog);
         game->level = level1;//Igualamos el nivel a la estrucutra predeterminada del nivel correspondiente
         game->level.entities = &game->entities; //Apuntamos las entidades del nivel a las entidades del juego
-        if(errorType=loadLevel(&game->level)){ //Se inicializan las entidades del juego con las caracteristicas del nivel
+        if((errorType = loadLevel(&game->level))){ //Se inicializan las entidades del juego con las caracteristicas del nivel
             return errorType;
         }
-        else{
-            return 0;
-        }
+        return 0;
     }
     else {
         return ERR_INVALID_GAME_POINTER;
     }
-  }
+}
 
 /*******************************************************************************
  *******************************************************************************
@@ -212,7 +202,7 @@ static int loadLevel(Level * level){
  if(level != NULL){ 
     int errorType;
     loadLevelEntities(level); //Cargamos las entidades con las caracteristicas del nivel
-    if(errorType = checkLevelEntities(level)){ //Chequeamos que no excedamos el maximo de entidades
+    if((errorType = checkLevelEntities(level))){ //Chequeamos que no excedamos el maximo de entidades
         return errorType;
     }
 
@@ -230,6 +220,7 @@ static void loadLevelEntities(Level* level){
     uint8_t  i;
     Entity * firstObstacle;
     Entity * firstFloater;
+    *(level->entities) = (GameEntities){0}; //inicializa en cero para sacar basura
     firstObstacle = level->entities->obstacles;
     firstFloater = level->entities->floaters;
     for(i=0; i<MAP_HEIGHT; i++){ //Recorremos las filas del mapa 
@@ -242,6 +233,11 @@ static void loadLevelEntities(Level* level){
                 loadZoneEntities(level->rows, i, firstFloater);
                 i+=MAX_PLAYING_ZONE_HEIGHT-1;
             break;
+            case SAFE:
+            case START:
+            case DEFAULT:
+            default:
+                break;
         }
     }
 }
@@ -256,6 +252,7 @@ static void loadRowEntities(Row* row, uint8_t rowNumber){
         ((row->firstEntity)[k]).speed = row->speed;
         ((row->firstEntity)[k]).direction = row->direction;
         ((row->firstEntity)[k]).length = row->entityLength;
+        ((row->firstEntity)[k]).active = true;
     }
 }
 

@@ -10,9 +10,9 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
+#include "config.h"
 #include "entities.h"
 #include "levels.h"
-#include "interactions.h"
 #include <time.h>
 #include <stdint.h>
 
@@ -69,9 +69,9 @@ typedef enum{
 
 typedef struct{
 
-    uint8_t  selected;
+    int selected;
 
-    uint8_t  optionCount;
+    int optionCount;
 
 } MenuState;
 
@@ -86,6 +86,7 @@ typedef struct{
     GameStateId id;
 
 } GameState;
+
 
 
 typedef struct Game {

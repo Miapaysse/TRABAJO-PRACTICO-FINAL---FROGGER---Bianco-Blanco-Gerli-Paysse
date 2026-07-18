@@ -132,7 +132,7 @@ int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
   }
 }
 
-void updateEntities(Game *game){ //Actualizamos la posicion de las entidades del juego, si paso el tiempo suficiente desde la ultima actualizacion
+int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del juego, si paso el tiempo suficiente desde la ultima actualizacion
     int i;
 
     if(entityUpdateRequired(game)){
@@ -143,6 +143,7 @@ void updateEntities(Game *game){ //Actualizamos la posicion de las entidades del
           }
       }
     }
+    return 0;
 }
 
 /*******************************************************************************
@@ -185,15 +186,13 @@ static void moveRow(Row *row){
 }
 
 static void wrapEntity(Entity *entity){
-    if(entity->direction == DIR_RIGHT){
-        if(entity->x >= MAP_WIDTH){
-            entity->x = -entity->length;
-        }
+    int width = MAP_WIDTH + 1;
+
+    while (entity->x >= width) {
+        entity->x -= width;
     }
-    else{
-        if(entity->x + entity->length - 1 < 0){
-            entity->x = MAP_WIDTH;
-        }
+    while (entity->x < 0) {
+        entity->x += width;
     }
 }
 
