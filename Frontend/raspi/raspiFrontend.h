@@ -7,17 +7,9 @@
 #ifndef RASPI_H
 #define RASPI_H
 
-/*******************************************************************************
- * INCLUDE HEADER FILES
- ******************************************************************************/
-
 #include <stdint.h>
 #include "game.h"
 #include "config.h"
-
-/*******************************************************************************
- * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
- ******************************************************************************/
 
 #define JOY_LIM 50 //Limite para detectar movimiento del joystic
 typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
@@ -34,14 +26,9 @@ typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
 #define SCORE_ID_YCOOR 11
 #define SCORE_ID_XCOOR 3
 
-/***************************************************************************
- * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
 void frontendInit(void);
 Input frontendGetInput(void);
 void frontendRender(Game * game);
 void frontendDestroy(void);
-
 
 #endif
