@@ -78,7 +78,7 @@ int resetFrog(Frog * frog);
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
  * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
+ * @return Devuelve un entero para manejo de errores
 */
 
 int moveFrog(Frog * frog , Input input);
@@ -86,7 +86,7 @@ int moveFrog(Frog * frog , Input input);
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
  * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
+ * @return Devuelve un entero para manejo de errores
 */
 
 int moveFrogWithFloater(Frog * frog , Entity* floater);

@@ -27,8 +27,11 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static void falta_envido (int);+
-
+static double getElapsedEntityTime(Game *game);
+static void resetEntityTimer(Game *game);
+static int entityUpdateRequired(Game *game);
+static void moveRow(Row *row);
+static void wrapEntity(Entity *entity);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -128,42 +131,43 @@ int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
   }
 }
 
+void updateEntities(Game *game){ //Actualizamos la posicion de las entidades del juego, si paso el tiempo suficiente desde la ultima actualizacion
+    int i;
 
+    if(entityUpdateRequired(game)){
+      for(i=0; i<MAP_HEIGHT; i++){
+          Row *row = &(game->level.rows[i]);
+          if(row->entityCount > 0){
+              moveRow(row);
+          }
+      }
+    }
+}
 
 /*******************************************************************************
  *******************************************************************************
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+
+static double getElapsedEntityTime(Game *game){
+    return (double)(clock() - game->lastEntityUpdate) / CLOCKS_PER_SEC;
+}
+
+static void resetEntityTimer(Game *game){
+    game->lastEntityUpdate = clock();
+}
+
 static int entityUpdateRequired(Game *game){
-    clock_t now = clock();
-
-    double elapsed = (double)(now - game->lastEntityUpdate) /CLOCKS_PER_SEC;
-
-    if(elapsed >= ENTITY_UPDATE_PERIOD){
-        game->lastEntityUpdate = now;
-        return 1;
+    if(getElapsedEntityTime(game) < ENTITY_UPDATE_PERIOD){
+      return 0;
     }
-
-    return 0;
-}
-
-void updateEntities(Game *game){
-    int i;
-
-    if(!entityUpdateRequired(game))
-        return;
-
-    for(i=0; i<MAP_HEIGHT; i++)
-    {
-        Row *row = &(game->level.rows[i]);
-
-        if(row->entityCount > 0)
-        {
-            moveRow(row);
-        }
+    else{
+      resetEntityTimer(game);
+      return 1;
     }
 }
+
 
 static void moveRow(Row *row){
     int i;
@@ -179,19 +183,14 @@ static void moveRow(Row *row){
     }
 }
 
-static void wrapEntity(Entity *entity)
-{
-    if(entity->direction == DIR_RIGHT)
-    {
-        if(entity->x >= MAP_WIDTH)
-        {
+static void wrapEntity(Entity *entity){
+    if(entity->direction == DIR_RIGHT){
+        if(entity->x >= MAP_WIDTH){
             entity->x = -entity->length;
         }
     }
-    else
-    {
-        if(entity->x + entity->length < 0)
-        {
+    else{
+        if(entity->x + entity->length - 1 < 0){
             entity->x = MAP_WIDTH;
         }
     }
