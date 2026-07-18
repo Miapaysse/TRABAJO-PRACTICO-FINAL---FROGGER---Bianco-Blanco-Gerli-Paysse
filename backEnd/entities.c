@@ -73,6 +73,7 @@ int moveFrog(Frog * frog , Input input){ //Cambiamos las coordenadas de la rana 
         break;
       }
   }
+  return 0;
 }
 
 int  moveFrogWithFloater(Frog * frog , Entity* floater){ //Para que la rana se mueva con el flotador tiene que tener su misma velocidad y direccion 
@@ -100,6 +101,7 @@ int resetFrog(Frog * frog){
     (frog->x)=FROG_X0; 
     frog->lastSafeSpot=frog->y;
     frog->speed = 0;
+    return 0;
   }
 }
 
