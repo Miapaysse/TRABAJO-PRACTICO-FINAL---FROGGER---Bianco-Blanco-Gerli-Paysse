@@ -141,6 +141,7 @@ void processInputMenu(GameState * state, Input input){
                             state->id = EXIT;
                         break;
                     }
+                    (state->menu).selected = MENU_TITLE; //reseteo menu
                     
                 break;
                 case UP:
@@ -172,6 +173,7 @@ void processInputPaused(GameState * state, Input input){
                             state->id = EXIT;
                         break;
                     }
+                    (state->paused).selected = PAUSED_TITLE; //resteo menu
                 break;
                 case UP:
                     menuPrevious(&(state->paused));
@@ -199,6 +201,7 @@ void processInputGameOver(GameState * state, Input input){
                             state->id = EXIT;
                         break;
                     }
+                    (state->gameOver).selected = GAME_OVER_TITLE; //reset menu
                 break;
                 case UP:
                     menuPrevious(&(state->gameOver));
@@ -226,6 +229,7 @@ void processInputVictory(GameState * state, Input input){
                             state->id = EXIT;
                         break;
                     }
+                    (state->victory).selected = VICTORY_TITLE; //reset menu
                 break;
                 case UP:
                     menuPrevious(&(state->victory));
@@ -248,10 +252,18 @@ void processInputPoints(GameState * state, Input input){
                         case POINTS_MENU: 
                             state->id = MENU;
                         break;
+
+                        //agrego estos case para que no tire warning, pero no hacen nada
+                        case POINT_1: case POINT_2: case POINT_3: case POINT_4: case POINT_5:
+                        case POINT_6: case POINT_7: case POINT_8: case POINT_9: case POINT_10:
+                            //todavia nada 
+                        break;
+                        
                         case POINTS_EXIT:
                             state->id = EXIT;
                         break;
                     }
+                    (state->points).selected = POINTS_TITLE; //para que no se pueda seleccionar nada mas
                 break;
                 case UP:
                     menuPrevious(&(state->points));
