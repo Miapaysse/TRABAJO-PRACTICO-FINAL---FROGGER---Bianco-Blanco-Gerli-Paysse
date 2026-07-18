@@ -142,7 +142,7 @@
         return 0;
   }
 
-  void checkLevel(Game * game){ //Si llego a la linea de meta avanza al siguiente nivel
+  int checkLevel(Game * game){ //Si llego a la linea de meta avanza al siguiente nivel
       if (arrivedAtFinishLine((game->frog).y)){
             goToNextLevel(game);
             resetFrog(&(game->frog));
