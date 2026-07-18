@@ -12,12 +12,13 @@
  ******************************************************************************/
   #include "entities.h"
   #include "config.h"
-  #include "game.h"
   #include <stdint.h>
   
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+
+typedef struct Game Game;
 
 typedef enum{
     SMALL=2,

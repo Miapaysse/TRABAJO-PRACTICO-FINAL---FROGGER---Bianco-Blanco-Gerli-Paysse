@@ -11,13 +11,13 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "config.h"
-#include "game.h"
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+typedef struct Game Game;
 
 typedef enum{
     DIR_LEFT,

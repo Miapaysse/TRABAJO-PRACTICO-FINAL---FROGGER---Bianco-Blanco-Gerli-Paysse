@@ -526,36 +526,6 @@ static void drawZone(const Row * rows) {
     }
 }
 
-void navigateScores(GameState * state, Input input, int scores[]){
-    switch(input){
-            case UP:
-                idxScore++;
-                if(idxScore >= 10)
-                menuNext(&(state->points));
-            
-            break;
-
-            case DOWN:
-                if(idxScore == 0){
-                    drawMSG(msgs[MSG_TOP_10]);
-                    idxScore = -1;  
-                } else{
-                    idxScore--;
-                }
-
-            break;
-
-            case SELECT: case NONE: case RIGHT: case LEFT: default:
-            //se queda en el mismo menu, no hace nada
-            break;
-
-    }
-
-    if(idxScore >= 0 && idxScore < 10) {
-    	drawScore(idxScore, scores[idxScore]);
-    }
-}
-
 static void drawScore(int idxScore, int score) {
 	int f, c, d, id;
 

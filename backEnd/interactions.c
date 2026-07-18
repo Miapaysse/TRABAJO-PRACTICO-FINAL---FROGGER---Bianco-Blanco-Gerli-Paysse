@@ -8,7 +8,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
     #include "interactions.h"
-    #include "levels.h"
+    #include "game.h"
     #include <stddef.h>
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS

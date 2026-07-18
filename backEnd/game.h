@@ -11,14 +11,15 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "entities.h"
-#include <stdint.h>
 #include "levels.h"
+#include "interactions.h"
 #include <time.h>
-#include "config.h"
+#include <stdint.h>
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+
 typedef enum{
    UP,
    DOWN,
@@ -106,7 +107,7 @@ typedef struct{
 } GameState;
 
 
-typedef struct {
+typedef struct Game {
 
    Frog frog;
 
