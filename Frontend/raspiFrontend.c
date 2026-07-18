@@ -268,7 +268,6 @@ static uint16_t msgs[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 };
 
 //..... Variables para mostrar los scores en menu TOP 10 ......
-static int idxScore = 0;
 
 DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
 
@@ -392,15 +391,24 @@ void frontendRender(Game * game){
 			break;
 
 		case POINTS:
-            option = (game->state).points.selected;
-            if (option == POINTS_TITLE){
-                navigateScores(&(game->state), frontendGetInput(), scores);
-            } else if(option == POINTS_MENU){
-                drawMSG(msgs[MSG_GO_HOME]);
-            } else if(option == POINTS_EXIT){
-                drawMSG(msgs[MSG_EXIT]);
-            } else {
-                printf("Error");
+            option = (game->state).points.selected;			
+            switch (option) {	
+				case POINTS_TITLE:
+				drawMSG(msgs[MSG_TOP_10]);
+				break;
+				
+				case POINT_1: case POINT_2: case POINT_3: case POINT_4: case POINT_5:
+				case POINT_6: case POINT_7: case POINT_8: case POINT_9: case POINT_10:
+				drawScore(option-POINT_1, scores[option-POINT_1]);
+				break;
+				
+				case POINTS_MENU:
+					drawMSG(msgs[MSG_GO_HOME]);
+					break;
+				
+				case POINTS_EXIT:
+				drawMSG(msgs[MSG_EXIT]);
+				break;
             }
 			break;
 
