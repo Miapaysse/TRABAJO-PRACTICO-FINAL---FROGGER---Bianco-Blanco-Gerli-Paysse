@@ -8,6 +8,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "game.h"
+#include "interactions.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -23,8 +24,12 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static void falta_envido (int);+
-
+static void processInputPlaying(GameState * state, Input input, Frog * frog);
+static void processInputPaused(GameState * state, Input input);
+static void processInputGameOver(GameState * state, Input input);
+static void processInputVictory(GameState * state, Input input);
+static void processInputPoints(GameState * state, Input input);
+static void processInputMenu(Game * game, Input input);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -46,7 +51,9 @@
  *******************************************************************************
  ******************************************************************************/
 
+
 void updateGame(Game * game, Input input){
+    game->timeNow = clock();
     switch ((game->state).id){
         case MENU: 
             processInputMenu(game, input);
@@ -83,8 +90,12 @@ void updateGame(Game * game, Input input){
  }
 
  void gameInit(Game* game){
+    game->timeNow = clock();
+    
     initLevel(game);
     initFrog(&(game->frog));
+
+
     game->score=MIN_SCORE;
     game->lives=MAX_LIVES;
     game->lastEntityUpdate = clock();
@@ -117,7 +128,7 @@ void menuNext(MenuState *menu){
 }
 
 /////////////////////////////////////////////////////////////////MENU
-void processInputMenu(Game * game, Input input){
+static void processInputMenu(Game * game, Input input){
     MenuState *menu = &game->state.menu;
     switch(input){
         case SELECT:

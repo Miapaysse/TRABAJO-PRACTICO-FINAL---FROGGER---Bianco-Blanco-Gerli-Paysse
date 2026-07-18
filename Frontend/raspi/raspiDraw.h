@@ -30,6 +30,7 @@ extern const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1];
 void drawZone(const Row * rows);
 void drawObstacles(const Entity obstacles[]);
 void drawFloaters(const Entity floaters[]);
+void drawFrog(const Frog * frog, int blink);
 
 void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
 void drawScore(int idxScore, int score);

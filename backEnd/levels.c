@@ -23,7 +23,7 @@ static Level level1={
         {NULL, START, 0, 0, 0, 0, DIR_LEFT},
         {NULL, START, 0, 0, 0, 0, DIR_LEFT},
 
-        {NULL, ROAD, 2, TRUCK_LENGHT, MEDIUM_GAP, SLOW, DIR_RIGHT},
+        {NULL, ROAD, 2, TRUCK_LENGTH, MEDIUM_GAP, SLOW, DIR_RIGHT},
         {NULL, ROAD, 2, CAR_LENGTH, MEDIUM_GAP, SLOW, DIR_LEFT},
         {NULL, ROAD, 2, CAR_LENGTH, MEDIUM_GAP, SLOW, DIR_RIGHT},
         {NULL, ROAD, 2, CAR_LENGTH, MEDIUM_GAP, SLOW, DIR_LEFT},
@@ -142,6 +142,7 @@ static int checkLevelEntities(Level* level);
             goToNextLevel(game);
             resetFrog(&(game->frog));
       }
+      return 0;
   }
 
   int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 

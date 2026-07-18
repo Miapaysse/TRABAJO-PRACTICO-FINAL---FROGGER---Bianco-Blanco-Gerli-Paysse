@@ -71,6 +71,8 @@ int moveFrog(Frog * frog , Input input){ //Cambiamos las coordenadas de la rana 
         case LEFT:
           (frog->x)--;
         break;
+        default:
+        break;
       }
   }
   return 0;
@@ -84,10 +86,10 @@ int  moveFrogWithFloater(Frog * frog , Entity* floater){ //Para que la rana se m
   if(floater == NULL){
     return ERR_INVALID_FLOATER_POINTER;
   }
-    frog->speed = floater->speed;
-    frog->direction = floater->direction;
-    // Si aun así la rana se mueve al revés, usar la línea siguiente en lugar de la anterior:
-    // frog->direction = (floater->direction == DIR_RIGHT) ? DIR_LEFT : DIR_RIGHT;
+  frog->speed = floater->speed;
+  frog->direction = (floater->direction == DIR_RIGHT) ? DIR_LEFT : DIR_RIGHT;
+    //frog->direction = floater->direction;
+    //Si aun así la rana se mueve al revés, usar la línea siguiente en lugar de la anterior:
     return 0;
 }
 
@@ -101,8 +103,8 @@ int resetFrog(Frog * frog){
     (frog->x)=FROG_X0; 
     frog->lastSafeSpot=frog->y;
     frog->speed = 0;
-    return 0;
   }
+  return 0;
 }
 
 int initFrog(Frog * frog){
@@ -146,8 +148,7 @@ int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del 
       if ((game->frog).speed) { //Si la rana esta sobre un floater, se mueve con el mismo sentido y velocidad que ese
         if ((game->frog).direction == DIR_RIGHT) {
           (game->frog).x += (game->frog).speed;
-        } 
-        else {
+        } else {
           (game->frog).x -= (game->frog).speed;
         }
       }

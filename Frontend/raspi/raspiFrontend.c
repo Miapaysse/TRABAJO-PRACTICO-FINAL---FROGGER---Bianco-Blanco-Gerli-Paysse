@@ -124,17 +124,35 @@ void frontendRender(Game * game) {
 				drawFloaters((game->entities).floaters);
 
 				//Dibuja rana (titila)
-				//drawFrog(&(game->frog));
+				drawFrog(&(game->frog), (game->timeNow % 1000) < 300);
 
 			}
 			break;
 
 		case GAME_OVER:
-			drawMSG(msgs_arr[MSG_GAME_OVER]);
+			option = (game->state).gameOver.selected;
+			if(option == GAME_OVER_TITLE){
+				drawMSG(msgs_arr[MSG_GAME_OVER]);
+			} else if(option == GAME_OVER_MENU){
+				drawMSG(msgs_arr[MSG_GO_HOME]);
+			} else if(option == GAME_OVER_EXIT){
+				drawMSG(msgs_arr[MSG_EXIT]);
+			} else {
+				printf("Error");
+			}
 			break;
 
 		case VICTORY:
-			drawMSG(msgs_arr[MSG_YOU_WIN]);
+			option = (game->state).victory.selected;
+			if(option == VICTORY_TITLE){
+				drawMSG(msgs_arr[MSG_YOU_WIN]);
+			} else if(option == VICTORY_MENU){
+				drawMSG(msgs_arr[MSG_GO_HOME]);
+			} else if(option == VICTORY_EXIT){
+				drawMSG(msgs_arr[MSG_EXIT]);
+			} else {
+				printf("Error");
+			}
 			break;
 
 		default:

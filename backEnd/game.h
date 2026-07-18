@@ -104,6 +104,8 @@ typedef struct Game {
    GameState state;
 
    clock_t lastEntityUpdate;
+
+   clock_t timeNow;
    
 } Game;
 
@@ -117,12 +119,6 @@ typedef struct Game {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
- void processInputPlaying(GameState *state, Input input, Frog *frog);
-+void processInputMenu(Game * game, Input input);
- void processInputPaused(GameState * state, Input input);
- void processInputGameOver(GameState * state, Input input);
- void processInputVictory(GameState * state, Input input);
- void processInputPoints(GameState * state, Input input);
 
 
  void updateGame(Game * game, Input input);

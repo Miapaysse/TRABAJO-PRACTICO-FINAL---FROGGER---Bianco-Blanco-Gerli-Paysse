@@ -47,7 +47,7 @@
  *******************************************************************************
  ******************************************************************************/
 
-    int manageInteractions(Game *game){
+   int manageInteractions(Game *game){
      if(game!=NULL){
         int errorType;
 
@@ -112,7 +112,6 @@
      }
     }
 
-
     int updateScore(Frog * frog , uint8_t * score){ //Si es la primera vez que la rana llega a esa zona segura, se le suman puntos 
         if(frog==NULL){
             return ERR_INVALID_FROG_POINTER;
@@ -176,7 +175,7 @@
     }
 
 
-    static int frogOutOfBounds(Frog *frog){ //Comparamos las coordenadas de la rana con los limites del juego
+static int frogOutOfBounds(Frog *frog){ //Comparamos las coordenadas de la rana con los limites del juego
         if (frog == NULL){
             return ERR_INVALID_LEVEL_POINTER;
         }   
@@ -195,6 +194,7 @@
 
         return 0;
     }
+
 
 
 

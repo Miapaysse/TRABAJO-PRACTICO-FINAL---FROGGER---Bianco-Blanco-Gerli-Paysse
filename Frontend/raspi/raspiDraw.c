@@ -63,16 +63,40 @@ const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
 		{//GAME OVER
-			0b0000000000000000, 0b1111011101010111, 0b1000010101110100, 0b1011011101010110,
-			0b1001010101010100, 0b1111010101010111, 0b0000000000000000, 0b0000000000000000,
-			0b0000000000000000, 0b1111010101110111, 0b1001010101000101, 0b1001010101110111,
-			0b1001001001000110, 0b1111001001110101, 0b0000000000000000, 0b0000000000000000
+			0b0000000100000000, 
+			0b0000001110000000, 
+			0b0000000000000000,
+			0b1111111111111111,
+			0b1111111111111111, 
+			0b0011000100010011,
+			0b0101010101110101, 
+			0b0101000100010101,
+			0b0101010101110101,
+			0b0011010100010011,
+			0b1111111111111111, 
+			0b1111111111111111,
+			0b1111111111111111,
+			0b0000000000000000,
+			0b0000001110000000,
+			0b0000000100000000
 		},
 		{ //YOU WIN
-			0b0000000000000000, 0b0100101111010010, 0b0100101001010010, 0b0100101001010010,
-			0b0011001001010010, 0b0011001001010010, 0b0011001001010010, 0b0011001111011110,
-			0b0000000000000000, 0b0100010110100010, 0b0100010110110010, 0b0100010110101010,
-			0b0101010110100110, 0b0110110110100010, 0b0100010110100010, 0b0000000000000000
+			0b0000000100000000, 
+			0b0000001110000000, 
+			0b0000000000000000,
+			0b1111111111111111,
+			0b110101000101011, 
+			0b1110110101010111, 
+			0b1110110001000111, 
+			0b1111111111111111, 
+			0b1101010101101111, 
+			0b1101010100101111, 
+			0b1100010101001111, 
+			0b1101010101101111,
+			0b1111111111111111,
+			0b0000000000000000,
+			0b0000001110000000,
+			0b0000000100000000
 		}
 };
 
@@ -111,7 +135,7 @@ static int popFromOtherSide(int x) {
     return x;
 }
 
-static void checkBorders(int x, int y, dlevel_t val) {
+static void passDrawing(int x, int y, dlevel_t val) {
     if (y < 0 || y > MAP_HEIGHT) {
         return;
     }
@@ -125,9 +149,9 @@ void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){
 		for (c = 0; c <= MAP_WIDTH; c++) {
 			ledState = msg[f] >> (MAP_HEIGHT - c) & 1;
 			if(ledState){
-				checkBorders(c, f, D_ON);
+				passDrawing(c, f, D_ON);
 			} else {
-				checkBorders(c, f, D_OFF);
+				passDrawing(c, f, D_OFF);
 			}
 		}
 	}
@@ -174,8 +198,6 @@ void drawScore(int idxScore, int score) {
 }
 
 
-
-
 void drawZone(const Row *rows) {
     int r, c, r_disp, backend_row;
 
@@ -203,7 +225,7 @@ void drawZone(const Row *rows) {
                     break;
             }
 
-            checkBorders(c, r_disp, draw_on ? D_ON : D_OFF);
+            passDrawing(c, r_disp, draw_on ? D_ON : D_OFF);
         }
     }
 }
@@ -219,7 +241,7 @@ void drawObstacles(const Entity obstacles[]){
 			y_disp = r_disp;
 			for (len = 0; len < obstacles[idxObs].length; len++){ // itera por largo
 				x_disp = obstacles[idxObs].x + len;
-				checkBorders(x_disp, y_disp, D_ON); // obstaculos prendidos
+				passDrawing(x_disp, y_disp, D_ON); // obstaculos prendidos
 			}
 		}
 	}
@@ -235,8 +257,18 @@ void drawFloaters(const Entity floaters[]){
 			y_disp = r_disp;
 			for (len = 0; len < floaters[idxFlo].length; len++){ // itera por largo
 				x_disp = floaters[idxFlo].x + len;
-				checkBorders(x_disp, y_disp, D_OFF); // Floaters apagados sobre agua
+				passDrawing(x_disp, y_disp, D_OFF); // Floaters apagados sobre agua
 			}
 		}
+	}
+}
+
+void drawFrog(const Frog * frog, int blink) {
+	int x_disp = frog->x;
+	int y_disp = ROW(frog->y);
+	if (blink) {
+		passDrawing(x_disp, y_disp, D_ON);
+	} else {
+		passDrawing(x_disp, y_disp, D_OFF);
 	}
 }

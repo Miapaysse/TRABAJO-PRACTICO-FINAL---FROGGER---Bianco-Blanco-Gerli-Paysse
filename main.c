@@ -1,5 +1,4 @@
 #include "raspiFrontend.h"
-#include "allegroFrontend.h"
 #include "game.h"
 
 int main(void)
