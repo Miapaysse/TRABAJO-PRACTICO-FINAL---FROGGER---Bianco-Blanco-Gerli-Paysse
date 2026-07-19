@@ -35,8 +35,7 @@ static Level level1={
         {NO_CHECKPOINT, NULL, WATER, 4, MEDIUM, MEDIUM_GAP, SLOW, DIR_LEFT},
         {NO_CHECKPOINT, NULL, WATER, 2, SMALL, MEDIUM_GAP, SLOW, DIR_RIGHT},
         {NO_CHECKPOINT, NULL, WATER, 2, LARGE, MEDIUM_GAP, SLOW, DIR_LEFT},
-        {NO_CHECKPOINT, NULL, WATER, 2, MEDIUM, MEDIUM_GAP,
-
+        {NO_CHECKPOINT, NULL, WATER, 2, MEDIUM, MEDIUM_GAP,SLOW, DIR_RIGHT},
         {NO_CHECKPOINT, NULL, WATER, 2, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
         {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
@@ -67,7 +66,7 @@ static Level level2={
         {NO_CHECKPOINT, NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
         {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
-        {CHECKPOINT_2, NULL, SAFE, 0, 0， 0， 0， DIR_LEFT}
+        {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
     }
 };
 
@@ -145,6 +144,7 @@ static int checkLevelEntities(Level* level);
   int checkLevel(Game * game){ //Si llego a la linea de meta avanza al siguiente nivel
       if (arrivedAtFinishLine((game->frog).y)){
             goToNextLevel(game);
+            (game->frog).lastCheckpoint = NO_CHECKPOINT;
             resetFrog(&(game->frog));
       }
       return 0;
