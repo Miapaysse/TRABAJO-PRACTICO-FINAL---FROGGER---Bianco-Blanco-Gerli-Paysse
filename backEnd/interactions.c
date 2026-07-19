@@ -90,7 +90,7 @@
                 break;
 
                 case SAFE://Si esta en una zona segura hay que chequear de sumarle puntos
-                    errorType = updateScore(&(game->frog), &(game->score));
+                    errorType = updateScore(&(game->frog), &(game->score), currentRow->checkpoint);
                     if(errorType){
                         return errorType;
                     }
