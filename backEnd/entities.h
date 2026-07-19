@@ -30,6 +30,13 @@ typedef enum{
     FAST
 }Speed;
 
+typedef enum{
+    NO_CHECKPOINT,
+    CHECKPOINT_1,
+    CHECKPOINT_FINISH_LINE,
+    CHECKPOINT_COUNT
+} CheckpointId;
+
 typedef struct{
     int  x; //int para x negativos
     int  y;
@@ -53,13 +60,6 @@ typedef struct{
     Entity obstacles[MAX_OBSTACLES];
     Entity floaters[MAX_FLOATERS];
 }GameEntities;
-
-typedef enum{
-    NO_CHECKPOINT,
-    CHECKPOINT_1,
-    CHECKPOINT_FINISH_LINE,
-    CHECKPOINT_COUNT
-} CheckpointId;
 
 typedef struct{
     uint8_t x;
@@ -125,7 +125,13 @@ int frogDies(Frog * frog, uint8_t* lives, GameStateId* id);
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-
+int frogInFinishBox(Frog *frog, FinishBox *finishBox);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+*/
 /******************************************************************************/
 
 #endif // _ENTITIES_H_
