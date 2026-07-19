@@ -100,10 +100,11 @@ int resetFrog(Frog * frog){
   else{
     (frog->y)=FROG_Y0; //Ubicamos la rana en sus coordenadas iniciales, reseteamos su ultima zona segura y su velocidad
     (frog->x)=FROG_X0; 
-    frog->lastSafeSpot = -1;
     frog->speed = 0;
+    frog->lastCheckpoint = NO_CHECKPOINT;
+    return 0;
   }
-  return 0;
+  
 }
 
 int initFrog(Frog * frog){
