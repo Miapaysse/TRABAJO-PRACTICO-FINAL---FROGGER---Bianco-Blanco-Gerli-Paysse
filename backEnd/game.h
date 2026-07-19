@@ -103,8 +103,6 @@ typedef struct Game {
 
    Level level;
 
-   Zone currentZone;
-
    GameState state;
 
    clock_t lastEntityUpdate;
