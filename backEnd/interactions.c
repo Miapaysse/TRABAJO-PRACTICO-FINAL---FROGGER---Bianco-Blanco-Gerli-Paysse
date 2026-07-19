@@ -103,6 +103,9 @@
                     
                 break;
 
+                case START: default:
+                //no hace  nada
+                break;
             }
         }
 
@@ -110,6 +113,7 @@
      else{
         return ERR_INVALID_GAME_POINTER;
      }
+     return 0;
     }
 
     int updateScore(Frog * frog , uint8_t * score){ //Si es la primera vez que la rana llega a esa zona segura, se le suman puntos 

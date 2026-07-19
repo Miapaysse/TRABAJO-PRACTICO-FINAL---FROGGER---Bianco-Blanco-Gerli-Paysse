@@ -69,10 +69,10 @@ const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111,
 			0b1111111111111111, 
 			0b0011000100010011,
-			0b0101010101110101, 
+			0b0101011101010101, 
 			0b0101000100010101,
-			0b0101010101110101,
-			0b0011010100010011,
+			0b0101011101010101,
+			0b0011000101010011,
 			0b1111111111111111, 
 			0b1111111111111111,
 			0b1111111111111111,
@@ -85,7 +85,7 @@ const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b0000001110000000, 
 			0b0000000000000000,
 			0b1111111111111111,
-			0b110101000101011, 
+			0b1101010001010111, 
 			0b1110110101010111, 
 			0b1110110001000111, 
 			0b1111111111111111, 
@@ -97,7 +97,27 @@ const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b0000000000000000,
 			0b0000001110000000,
 			0b0000000100000000
+		},
+		{ //-corazon, perdio vida
+			0b1111111111111111,
+			0b1111111111111111,
+			0b0000000000000000,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111001001111,
+			0b1111110000000111,
+			0b1001111000001111,
+			0b1111111100011111,
+			0b1111111110111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b0000000000000000,
+			0b1111111111111111,
+			0b1111111111111111
 		}
+
+		
 };
 
 static DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
@@ -199,16 +219,15 @@ void drawScore(int idxScore, int score) {
 
 
 void drawZone(const Row *rows) {
-    int r, c, r_disp, backend_row;
+    int r, c, r_disp;
 
     for (r = 0; r <= MAP_HEIGHT; r++) {
-        backend_row = (r < MAP_HEIGHT) ? r : (MAP_HEIGHT - 1);
         r_disp = ROW(r);
 
         for (c = 0; c <= MAP_WIDTH; c++) {
             int draw_on = 0;
 
-            switch (rows[backend_row].zone) {
+            switch (rows[r].zone) {
                 case WATER:
                     draw_on = 1;
                     break;

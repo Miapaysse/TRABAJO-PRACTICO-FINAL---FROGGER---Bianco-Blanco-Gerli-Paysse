@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <unistd.h>
 #include "disdrv.h"
 #include "joydrv.h"
 
@@ -14,7 +15,7 @@
 joyinfo_t joy;
 int scores[10] = {1,2,3,4,5,6,7,8,9,10};
 static Input ultimo_input = NONE;
-
+int lastLive = MAX_LIVES;
 
 void frontendInit(void) {
     joy_init();
@@ -34,13 +35,13 @@ Input frontendGetInput(void) {
 
     if (joy.sw == J_PRESS) {
         input_actual = SELECT;
-    } else if (joy.y > JOY_LIM) {
+    } else if (joy.y > JOY_LIM && joy.x < JOY_LIM && joy.x > -JOY_LIM) { //solamente arriba
         input_actual = UP;
-    } else if (joy.y < -JOY_LIM) {
+    } else if (joy.y < -JOY_LIM && joy.x < JOY_LIM && joy.x > -JOY_LIM) { //solamente abajo
         input_actual = DOWN;
-    } else if (joy.x > JOY_LIM) {
+    } else if (joy.x > JOY_LIM && joy.y < JOY_LIM && joy.y > -JOY_LIM) { // solo a la derecha
         input_actual = RIGHT;
-    } else if (joy.x < -JOY_LIM) {
+    } else if (joy.x < -JOY_LIM && joy.y < JOY_LIM && joy.y > -JOY_LIM) { //solo a la izquierda
         input_actual = LEFT;
     } else {
         input_actual = NONE;
@@ -110,30 +111,37 @@ void frontendRender(Game * game) {
 				printf("Error");
 			}
 			break;
-
-		case PLAYING:
+			
+			case PLAYING:
             option = (game->state).id;
 			if(option == PAUSED){
 				drawMSG(msgs_arr[MSG_PAUSE]);
 			} else {
+				if (game->lives != lastLive) {
+					lastLive = game->lives;
+					drawMSG(msgs_arr[LIVE_LOSED]);
+					disp_update();
+					usleep(1000000); //pauso todo el programa por 1 seg
+				}
 				// Dibuja zonas
 				drawZone((game->level).rows);
-
+				
 				//Dibuja obstaculos y floaters
 				drawObstacles((game->entities).obstacles);
 				drawFloaters((game->entities).floaters);
-
+				
 				//Dibuja rana (titila)
 				drawFrog(&(game->frog), (game->timeNow % 1000) < 300);
 
 			}
 			break;
-
-		case GAME_OVER:
+			
+			case GAME_OVER:
 			option = (game->state).gameOver.selected;
 			if(option == GAME_OVER_TITLE){
 				drawMSG(msgs_arr[MSG_GAME_OVER]);
 			} else if(option == GAME_OVER_MENU){
+				lastLive = MAX_LIVES;
 				drawMSG(msgs_arr[MSG_GO_HOME]);
 			} else if(option == GAME_OVER_EXIT){
 				drawMSG(msgs_arr[MSG_EXIT]);

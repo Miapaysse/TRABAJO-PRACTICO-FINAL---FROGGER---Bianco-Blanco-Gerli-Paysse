@@ -19,6 +19,7 @@ enum msgs {
 	MSG_EXIT,
 	MSG_GAME_OVER,
 	MSG_YOU_WIN,
+	LIVE_LOSED,
 	MSG_MAX_MENUS
 };
 
