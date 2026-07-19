@@ -57,7 +57,7 @@ typedef struct{
 typedef enum{
     NO_CHECKPOINT,
     CHECKPOINT_1,
-    CHECKPOINT_2,
+    CHECKPOINT_FINISH_LINE,
     CHECKPOINT_COUNT
 } CheckpointId;
 

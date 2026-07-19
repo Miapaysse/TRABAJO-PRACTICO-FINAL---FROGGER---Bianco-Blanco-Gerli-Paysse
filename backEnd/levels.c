@@ -135,7 +135,9 @@ static void loadLevelEntities(Level* level);
 static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity);
 static void loadRowEntities(Row* row, uint8_t  rowNumber);
 static int checkLevelEntities(Level* level);
-
+static int occupyFinishBox(Game *game);
+static int allFinishBoxesOccupied(Game *game);
+static void loadFinishBoxes(Level* level);
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
