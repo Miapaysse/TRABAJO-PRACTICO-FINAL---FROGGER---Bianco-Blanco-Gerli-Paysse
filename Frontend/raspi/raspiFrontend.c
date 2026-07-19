@@ -13,15 +13,18 @@
 #include "raspiDraw.h"
 
 joyinfo_t joy;
-int scores[10] = {1,2,3,4,5,6,7,8,9,10};
+static int scores[10]; 
 static Input ultimo_input = NONE;
-int lastLive = MAX_LIVES;
+int lastLive, showScore;
 
 void frontendInit(void) {
     joy_init();
     disp_init();
     disp_clear();
     disp_update();
+	showScore = 1;
+	lastLive = MAX_LIVES;
+	//scores[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
 }
 
 void frontendDestroy(void) {
@@ -61,6 +64,12 @@ void frontendRender(Game * game) {
 
 	switch((game->state).id) {
 		case MENU:
+
+			//Inicializo aca variables para mostras mensajes temporales en display
+			showScore = 1;
+			// si estas en menu signica que volviste a empezar el juego, por lo tanto se resetea el showScore
+			lastLive = MAX_LIVES;
+
 			option = (game->state).menu.selected;
 			if(option == MENU_TITLE){
 				drawMSG(msgs_arr[MSG_HOME]);
@@ -113,49 +122,65 @@ void frontendRender(Game * game) {
 			break;
 			
 			case PLAYING:
-            option = (game->state).id;
-			if(option == PAUSED){
-				drawMSG(msgs_arr[MSG_PAUSE]);
-			} else {
-				if (game->lives != lastLive) {
-					lastLive = game->lives;
-					drawMSG(msgs_arr[LIVE_LOSED]);
-					disp_update();
-					usleep(1000000); //pauso todo el programa por 1 seg
-				}
-				// Dibuja zonas
-				drawZone((game->level).rows);
-				
-				//Dibuja obstaculos y floaters
-				drawObstacles((game->entities).obstacles);
-				drawFloaters((game->entities).floaters);
-				
-				//Dibuja rana (titila)
-				drawFrog(&(game->frog), (game->timeNow % 1000) < 300);
+				option = (game->state).id;
+				if(option == PAUSED){
+					drawMSG(msgs_arr[MSG_PAUSE]);
+				} else {
+					if (game->lives != lastLive) {
+						lastLive = game->lives;
+						drawMSG(msgs_arr[LIVE_LOSED]);
+						disp_update();
+						usleep(1000000); //pauso todo el programa por 1 seg
+					}
+					// Dibuja zonas
+					drawZone((game->level).rows);
+					
+					//Dibuja obstaculos y floaters
+					drawObstacles((game->entities).obstacles);
+					drawFloaters((game->entities).floaters);
+					
+					//Dibuja rana (titila)
+					drawFrog(&(game->frog), (game->timeNow % 1000) < 300);
 
-			}
+				}
 			break;
 			
 			case GAME_OVER:
-			option = (game->state).gameOver.selected;
-			if(option == GAME_OVER_TITLE){
-				drawMSG(msgs_arr[MSG_GAME_OVER]);
-			} else if(option == GAME_OVER_MENU){
-				lastLive = MAX_LIVES;
-				drawMSG(msgs_arr[MSG_GO_HOME]);
-			} else if(option == GAME_OVER_EXIT){
-				drawMSG(msgs_arr[MSG_EXIT]);
-			} else {
-				printf("Error");
-			}
+				option = (game->state).gameOver.selected;
+				if(option == GAME_OVER_TITLE){
+					drawMSG(msgs_arr[MSG_GAME_OVER]);
+					if (showScore){
+						showScore = 0;
+						disp_update();
+						usleep(500000); //pauso todo el programa por 1 seg
+						drawScore(-1, game->score);
+						disp_update();
+						usleep(1000000); //pauso todo el programa por 1 seg
+					}
+				} else if(option == GAME_OVER_MENU){
+					drawMSG(msgs_arr[MSG_GO_HOME]);
+				} else if(option == GAME_OVER_EXIT){
+					drawMSG(msgs_arr[MSG_EXIT]);
+				} else {
+					printf("Error");
+				}
 			break;
 
 		case VICTORY:
 			option = (game->state).victory.selected;
 			if(option == VICTORY_TITLE){
 				drawMSG(msgs_arr[MSG_YOU_WIN]);
+				if (showScore){
+					showScore = 0;
+					disp_update();
+					usleep(1000000); //pauso todo el programa por 1 seg
+					drawScore(-1, game->score);
+					disp_update();
+					usleep(2000000); //pauso todo el programa por 1 seg
+				}
 			} else if(option == VICTORY_MENU){
 				drawMSG(msgs_arr[MSG_GO_HOME]);
+				showScore = 1;
 			} else if(option == VICTORY_EXIT){
 				drawMSG(msgs_arr[MSG_EXIT]);
 			} else {
