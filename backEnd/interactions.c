@@ -60,6 +60,14 @@
 
             Row *currentRow = &(game->level.rows[game->frog.y]); // Tomamos la fila en la que esta la rana
 
+            if (currentRow->zone != WATER) {
+                game->frog.speed = 0;
+            }
+
+            if (currentRow->zone != SAFE) {
+                game->frog.lastSafeSpot = -1;
+            }
+
             switch(currentRow->zone){ //Dependiendo la zona en la que esta analizamos como y con que puede interactuar
 
                 case ROAD://Si la rana esta en la calle lo unico que le puede pasar es que sea atropellada por un obstaculo
@@ -90,7 +98,8 @@
                 break;
 
                 case SAFE://Si esta en una zona segura hay que chequear de sumarle puntos
-                    if((errorType = updateScore(&(game->frog), &(game->score))) ==1){ 
+                    if((errorType = updateScore(&(game->frog), &(game->score))) ==1){
+                        game->frog.speed = 0;
                         return 0;
                     }
                     else if(errorType){
@@ -120,9 +129,23 @@
             return ERR_INVALID_SCORE_POINTER;
         }
         else{
-            if(frog->lastSafeSpot != frog->y){
+            if(frog->lastSafeSpot < 0){
                 (*score)+=POINT_WEIGHT;
                 frog->lastSafeSpot = frog->y;
+            }
+            else if(frog->lastSafeSpot != frog->y){
+                int rowDelta;
+                if(frog->y >= frog->lastSafeSpot){
+                    rowDelta = frog->y - frog->lastSafeSpot;
+                }
+                else{
+                    rowDelta = frog->lastSafeSpot - frog->y;
+                }
+
+                if(rowDelta > 1){
+                    (*score)+=POINT_WEIGHT;
+                    frog->lastSafeSpot = frog->y;
+                }
             }
             return 0;
         }
