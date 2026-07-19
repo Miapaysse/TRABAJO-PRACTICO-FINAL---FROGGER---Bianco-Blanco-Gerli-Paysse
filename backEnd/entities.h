@@ -35,7 +35,7 @@ typedef struct{
     int  y;
     Speed speed;
     Direction direction;
-    int  lastSafeSpot;
+    CheckpointId lastCheckpoint;
 } Frog;
 
 typedef struct{
@@ -54,6 +54,12 @@ typedef struct{
     Entity floaters[MAX_FLOATERS];
 }GameEntities;
 
+typedef enum{
+    NO_CHECKPOINT,
+    CHECKPOINT_1,
+    CHECKPOINT_2,
+    CHECKPOINT_COUNT
+} CheckpointId;
 
 
 /*******************************************************************************

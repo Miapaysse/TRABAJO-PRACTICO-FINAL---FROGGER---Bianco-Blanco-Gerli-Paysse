@@ -103,6 +103,8 @@ typedef struct Game {
 
    Level level;
 
+   Zone currentZone;
+
    GameState state;
 
    clock_t lastEntityUpdate;
@@ -141,9 +143,6 @@ typedef struct Game {
 
 void menuNext(MenuState *menu);
 void menuPrevious(MenuState *menu);
-
-
-
 
 /******************************************************************************/
 
