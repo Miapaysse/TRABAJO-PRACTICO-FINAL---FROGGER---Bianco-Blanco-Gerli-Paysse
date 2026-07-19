@@ -38,8 +38,15 @@ static Level level1={
         {NO_CHECKPOINT, NULL, WATER, 2, MEDIUM, MEDIUM_GAP,SLOW, DIR_RIGHT},
         {NO_CHECKPOINT, NULL, WATER, 2, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
-        {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
+        {CHECKPOINT_FINISH_LINE, NULL, SAFE, 0, 0, MEDIUM_GAP, 0, DIR_LEFT},
         {NO_CHECKPOINT, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
+    },
+    {
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false}
     }
 };
 
@@ -65,8 +72,15 @@ static Level level2={
         {NO_CHECKPOINT, NULL, WATER, 4, MEDIUM, MAX_GAP, SLOW, DIR_RIGHT},
         {NO_CHECKPOINT, NULL, WATER, 3, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
-        {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
-        {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
+        {CHECKPOINT_FINISH_LINE, NULL, SAFE, 0, 0, MEDIUM_GAP, 0, DIR_LEFT},
+        {NO_CHECKPOINT, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
+    },
+    {
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false}
     }
 };
 
@@ -92,9 +106,16 @@ static Level level3={
         {NO_CHECKPOINT, NULL, WATER, 3, MEDIUM, MEDIUM_GAP, FAST, DIR_RIGHT},
         {NO_CHECKPOINT, NULL, WATER, 1, LARGE, MEDIUM_GAP, MEDIUM_SPEED, DIR_LEFT},
 
-        {CHECKPOINT_2, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT},
-        {CHECKPOINT_2, NULL, SAFE, 0, 0， 0， 0， DIR_LEFT}
+        {CHECKPOINT_FINISH_LINE, NULL, SAFE, 0, 0, MEDIUM_GAP, 0, DIR_LEFT},
+        {NO_CHECKPOINT, NULL, SAFE, 0, 0, 0, 0, DIR_LEFT}
 
+    },
+    {
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false},
+        {0, 3, false}
     }
 };
 
@@ -135,20 +156,61 @@ static int checkLevelEntities(Level* level);
  *******************************************************************************
  ******************************************************************************/
   int arrivedAtFinishLine(uint8_t  y){
-        if (y==FINISH_LINE){ //Detectamos si la rana llego a la linea de meta 
+        if (y==FINISH_LINE){ //Detectamos si la rana llego a la linea de meta
             return 1;
         }
         return 0;
   }
 
-  int checkLevel(Game * game){ //Si llego a la linea de meta avanza al siguiente nivel
-      if (arrivedAtFinishLine((game->frog).y)){
-            goToNextLevel(game);
-            (game->frog).lastCheckpoint = NO_CHECKPOINT;
-            resetFrog(&(game->frog));
-      }
-      return 0;
-  }
+    static int occupyFinishBox(Game *game){
+        int i;
+
+        for(i = 0; i < FINISH_BOX_COUNT; i++){
+
+            FinishBox *box = &(game->level.finishBoxes[i]);
+
+            if(!box->occupied && frogInFinishBox(&(game->frog), box)){
+
+                box->occupied = true;
+
+                game->score += FINISH_BOX_POINTS;
+
+                if(allFinishBoxesOccupied(game)){
+                    (game->frog).lastCheckpoint = NO_CHECKPOINT;
+                    goToNextLevel(game);
+                }
+                else{
+                    resetFrog(&(game->frog));
+                }
+
+                return 1;
+            }
+        }
+
+        /* Llegó a la meta pero no cayó en ninguna casilla libre */
+        frogDies(&(game->frog), &(game->lives), &(game->state.id));
+
+        return 0;
+    }
+
+    static int allFinishBoxesOccupied(Game *game){
+        int i;
+
+        for(i = 0; i < FINISH_BOX_COUNT; i++){
+            if(!game->level.finishBoxes[i].occupied){
+                return 0;   // Encontramos una libre
+            }
+        }
+
+        return 1;   // Todas están ocupadas
+    }
+
+    int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en una casilla libre y la ocupamos, si no esta libre la rana muere
+        if (arrivedAtFinishLine((game->frog).y)){
+                occupyFinishBox(game); 
+        }
+        return 0;
+    }
 
   int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
     int errorType;
@@ -240,6 +302,9 @@ static void loadLevelEntities(Level* level){
                 i+=MAX_PLAYING_ZONE_HEIGHT-1;
             break;
             case SAFE:
+                if(level->rows[i].checkpoint == CHECKPOINT_FINISH_LINE){ //Si estamos en la zona de meta cargamos las casillas de meta
+                    loadFinishBoxes(level);
+                }
             case START:
             case DEFAULT:
             default:
@@ -248,6 +313,13 @@ static void loadLevelEntities(Level* level){
     }
 }
 
+static void loadFinishBoxes(Level* level){
+    uint8_t  i;
+    int x0 = 0;
+    for(i = 0; i < FINISH_BOX_COUNT; i++){
+        level->finishBoxes[i].x = x0 + (level->finishBox[i].length+level->rows[FINISH_LINE].gap)*i;
+    }
+}
 
 static void loadRowEntities(Row* row, uint8_t rowNumber){
     uint8_t  k;

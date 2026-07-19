@@ -61,6 +61,14 @@ typedef enum{
     CHECKPOINT_COUNT
 } CheckpointId;
 
+typedef struct{
+    uint8_t x;
+    uint8_t length;
+    bool occupied;
+} FinishBox;
+
+
+
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

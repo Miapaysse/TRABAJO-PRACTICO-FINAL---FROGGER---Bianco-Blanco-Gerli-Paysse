@@ -78,6 +78,7 @@ typedef struct {
     LevelId id;
     GameEntities* entities;
     Row rows[MAP_HEIGHT+1];
+    FinishBox finishBoxes[5];
 } Level;
 
 
