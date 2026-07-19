@@ -96,6 +96,8 @@ typedef struct Game {
    GameEntities entities;
 
    uint8_t score;
+   
+   int scoresTop10[TOP10_SIZE]; // Array to hold the top 10 scores
 
    uint8_t  lives;
 

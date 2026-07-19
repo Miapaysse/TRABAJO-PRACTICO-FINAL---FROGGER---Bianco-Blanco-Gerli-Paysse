@@ -43,36 +43,6 @@
  /*******************************************************************************
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
   ******************************************************************************/
- Top10Status LoadTop10(int topScores[TOP10_SIZE]);
-
-/**
- * @brief Carga el top 10 desde TOP10_FILE. Si el archivo no existe o esta
- *        corrupto, rellena las posiciones invalidas con 0. Garantiza que
- *        topScores queda ordenado de mayor a menor al terminar.
- * @param topScores array de salida, tamaño TOP10_SIZE
- * @return TOP10_OK, TOP10_FILE_NOT_FOUND o TOP10_READ_ERROR
- */
-
-bool UpdateTop10(int topScores[TOP10_SIZE], int newScore);
-
- /**
- * @brief Inserta newScore en el ranking si corresponde, manteniendo el
- *        array ordenado de mayor a menor.
- * @param topScores array ya ordenado de mayor a menor, tamaño TOP10_SIZE
- * @param newScore puntaje nuevo a intentar insertar
- * @return true si entro al top 10, false si no
- */
- 
- Top10Status SaveTop10(const int topScores[TOP10_SIZE]);
-
- /**
- * @brief Guarda el top 10 en TOP10_FILE de forma atomica (escribe a un
- *        archivo temporal y luego lo renombra), para no dejar el archivo
- *        corrupto si el programa se interrumpe durante el guardado.
- * @param topScores array a guardar, tamaño TOP10_SIZE
- * @return TOP10_OK o TOP10_WRITE_ERROR
- */
- /******************************************************************************/
- 
+Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore);
  #endif 
  

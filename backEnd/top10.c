@@ -23,56 +23,104 @@
 
 static void sortDescending(int topScores[TOP10_SIZE]);
 
+static Top10Status LoadTop10(int topScores[TOP10_SIZE]);
+
+/**
+ * @brief Carga el top 10 desde TOP10_FILE. Si el archivo no existe o esta
+ *        corrupto, rellena las posiciones invalidas con 0. Garantiza que
+ *        topScores queda ordenado de mayor a menor al terminar.
+ * @param topScores array de salida, tamaño TOP10_SIZE
+ * @return TOP10_OK, TOP10_FILE_NOT_FOUND o TOP10_READ_ERROR
+ */
+
+static bool UpdateTop10(int topScores[TOP10_SIZE], int newScore);
+
+ /**
+ * @brief Inserta newScore en el ranking si corresponde, manteniendo el
+ *        array ordenado de mayor a menor.
+ * @param topScores array ya ordenado de mayor a menor, tamaño TOP10_SIZE
+ * @param newScore puntaje nuevo a intentar insertar
+ * @return true si entro al top 10, false si no
+ */
+ 
+ static Top10Status SaveTop10(const int topScores[TOP10_SIZE]);
+
+ /**
+ * @brief Guarda el top 10 en TOP10_FILE de forma atomica (escribe a un
+ *        archivo temporal y luego lo renombra), para no dejar el archivo
+ *        corrupto si el programa se interrumpe durante el guardado.
+ * @param topScores array a guardar, tamaño TOP10_SIZE
+ * @return TOP10_OK o TOP10_WRITE_ERROR
+ */
+ /******************************************************************************/
+ 
+
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
+Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore){
+    //une las otras tres funciones en una sola para simplificar el manejo de errores
+    Top10Status status = LoadTop10(topScores);
+    if (status == TOP10_OK){
+        status = UpdateTop10(topScores, newScore);
+        if (status == TOP10_OK){
+            status = SaveTop10(topScores);  
+            if (status == TOP10_OK) {
+                return TOP10_OK;
+            } else {
+                return TOP10_WRITE_ERROR;
+            }          
+        }
+    }
+    return status;
+}
 
-Top10Status LoadTop10(int topScores[TOP10_SIZE]){
+static Top10Status LoadTop10(int topScores[TOP10_SIZE]){
    
     if (topScores == NULL){
         return TOP10_READ_ERROR;
     }
 
-FILE *file = fopen(TOP10_FILE, "r");
-int i;
-if (file == NULL){
-    // Probablemente es la primera vez que corre el juego
-    for (i = 0; i < TOP10_SIZE; i++){
-        topScores[i] = 0;
-    }
-    return TOP10_FILE_NOT_FOUND;
-}
-
-Top10Status status = TOP10_OK;
-
- for(i=0; i < TOP10_SIZE; i++){
-    int value;
-    int result = fscanf(file, "%d", &value);
-        if(result == EOF){
-            break;//no se jugaron diez partidas todavia
+    FILE *file = fopen(TOP10_FILE, "r");
+    int i;
+    if (file == NULL){
+        // Probablemente es la primera vez que corre el juego
+        for (i = 0; i < TOP10_SIZE; i++){
+            topScores[i] = 0;
         }
-    if(result != 1){
-        status = TOP10_READ_ERROR;
-        break;
+        return TOP10_FILE_NOT_FOUND;
     }
-    if(value < 0){
-        status = TOP10_READ_ERROR;
-        topScores[i] = 0;//hubo un error
-        continue;
-    }
-    topScores[i] =value;
- }
- fclose(file);
- sortdescending(topScores);
 
- return status;
+    Top10Status status = TOP10_OK;
+
+    for(i=0; i < TOP10_SIZE; i++){
+        int value;
+        int result = fscanf(file, "%d", &value);
+            if(result == EOF){
+                break;//no se jugaron diez partidas todavia
+            }
+        if(result != 1){
+            status = TOP10_READ_ERROR;
+            break;
+        }
+        if(value < 0){
+            status = TOP10_READ_ERROR;
+            topScores[i] = 0;//hubo un error
+            continue;
+        }
+        topScores[i] =value;
+    }
+    fclose(file);
+    sortDescending(topScores);
+
+    return status;
 }
 
 
-bool UpdateTop10(int topScores[TOP10_SIZE], int newScore){
+static bool UpdateTop10(int topScores[TOP10_SIZE], int newScore){
 
     if(topScores == NULL){
 

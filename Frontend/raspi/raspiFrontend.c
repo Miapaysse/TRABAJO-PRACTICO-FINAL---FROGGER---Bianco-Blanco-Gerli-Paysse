@@ -13,7 +13,7 @@
 #include "raspiDraw.h"
 
 joyinfo_t joy;
-static int scores[10]; 
+//static int scores[10]; 
 static Input ultimo_input = NONE;
 int lastLive, showScore;
 
@@ -24,7 +24,6 @@ void frontendInit(void) {
     disp_update();
 	showScore = 1;
 	lastLive = MAX_LIVES;
-	//scores[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
 }
 
 void frontendDestroy(void) {
@@ -93,7 +92,7 @@ void frontendRender(Game * game) {
 				
 				case POINT_1: case POINT_2: case POINT_3: case POINT_4: case POINT_5:
 				case POINT_6: case POINT_7: case POINT_8: case POINT_9: case POINT_10:
-				    drawScore(option-POINT_1, scores[option-POINT_1]);
+				    drawScore(option-POINT_1, (game->scoresTop10)[option-POINT_1]);
 				break;
 				
 				case POINTS_MENU:
