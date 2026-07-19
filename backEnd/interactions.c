@@ -77,17 +77,13 @@
                 case WATER://Si la rana esta en el agua lo unico que le puede pasar es que se mueva con un flotador, sino se muere
 
                     {
-                        Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount); //Si esta en un flotador necesitamos saber en cual
+                        Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
 
                         if(floaterP != NULL){
-                            // Usar la velocidad/direccion de la fila (row) porque moveRow usa row->speed/row->direction
-                            game->frog.speed = currentRow->speed;
-                            game->frog.direction = currentRow->direction;
-                            // Si prefieren que la entidad mantenga speed/direction, actualizar las entidades al inicializarlas.
-                            // moveFrogWithFloater(&(game->frog), floaterP); // opcional si entidades tienen speed/direction válidos
+                            moveFrogWithFloater(&(game->frog), floaterP);
                         }
                         else{
-                            frogDies(&(game->frog),&(game->lives), &((game->state).id)); //Si no esta en un flotador, esta en el agua, por ende se muere
+                            frogDies(&(game->frog), &(game->lives), &(game->state.id));
                         }
                     }
                 
