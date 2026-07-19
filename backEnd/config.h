@@ -25,6 +25,8 @@
 
 #define MAX_PLAYING_ZONE_HEIGHT 6
 
+#define FINISH_BOX_COUNT 5
+
 //ENTITIES SETTINGS/////////////////////////////////////////////////////
 #define MAX_OBSTACLES 20
 
