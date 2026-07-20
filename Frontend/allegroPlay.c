@@ -64,7 +64,7 @@
 
  void drawEntities( Game* p2game){
 
-    int i, x, y, new_lenght, new_height, space = 10;
+    int i, x, y,j, new_lenght, new_height, space = 10;
     int flag_direction = 0; //flag para rotar el dibujo
 
     //Bucle generador de vehículos
@@ -93,8 +93,8 @@
             }
         }
 
+    
     } 
-
     //Bucle generador de flotadores
     for (i=0 ; i<MAX_FLOATERS ; i++){
         
@@ -129,6 +129,7 @@
 
             }
     }
+}
 }
 
  void drawFrog(Game * p2game){
