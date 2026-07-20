@@ -37,6 +37,13 @@ typedef enum{
     CHECKPOINT_COUNT
 } CheckpointId;
 
+typedef enum{
+    CAR,
+    TRUCK,
+    TRUNK_FLOATER,
+    LEAF,
+} EntityType;
+
 typedef struct{
     int  x; //int para x negativos
     int  y;
@@ -52,7 +59,7 @@ typedef struct{
     //int height; 
     Speed speed;
     Direction direction;
-    int type;
+    EntityType type;
     bool active;
 }Entity;
 
