@@ -251,6 +251,7 @@ static void loadFiles (void){
     pause_img =al_load_bitmap("pause.png");
     heart = al_load_bitmap("heart.png");
     safe_box = al_load_bitmap("safe_box.png");
+    leaf = al_load_bitmap("floater_leaf.png");
 
     very_big_font = al_load_ttf_font("Tiny5-Regular.ttf", 200, 0);
     if(very_big_font == NULL){
@@ -259,10 +260,5 @@ static void loadFiles (void){
     big_font = al_load_ttf_font("Tiny5-Regular.ttf", 110, 0);
     medium_font = al_load_ttf_font("Tiny5-Regular.ttf", 60, 0);
     small_font = al_load_ttf_font("Tiny5-Regular.ttf", 40, 0);
-    printf("very_big_font=%p\n", very_big_font);
-    printf("big_font=%p\n", big_font);
-    printf("medium_font=%p\n", medium_font);
-    printf("small_font=%p\n", small_font);
-
 }
 
