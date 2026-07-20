@@ -41,7 +41,7 @@ typedef enum{
     CAR,
     TRUCK,
     TRUNK_FLOATER,
-    LEAF,
+    LEAF
 } EntityType;
 
 typedef struct{

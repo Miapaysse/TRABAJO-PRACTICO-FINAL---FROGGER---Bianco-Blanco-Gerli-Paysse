@@ -62,7 +62,7 @@
 
 }
 
- void drawObstacles( Game* p2game){
+ void drawEntities( Game* p2game){
 
     int i, x, y, new_lenght, new_height, space = 10;
     int flag_direction = 0; //flag para rotar el dibujo
@@ -82,7 +82,7 @@
                 flag_direction = ALLEGRO_FLIP_HORIZONTAL;
             }
 
-            if (p2game -> entities.obstacles[i].length == CAR_LENGTH){
+            if ((p2game -> entities.obstacles[i].type) == CAR){
                 al_draw_scaled_bitmap(car, 0, 0, al_get_bitmap_width(car), al_get_bitmap_height(car), x, y, al_get_bitmap_width(car)-space, al_get_bitmap_height(car)-space, flag_direction);
             }
             else { //es camión

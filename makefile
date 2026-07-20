@@ -1,20 +1,35 @@
-# Compilador y opciones
+# Compilador y opciones generales
 CC := gcc
-OPTIONS := -g -Wall
+CFLAGS := -g -Wall
 
-# Carpetas del proyecto
+# Directorios del proyecto
 BACKEND_DIR := backend
 FRONTEND_DIR := frontend
-RASPI_DIR := frontend/raspi
-RASPI_LIBS_DIR := frontend/raspi/libs
+RASPI_DIR := $(FRONTEND_DIR)/raspi
+RASPI_LIBS_DIR := $(RASPI_DIR)/libs
 
-# Incluir directorios para los archivos .h
-INCLUDES := -I$(BACKEND_DIR) -I$(FRONTEND_DIR) -I$(RASPI_DIR) -I$(RASPI_LIBS_DIR)
+# Directorios donde se buscan los archivos .h
+INCLUDES := \
+	-I$(BACKEND_DIR) \
+	-I$(FRONTEND_DIR) \
+	-I$(RASPI_DIR) \
+	-I$(RASPI_LIBS_DIR)
 
-# Flags para Allegro
-ALLEGRO_FLAGS := $(shell pkg-config --cflags --libs allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_audio-5 allegro_acodec-5 allegro_image-5)
+# Allegro: flags de compilacion y de enlazado por separado
+ALLEGRO_PACKAGES := \
+	allegro-5 \
+	allegro_main-5 \
+	allegro_font-5 \
+	allegro_ttf-5 \
+	allegro_primitives-5 \
+	allegro_audio-5 \
+	allegro_acodec-5 \
+	allegro_image-5
 
-# Objetos del backend
+ALLEGRO_CFLAGS := $(shell pkg-config --cflags $(ALLEGRO_PACKAGES))
+ALLEGRO_LIBS := $(shell pkg-config --libs $(ALLEGRO_PACKAGES))
+
+# Backend compartido por las dos plataformas
 BACKEND_OBJS := \
 	$(BACKEND_DIR)/game.o \
 	$(BACKEND_DIR)/entities.o \
@@ -22,62 +37,164 @@ BACKEND_OBJS := \
 	$(BACKEND_DIR)/levels.o \
 	$(BACKEND_DIR)/top10.o
 
-# Objetos comunes
-COMMON_OBJS := main.o
+# main.c se compila de forma diferente para cada plataforma.
+# Allegro necesita su wrapper de main en macOS; Raspberry no.
+MAIN_ALLEGRO_OBJ := main-allegro.o
+MAIN_RASPI_OBJ := main-raspi.o
 
-# Objetos del frontend para Raspberry Pi
+# Frontend Allegro para PC
+ALLEGRO_OBJS := \
+	$(FRONTEND_DIR)/allegroFrontend.o \
+	$(FRONTEND_DIR)/allegroMenus.o \
+	$(FRONTEND_DIR)/allegroPlay.o
+
+# Frontend Raspberry Pi
 RASPI_OBJS := \
 	$(RASPI_DIR)/raspiFrontend.o \
 	$(RASPI_DIR)/raspiDraw.o
 
+# Objetos precompilados de las librerias especificas de Raspberry Pi
 RASPI_LIB_OBJS := \
 	$(RASPI_LIBS_DIR)/disdrv.o \
 	$(RASPI_LIBS_DIR)/joydrv.o
 
-# Declaración de objetivos phony
-.PHONY: allegro raspi backend clean
+.PHONY: all allegro raspi backend clean raspi-libs
 
-# --- Backend ---
+all: allegro
+
+# -----------------------------------------------------------------------------
+# Backend
+# -----------------------------------------------------------------------------
+
 backend: $(BACKEND_OBJS)
 
-$(BACKEND_DIR)/interactions.o: $(BACKEND_DIR)/interactions.c $(BACKEND_DIR)/interactions.h $(BACKEND_DIR)/entities.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(BACKEND_DIR)/game.o: \
+	$(BACKEND_DIR)/game.c \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/interactions.h \
+	$(BACKEND_DIR)/levels.h \
+	$(BACKEND_DIR)/top10.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BACKEND_DIR)/entities.o: $(BACKEND_DIR)/entities.c $(BACKEND_DIR)/entities.h $(BACKEND_DIR)/config.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(BACKEND_DIR)/entities.o: \
+	$(BACKEND_DIR)/entities.c \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/config.h \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/levels.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BACKEND_DIR)/levels.o: $(BACKEND_DIR)/levels.c $(BACKEND_DIR)/levels.h $(BACKEND_DIR)/config.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(BACKEND_DIR)/interactions.o: \
+	$(BACKEND_DIR)/interactions.c \
+	$(BACKEND_DIR)/interactions.h \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/config.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BACKEND_DIR)/game.o: $(BACKEND_DIR)/game.c $(BACKEND_DIR)/game.h $(BACKEND_DIR)/entities.h $(BACKEND_DIR)/interactions.h $(BACKEND_DIR)/levels.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(BACKEND_DIR)/levels.o: \
+	$(BACKEND_DIR)/levels.c \
+	$(BACKEND_DIR)/levels.h \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/config.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BACKEND_DIR)/top10.o: $(BACKEND_DIR)/top10.c $(BACKEND_DIR)/top10.h $(BACKEND_DIR)/config.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(BACKEND_DIR)/top10.o: \
+	$(BACKEND_DIR)/top10.c \
+	$(BACKEND_DIR)/top10.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# --- main.c ---
-main.o: main.c $(BACKEND_DIR)/game.h $(FRONTEND_DIR)/frontend.h $(BACKEND_DIR)/config.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+# -----------------------------------------------------------------------------
+# main.c
+# -----------------------------------------------------------------------------
 
-# --- Frontend (Allegro) ---
-allegro: $(BACKEND_OBJS) $(COMMON_OBJS) $(FRONTEND_DIR)/allegroFrontend.o
-	$(CC) $(OPTIONS) $(INCLUDES) $(BACKEND_OBJS) $(COMMON_OBJS) $(FRONTEND_DIR)/allegroFrontend.o -o pc $(ALLEGRO_FLAGS)
+$(MAIN_ALLEGRO_OBJ): \
+	main.c \
+	$(BACKEND_DIR)/game.h \
+	$(FRONTEND_DIR)/allegroFrontend.h \
+	$(RASPI_DIR)/raspiFrontend.h
+	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -include allegro5/allegro.h -c $< -o $@
 
-$(FRONTEND_DIR)/allegroFrontend.o: $(FRONTEND_DIR)/allegroFrontend.c $(FRONTEND_DIR)/frontend.h $(BACKEND_DIR)/game.h
-	$(CC) $(OPTIONS) $(INCLUDES) $(ALLEGRO_FLAGS) -c $< -o $@
+$(MAIN_RASPI_OBJ): \
+	main.c \
+	$(BACKEND_DIR)/game.h \
+	$(FRONTEND_DIR)/allegroFrontend.h \
+	$(RASPI_DIR)/raspiFrontend.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# --- Frontend Raspberry Pi ---
-raspi: $(BACKEND_OBJS) $(COMMON_OBJS) $(RASPI_OBJS) $(RASPI_LIB_OBJS)
-	$(CC) $(OPTIONS) $(INCLUDES) $(BACKEND_OBJS) $(COMMON_OBJS) $(RASPI_OBJS) $(RASPI_LIB_OBJS) -o raspi -lpthread
+# -----------------------------------------------------------------------------
+# Frontend Allegro
+# -----------------------------------------------------------------------------
 
-$(RASPI_DIR)/raspiFrontend.o: $(RASPI_DIR)/raspiFrontend.c $(RASPI_DIR)/raspiFrontend.h $(RASPI_DIR)/raspiDraw.h $(BACKEND_DIR)/game.h $(RASPI_LIBS_DIR)/disdrv.h $(RASPI_LIBS_DIR)/joydrv.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+allegro: $(BACKEND_OBJS) $(MAIN_ALLEGRO_OBJ) $(ALLEGRO_OBJS)
+	$(CC) $(CFLAGS) $(BACKEND_OBJS) $(MAIN_ALLEGRO_OBJ) $(ALLEGRO_OBJS) -o frogger $(ALLEGRO_LIBS)
 
-$(RASPI_DIR)/raspiDraw.o: $(RASPI_DIR)/raspiDraw.c $(RASPI_DIR)/raspiDraw.h $(RASPI_DIR)/raspiFrontend.h $(RASPI_LIBS_DIR)/disdrv.h
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(FRONTEND_DIR)/allegroFrontend.o: \
+	$(FRONTEND_DIR)/allegroFrontend.c \
+	$(FRONTEND_DIR)/allegroFrontend.h \
+	$(FRONTEND_DIR)/allegroFrontendInternal.h \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/config.h
+	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -c $< -o $@
 
+$(FRONTEND_DIR)/allegroMenus.o: \
+	$(FRONTEND_DIR)/allegroMenus.c \
+	$(FRONTEND_DIR)/allegroFrontendInternal.h \
+	$(FRONTEND_DIR)/allegroFrontend.h \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/config.h
+	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -c $< -o $@
 
+$(FRONTEND_DIR)/allegroPlay.o: \
+	$(FRONTEND_DIR)/allegroPlay.c \
+	$(FRONTEND_DIR)/allegroFrontendInternal.h \
+	$(BACKEND_DIR)/game.h \
+	$(BACKEND_DIR)/entities.h \
+	$(BACKEND_DIR)/config.h
+	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -c $< -o $@
 
-# --- Limpieza ---
+# -----------------------------------------------------------------------------
+# Frontend Raspberry Pi
+# -----------------------------------------------------------------------------
+
+raspi: $(BACKEND_OBJS) $(MAIN_RASPI_OBJ) $(RASPI_OBJS) $(RASPI_LIB_OBJS)
+	$(CC) $(CFLAGS) $(BACKEND_OBJS) $(MAIN_RASPI_OBJ) $(RASPI_OBJS) $(RASPI_LIB_OBJS) -o raspi -lpthread
+
+$(RASPI_DIR)/raspiFrontend.o: \
+	$(RASPI_DIR)/raspiFrontend.c \
+	$(RASPI_DIR)/raspiFrontend.h \
+	$(RASPI_DIR)/raspiDraw.h \
+	$(RASPI_LIBS_DIR)/disdrv.h \
+	$(RASPI_LIBS_DIR)/joydrv.h \
+	$(BACKEND_DIR)/game.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(RASPI_DIR)/raspiDraw.o: \
+	$(RASPI_DIR)/raspiDraw.c \
+	$(RASPI_DIR)/raspiDraw.h \
+	$(RASPI_DIR)/raspiFrontend.h \
+	$(RASPI_LIBS_DIR)/disdrv.h \
+	$(BACKEND_DIR)/levels.h \
+	$(BACKEND_DIR)/entities.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# -----------------------------------------------------------------------------
+# Pruebas de las librerias de Raspberry Pi
+# -----------------------------------------------------------------------------
+
+raspi-libs:
+	$(MAKE) -C $(RASPI_LIBS_DIR)
+
+# -----------------------------------------------------------------------------
+# Limpieza
+# -----------------------------------------------------------------------------
+
 clean:
-	rm -f pc raspi main.o $(BACKEND_DIR)/*.o $(FRONTEND_DIR)/*.o $(RASPI_DIR)/*.o; find $(RASPI_LIBS_DIR) -name "*.o" ! -name "disdrv.o" ! -name "joydrv.o" -delete
+	rm -f frogger raspi $(MAIN_ALLEGRO_OBJ) $(MAIN_RASPI_OBJ)
+	rm -f $(BACKEND_DIR)/*.o
+	rm -f $(FRONTEND_DIR)/*.o
+	rm -f $(RASPI_DIR)/*.o

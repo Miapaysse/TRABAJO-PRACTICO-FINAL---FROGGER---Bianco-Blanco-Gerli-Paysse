@@ -85,7 +85,7 @@ void frontendInit(void) {
     }
 
     if (al_install_audio() == false) {
-        printf("Fallo audio\n");
+     printf("Fallo audio\n");
     }
 
     if (al_init_font_addon() == false) {
@@ -171,7 +171,7 @@ void frontendRender(Game * game){
 
     case PLAYING:
     drawZones(game);
-    drawObstacles(game);
+    drawEntities(game);
     drawFrog(game);
     drawScore(game);
     drawLevel(game);
