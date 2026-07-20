@@ -7,7 +7,8 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
- #include <stdio.h>
+ #include "stdio.h"
+ #include "stdbool.h"
  #include "top10.h"
 
 /*******************************************************************************
@@ -33,7 +34,7 @@ static Top10Status LoadTop10(int topScores[TOP10_SIZE]);
  * @return TOP10_OK, TOP10_FILE_NOT_FOUND o TOP10_READ_ERROR
  */
 
-static bool UpdateTop10(int topScores[TOP10_SIZE], int newScore);
+static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore);
 
  /**
  * @brief Inserta newScore en el ranking si corresponde, manteniendo el
@@ -62,20 +63,18 @@ static bool UpdateTop10(int topScores[TOP10_SIZE], int newScore);
  ******************************************************************************/
 
 Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore){
-    //une las otras tres funciones en una sola para simplificar el manejo de errores
-    Top10Status status = LoadTop10(topScores);
-    if (status == TOP10_OK){
-        status = UpdateTop10(topScores, newScore);
-        if (status == TOP10_OK){
-            status = SaveTop10(topScores);  
-            if (status == TOP10_OK) {
-                return TOP10_OK;
-            } else {
-                return TOP10_WRITE_ERROR;
-            }          
+    Top10Status status = LoadTop10(topScores); //Carga archivo
+    if (status == TOP10_OK || status == TOP10_FILE_NOT_FOUND){ // Con cualquiera de estos status se puede devolver algo
+        Top10Status rankingChanged = UpdateTop10(topScores, newScore); //Todo OK, analiza si jugador ingreso a top 10
+        status = SaveTop10(topScores); // Vemos si se puede guardar el archivo
+        if (status != TOP10_OK) { //Si no es asi
+            return TOP10_WRITE_ERROR; // Avisamos que no se pudo guardar
+        } else {
+            //Esta todo bien entonces devuelve estado de ranking
+            return rankingChanged;
         }
     }
-    return status;
+    return status; // Hubo un error irreparable al intentar habrir el archivo
 }
 
 static Top10Status LoadTop10(int topScores[TOP10_SIZE]){
@@ -120,55 +119,53 @@ static Top10Status LoadTop10(int topScores[TOP10_SIZE]){
 }
 
 
-static bool UpdateTop10(int topScores[TOP10_SIZE], int newScore){
-
+static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore){
     if(topScores == NULL){
-
-        return TOP10_WRITE_ERROR;
+        return TOP10_WRITE_ERROR; // Avisa que hubo un error al acceder a los puntajes
     }
-    int position = TOP10_SIZE - 1; 
+    int position = TOP10_SIZE - 1;
+
     if(newScore <= topScores[position]){ //Si no supera el ultimo lugar no entra
-        return false;
+        return TOP10_NO_CHANGE;
     }
 
-    while (position > 0 && topScores[position - 1] < newScore){
-        topScores[position] = topScores[position - 1]; //Si el score supera al de una posicion "baja" de ranking esa posicion por el anterior, y luego reemplaza 
-        position--;
+    for (; position > 0 && topScores[position - 1] < newScore ; position--){ 
+        topScores[position] = topScores[position - 1]; // Corregido comentario
     }
     topScores[position] = newScore;
-    return true;
+    return TOP10_CHANGED;
 }
 
-Top10Status SaveTop10(const int topScores[TOP10_SIZE]){
+static Top10Status SaveTop10(const int topScores[TOP10_SIZE]){
 
-    if(topScores == NULL){
+    if(topScores == NULL){ // No se pudo acceder al rankin
         return TOP10_WRITE_ERROR;
     }
 
     FILE *file = fopen(TOP10_TMP_FILE, "w"); //Usamos un archivo temporal para que en caso de un fallo, como corte de luz no nos quede el archivo original corrupto
     
-          if (file == NULL){
-            return TOP10_WRITE_ERROR;
-        }
-    
-        for (int i = 0; i < TOP10_SIZE; i++){
-            if (fprintf(file, "%d\n", topScores[i]) < 0){// Escribimos y validamos
-                fclose(file);
-            remove(TOP10_TMP_FILE);// Limpieza del archivo temporal si hay fallos
-            return TOP10_WRITE_ERROR;
-            }
-        }
-        if (fclose(file) != 0){//cerramos el archivo asegurandonos que los datos
-            remove(TOP10_TMP_FILE);
-            return TOP10_WRITE_ERROR;
-        }
-        if (rename(TOP10_TMP_FILE, TOP10_FILE) != 0){//si todo salio bien reemplazamos el archivo temporal por el original
-            remove(TOP10_TMP_FILE);
-            return TOP10_WRITE_ERROR;
-        }
-     
-        return TOP10_OK;
+    if (file == NULL){
+        return TOP10_WRITE_ERROR;
     }
+    
+    for (int i = 0; i < TOP10_SIZE; i++){
+        if (fprintf(file, "%d\n", topScores[i]) < 0){// Escribimos y validamos
+            fclose(file);
+        remove(TOP10_TMP_FILE);// Limpieza del archivo temporal si hay fallos
+        return TOP10_WRITE_ERROR;
+        }
+    }
+    if (fclose(file) != 0){//cerramos el archivo asegurandonos que los datos
+        remove(TOP10_TMP_FILE);
+        return TOP10_WRITE_ERROR;
+    }
+    if (rename(TOP10_TMP_FILE, TOP10_FILE) != 0){//si todo salio bien reemplazamos el archivo temporal por el original
+        remove(TOP10_TMP_FILE);
+        return TOP10_WRITE_ERROR;
+    }
+    
+    return TOP10_OK;
+}
         
 /*******************************************************************************
  *******************************************************************************
@@ -182,9 +179,8 @@ static void sortDescending(int topScores[TOP10_SIZE]){
     for (int i = 1; i < TOP10_SIZE; i++){
         int key = topScores[i];
         int j = i - 1;
-        while (j >= 0 && topScores[j] < key){
+        for (; j >= 0 && topScores[j] < key; j--){
             topScores[j + 1] = topScores[j];
-            j--;
         }
         topScores[j + 1] = key;
     }

@@ -28,6 +28,8 @@
  
   typedef enum {
   TOP10_OK = 0,
+  TOP10_NO_CHANGE,        // Usuario NO ingreso al ranking
+  TOP10_CHANGED,          // Usuario ingreso al ranking
   TOP10_FILE_NOT_FOUND,  // no existe el archivo todavia (primera ejecucion, no es un error)
   TOP10_READ_ERROR,      // el archivo existe pero esta corrupto/incompleto
   TOP10_WRITE_ERROR      // no se pudo escribir o guardar el archivo

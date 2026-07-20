@@ -163,8 +163,8 @@ int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del 
 }
 
 int frogInFinishBox(Frog *frog, FinishBox *finishBox){
-    if((frog->x >= finishBox->x) &&
-       (frog->x <= finishBox->x + finishBox->length - 1)){
+    if((frog->x == finishBox->x)){
+    //&& (frog->x <= finishBox->x + finishBox->length - 1)){
         return 1;
     }
 
