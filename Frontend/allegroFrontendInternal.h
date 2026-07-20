@@ -21,7 +21,6 @@
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 #define SCALE 90
-#define MARGIN 0
 #define ROW(r) ((MAP_HEIGHT) - r)
  
 /*******************************************************************************
