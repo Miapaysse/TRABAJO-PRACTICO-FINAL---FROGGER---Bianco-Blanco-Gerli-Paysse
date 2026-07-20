@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "disdrv.h"
+#include <unistd.h>
 #include "raspiFrontend.h"
 #include "raspiDraw.h"
 #include "levels.h"

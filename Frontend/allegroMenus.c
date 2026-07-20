@@ -169,7 +169,7 @@
     int i;
     char position[5]; //string #1, #2, ...
     char score_as_string[30]; //string para poner puntaje en pantalla
-    int *pScores = p2game->scoresTop10;
+    int *pScores = p2game->top10.topScores;
     int selected = p2game->state.points.selected;
 
     // Constantes de diseño
@@ -215,7 +215,7 @@
 }
 
  void top10_notify(Game* p2game, int x, int y){
-    if (p2game->score > p2game->scoresTop10[TOP10_SIZE - 1]){
+    if (p2game->top10.status == TOP10_CHANGED){
         al_draw_text(medium_font, pink, x, y, ALLEGRO_ALIGN_LEFT,
                 "YOU MADE IT TO THE TOP 10!");
     

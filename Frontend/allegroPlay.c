@@ -95,6 +95,7 @@
     //Bucle generador de flotadores
     for (i=0 ; i<MAX_FLOATERS ; i++){
         //Si la entidad está activa, la dibujamos en la pantalla
+        
         if (p2game -> entities.floaters[i].active){
             x = (p2game -> entities.floaters[i].x)*SCALE;
             y = ROW((p2game -> entities.floaters[i].y))*SCALE;
