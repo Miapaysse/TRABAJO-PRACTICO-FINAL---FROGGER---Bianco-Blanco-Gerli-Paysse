@@ -23,7 +23,7 @@
   ******************************************************************************/
   #define TOP10_SIZE 10
 
-  #define TOP10_FILE  "../backend/top10.txt"
+  #define TOP10_FILE  "../../backend/top10.txt"
  
  
   typedef enum {
