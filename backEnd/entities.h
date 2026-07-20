@@ -38,6 +38,7 @@ typedef enum{
 } CheckpointId;
 
 typedef enum{
+    NONE,
     CAR,
     TRUCK,
     TRUNK_FLOATER,

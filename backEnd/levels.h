@@ -60,6 +60,8 @@ typedef struct{
 
     Entity* firstEntity;
 
+    EntityType type;
+
     Zone zone;
 
     uint8_t  entityCount;
