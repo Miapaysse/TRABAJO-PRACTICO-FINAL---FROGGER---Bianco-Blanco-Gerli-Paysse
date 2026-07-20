@@ -5,9 +5,10 @@
 #include "raspiDraw.h"
 #include "levels.h"
 #include "entities.h"
+#include "config.h"
 
 // Defino arreglo de bitmaps con distintos mensajes
-const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
+const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 		{//Home title
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b1111111111111111, 0b1010100010101001, 0b1010101010001011, 0b1000101010101001,
@@ -26,37 +27,37 @@ const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111, 0b1111101000111111, 0b1000101010110001, 0b1111101000111111,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
-		{//Play option
+		{//Go Play 
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b1111111111111111, 0b1000101100010101, 0b1010101101010101, 0b1000101100010101,
 			0b1011101101011011, 0b1011100101011011, 0b1111111111111111, 0b1111111111111111,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
-		{//Go to home option
+		{//Go to home 
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b1111111011111111, 0b1111110001111111, 0b1111100000111111, 0b1111000000111111,
 			0b1110000000001111, 0b1111001110011111, 0b1111001110011111, 0b1111001110011111,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
-		{//Despause option
+		{//Despause
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b1111110011111111, 0b1111110001111111, 0b1111110000111111, 0b1111110000011111,
 			0b1111110000111111, 0b1111110001111111, 0b1111110011111111, 0b1111111111111111,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
-		{//TOP 10 option
+		{//Go TOP 10 
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b1100010001000111, 0b1110110101010111, 0b1110110101000111, 0b1110110001011111,
 			0b1111111111111111, 0b1111101000111111, 0b1111101010111111, 0b1111101000111111,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
-		{//Go BACK option
+		{//Go BACK 
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b0001100010001010, 0b0110101010111010, 0b0110101010111010, 0b0001100010111001,
 			0b0110101010111010, 0b0110101010111010, 0b0110101010111010, 0b0001101010001010,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
-		{//EXIT option
+		{//EXIT 
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
 			0b1000101010010001, 0b1011101010011011, 0b1011101010011011, 0b1001110110011011,
 			0b1011101010011011, 0b1011101010011011, 0b1000101010011011, 0b1111111111111111,
@@ -115,9 +116,26 @@ const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b0000000000000000,
 			0b1111111111111111,
 			0b1111111111111111
+		},
+		{ //Next level
+			0b1111111111111111,
+			0b1111111111111111,
+			0b0110100101010001,
+			0b0010101101011011,
+			0b0100100110111011,
+			0b0110101101011011,
+			0b1110100101011111,
+			0b1111111111111111,
+			0b0110010101001011,
+			0b0110110101011011,
+			0b0110010101001011,
+			0b0110111011011011,
+			0b0010011011001001,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111
 		}
 
-		
 };
 
 static DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
@@ -133,7 +151,7 @@ static const DISP menuBackground = {
 	{0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}
 };
 
-static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = {
+static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = { //Arreglo con todos los dibujos de los dijitos para el display
 	{ {0,0,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,0,0} }, // Nro 0
 	{ {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1} }, // Nro 1
 	{ {0,0,0}, {1,1,0}, {0,0,0}, {0,1,1}, {0,0,0} }, // Nro 2
@@ -146,10 +164,10 @@ static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = {
 	{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }  // Nro 9
 };
 
-static int popFromOtherSide(int x) {
+static int popFromOtherSide(int x) { //Dibuja la parte de la entitie que debe aparece por el otro lado
     int width = MAP_WIDTH + 1;
-    x %= width;
-    if (x < 0) {
+    x %= width; //toma su cordenada en x y ve cuanto se fue del mapa
+    if (x < 0) { // Si es negativa, es por que debe aparecer por la izquierda
         x += width;
     }
     return x;
@@ -219,45 +237,49 @@ void drawScore(int idxScore, int score) {
 
 
 void drawZone(const Row *rows) {
-    int r, c, r_disp;
+    int r, c, rDisp;
 
     for (r = 0; r <= MAP_HEIGHT; r++) {
-        r_disp = ROW(r);
+        rDisp = ROW(r);
 
         for (c = 0; c <= MAP_WIDTH; c++) {
-            int draw_on = 0;
+            int drawFlag = 0;
 
             switch (rows[r].zone) {
                 case WATER:
-                    draw_on = 1;
+                    drawFlag = 1;
                     break;
                 case ROAD:
-                    draw_on = 0;
+                    drawFlag = 0;
                     break;
-                case SAFE:
-                case START:
-                    draw_on = ((c + r_disp) % 2 == 0);
+				case START:
+				case SAFE:
+					if (r == FINISH_LINE || r == FINISH_LINE + 1) {
+						drawFlag = 1;
+					} else {
+						drawFlag = ((c + rDisp) % 2 == 0);
+					}
                     break;
                 case DEFAULT:
                 default:
-                    draw_on = 0;
+                    drawFlag = 0;
                     break;
             }
 
-            passDrawing(c, r_disp, draw_on ? D_ON : D_OFF);
+            passDrawing(c, rDisp, drawFlag ? D_ON : D_OFF);
         }
     }
 }
 
 
 void drawObstacles(const Entity obstacles[]){
-	int idxObs, len, r_disp;
+	int idxObs, len, rDisp;
 	int x_disp, y_disp;
 
 	for (idxObs = 0; idxObs < MAX_OBSTACLES; idxObs++){
 		if (obstacles[idxObs].active){ // si existe obstáculo
-			r_disp = ROW(obstacles[idxObs].y);
-			y_disp = r_disp;
+			rDisp = ROW(obstacles[idxObs].y);
+			y_disp = rDisp;
 			for (len = 0; len < obstacles[idxObs].length; len++){ // itera por largo
 				x_disp = obstacles[idxObs].x + len;
 				passDrawing(x_disp, y_disp, D_ON); // obstaculos prendidos
@@ -267,19 +289,32 @@ void drawObstacles(const Entity obstacles[]){
 }
 
 void drawFloaters(const Entity floaters[]){
-	int idxFlo, len, r_disp;
+	int idxFlo, len, rDisp;
 	int x_disp, y_disp;
 
 	for (idxFlo = 0; idxFlo < MAX_FLOATERS; idxFlo++){
 		if (floaters[idxFlo].active){ // si existe floater
-			r_disp = ROW(floaters[idxFlo].y);
-			y_disp = r_disp;
+			rDisp = ROW(floaters[idxFlo].y);
+			y_disp = rDisp;
 			for (len = 0; len < floaters[idxFlo].length; len++){ // itera por largo
 				x_disp = floaters[idxFlo].x + len;
 				passDrawing(x_disp, y_disp, D_OFF); // Floaters apagados sobre agua
 			}
 		}
 	}
+}
+
+void drawBoxes (FinishBox boxes[], int blink){
+	int x, i = 0;
+	for (; i < FINISH_BOX_COUNT; i++){
+		x = boxes[i].x;
+		if (!boxes[i].occupied){
+			passDrawing(x, 1, D_OFF);
+		} else {
+			passDrawing(x, 1, blink);
+		}
+	}
+	//printf("\nListo\n");
 }
 
 void drawFrog(const Frog * frog, int blink) {

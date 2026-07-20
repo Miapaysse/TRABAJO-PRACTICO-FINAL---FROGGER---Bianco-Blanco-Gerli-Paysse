@@ -20,11 +20,12 @@ enum msgs {
 	MSG_GAME_OVER,
 	MSG_YOU_WIN,
 	LIVE_LOSED,
+	NEXT_LEVEL,
 	MSG_MAX_MENUS
 };
 
 // Exponemos la matriz de mensajes para que frontendRender pueda usarla
-extern const uint16_t msgs_arr[MSG_MAX_MENUS][MAP_HEIGHT + 1];
+extern const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1];
 
 // Prototipos de funciones de dibujo
 
@@ -35,5 +36,6 @@ void drawFrog(const Frog * frog, int blink);
 
 void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
 void drawScore(int idxScore, int score);
+void drawBoxes (FinishBox boxes[], int blink);
 
 #endif
