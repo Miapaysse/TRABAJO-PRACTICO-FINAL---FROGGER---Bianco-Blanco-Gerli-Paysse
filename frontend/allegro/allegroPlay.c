@@ -133,7 +133,7 @@
 }
 
  void drawFrog(Game * p2game){
-    int x = (p2game -> frog.x)*SCALE + MARGIN;
+    int x = (p2game -> frog.x)*SCALE;
     int y = ROW((p2game -> frog.y))*SCALE;
     int space = 35;
     al_draw_scaled_bitmap (frog, 0, 0,al_get_bitmap_width(frog), al_get_bitmap_height(frog), x, y, al_get_bitmap_width(frog)-space, al_get_bitmap_height(frog)-space, 0);

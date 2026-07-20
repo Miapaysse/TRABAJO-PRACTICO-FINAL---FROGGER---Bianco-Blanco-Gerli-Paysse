@@ -94,7 +94,7 @@ void frontendInit(void) {
     //Creamos ventana del juego
     al_set_new_display_flags(ALLEGRO_WINDOWED);
 
-    display = al_create_display(MAP_WIDTH*SCALE + 2*MARGIN, (MAP_HEIGHT+1)*SCALE);
+    display = al_create_display(MAP_WIDTH*SCALE, (MAP_HEIGHT+1)*SCALE);
     if(display == NULL) {
         printf("Fallo al_create_display\n");
         return;
