@@ -179,7 +179,7 @@ static int occupyFinishBox(Game *game){
             game->score += POINT_WEIGHT;
 
             if(allFinishBoxesOccupied(game)){
-                (game->frog).lastCheckpoint = NO_CHECKPOINT;
+                (game->frog).lastCheckpoint = NO_CHECKPOINT; //Cuando pasamos de nivel reseteamos el checkpoint de la rana para que no se quede en el ultimo
                 goToNextLevel(game);
             }
             else{
@@ -272,6 +272,7 @@ int initLevel(Game * game){
 static int loadLevel(Level * level){
  if(level != NULL){ 
     int errorType;
+    resetFinishBoxes(game->level.finishBoxes);
     loadLevelEntities(level); //Cargamos las entidades con las caracteristicas del nivel
     if((errorType = checkLevelEntities(level))){ //Chequeamos que no excedamos el maximo de entidades
         return errorType;

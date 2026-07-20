@@ -171,6 +171,14 @@ int frogInFinishBox(Frog *frog, FinishBox *finishBox){
     return 0;
 }
 
+void resetFinishBoxes(FinishBox *finishBox){
+  int i;
+    for(i = 0; i < FINISH_BOX_COUNT; i++){
+        finishBox[i].occupied = false;
+    }
+}
+
+
 /*******************************************************************************
  *******************************************************************************
                         LOCAL FUNCTION DEFINITIONS

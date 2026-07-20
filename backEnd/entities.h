@@ -139,6 +139,14 @@ int frogInFinishBox(Frog *frog, FinishBox *finishBox);
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
+
+void resetFinishBoxes(FinishBox *finishBox);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+*/
 /******************************************************************************/
 
 #endif // _ENTITIES_H_
