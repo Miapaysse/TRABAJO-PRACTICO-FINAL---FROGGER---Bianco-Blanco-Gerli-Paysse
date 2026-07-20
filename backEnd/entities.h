@@ -56,7 +56,6 @@ typedef struct{
     int  x; //int para x negativos
     int  y;
     uint8_t  length;
-    //int height; 
     Speed speed;
     Direction direction;
     EntityType type;
