@@ -2,9 +2,9 @@
 CC := gcc
 CFLAGS := -g -Wall
 
-# Directorios del proyecto
-BACKEND_DIR := backend
-FRONTEND_DIR := frontend
+# Directorios del proyecto (Con las mayúsculas exactas de tus carpetas)
+BACKEND_DIR := backEnd
+FRONTEND_DIR := Frontend
 RASPI_DIR := $(FRONTEND_DIR)/raspi
 RASPI_LIBS_DIR := $(RASPI_DIR)/libs
 
@@ -38,7 +38,6 @@ BACKEND_OBJS := \
 	$(BACKEND_DIR)/top10.o
 
 # main.c se compila de forma diferente para cada plataforma.
-# Allegro necesita su wrapper de main en macOS; Raspberry no.
 MAIN_ALLEGRO_OBJ := main-allegro.o
 MAIN_RASPI_OBJ := main-raspi.o
 
@@ -162,7 +161,7 @@ $(FRONTEND_DIR)/allegroPlay.o: \
 # -----------------------------------------------------------------------------
 
 raspi: $(BACKEND_OBJS) $(MAIN_RASPI_OBJ) $(RASPI_OBJS) $(RASPI_LIB_OBJS)
-	$(CC) $(CFLAGS) $(BACKEND_OBJS) $(MAIN_RASPI_OBJ) $(RASPI_OBJS) $(RASPI_LIB_OBJS) -o raspi -lpthread
+	$(CC) $(CFLAGS) $(BACKEND_OBJS) $(MAIN_RASPI_OBJ) $(RASPI_OBJS) $(RASPI_LIB_OBJS) -o frogger -lpthread
 
 $(RASPI_DIR)/raspiFrontend.o: \
 	$(RASPI_DIR)/raspiFrontend.c \
@@ -194,7 +193,7 @@ raspi-libs:
 # -----------------------------------------------------------------------------
 
 clean:
-	rm -f frogger raspi $(MAIN_ALLEGRO_OBJ) $(MAIN_RASPI_OBJ)
+	rm -f frogger $(MAIN_ALLEGRO_OBJ) $(MAIN_RASPI_OBJ)
 	rm -f $(BACKEND_DIR)/*.o
 	rm -f $(FRONTEND_DIR)/*.o
 	rm -f $(RASPI_DIR)/*.o
