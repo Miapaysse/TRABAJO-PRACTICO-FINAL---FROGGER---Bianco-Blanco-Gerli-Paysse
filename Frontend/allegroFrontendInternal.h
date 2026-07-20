@@ -50,7 +50,7 @@ extern ALLEGRO_COLOR pink;
  * FUNCTION PROTOTYPES - allegroPlay.c
  ******************************************************************************/
 void drawZones(Game * p2game);
-void drawObstacles(Game * p2game);
+void drawEntities(Game * p2game);
 void drawFrog(Game * p2game);
 void drawScore(Game * p2game);
 void drawLevel(Game * p2game);
