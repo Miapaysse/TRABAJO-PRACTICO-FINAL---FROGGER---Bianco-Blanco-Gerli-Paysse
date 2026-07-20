@@ -181,6 +181,7 @@ static int occupyFinishBox(Game *game){
             if(allFinishBoxesOccupied(game)){
                 (game->frog).lastCheckpoint = NO_CHECKPOINT; //Cuando pasamos de nivel reseteamos el checkpoint de la rana para que no se quede en el ultimo
                 goToNextLevel(game);
+                resetFrog(&(game->frog));
             }
             else{
                 resetFrog(&(game->frog));
