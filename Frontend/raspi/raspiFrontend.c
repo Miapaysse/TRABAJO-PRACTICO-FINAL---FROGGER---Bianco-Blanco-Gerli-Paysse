@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <unistd.h>
-#include <unistd.h>
+#include "unistd.h"
 #include "disdrv.h"
 #include "joydrv.h"
 
@@ -16,6 +15,7 @@ joyinfo_t joy;
 //static int scores[10]; 
 static Input ultimo_input = NONE;
 int lastLive, showScore;
+LevelId lastLevel;
 
 void frontendInit(void) {
     joy_init();
@@ -24,6 +24,7 @@ void frontendInit(void) {
     disp_update();
 	showScore = 1;
 	lastLive = MAX_LIVES;
+	lastLevel = LEVEL_1;
 }
 
 void frontendDestroy(void) {
@@ -71,13 +72,13 @@ void frontendRender(Game * game) {
 
 			option = (game->state).menu.selected;
 			if(option == MENU_TITLE){
-				drawMSG(msgs_arr[MSG_HOME]);
+				drawMSG(msgsDisp[MSG_HOME]);
 			} else if(option == MENU_PLAY){
-				drawMSG(msgs_arr[MSG_PLAY]);
+				drawMSG(msgsDisp[MSG_PLAY]);
 			} else if(option == MENU_POINTS){
-				drawMSG(msgs_arr[MSG_GO_TOP_10]);
+				drawMSG(msgsDisp[MSG_GO_TOP_10]);
 			} else if(option == MENU_EXIT){
-				drawMSG(msgs_arr[MSG_EXIT]);
+				drawMSG(msgsDisp[MSG_EXIT]);
 			} else {
 				printf("Error en Menu");
 			}
@@ -87,7 +88,7 @@ void frontendRender(Game * game) {
 			option = (game->state).points.selected;			
             switch (option) {	
 				case POINTS_TITLE:
-				    drawMSG(msgs_arr[MSG_TOP_10]);
+				    drawMSG(msgsDisp[MSG_TOP_10]);
 				break;
 				
 				case POINT_1: case POINT_2: case POINT_3: case POINT_4: case POINT_5:
@@ -96,11 +97,11 @@ void frontendRender(Game * game) {
 				break;
 				
 				case POINTS_MENU:
-					drawMSG(msgs_arr[MSG_GO_HOME]);
+					drawMSG(msgsDisp[MSG_GO_HOME]);
 				break;
 				
 				case POINTS_EXIT:
-				    drawMSG(msgs_arr[MSG_EXIT]);
+				    drawMSG(msgsDisp[MSG_EXIT]);
 				break;
             }
 			break;
@@ -108,67 +109,75 @@ void frontendRender(Game * game) {
 		case PAUSED:
 			option = (game->state).paused.selected;
 			if(option == PAUSED_TITLE){
-				drawMSG(msgs_arr[MSG_PAUSE]);
+				drawMSG(msgsDisp[MSG_PAUSE]);
 			} else if(option == PAUSED_MENU){
-				drawMSG(msgs_arr[MSG_GO_HOME]);
+				drawMSG(msgsDisp[MSG_GO_HOME]);
 			} else if(option == PAUSED_PLAY){
-				drawMSG(msgs_arr[MSG_DESPAUSE]);
+				drawMSG(msgsDisp[MSG_DESPAUSE]);
 			} else if(option == PAUSED_EXIT){
-				drawMSG(msgs_arr[MSG_EXIT]);
+				drawMSG(msgsDisp[MSG_EXIT]);
 			} else {
 				printf("Error");
 			}
-			break;
-			
-			case PLAYING:
-				option = (game->state).id;
-				if(option == PAUSED){
-					drawMSG(msgs_arr[MSG_PAUSE]);
-				} else {
-					if (game->lives != lastLive) {
-						lastLive = game->lives;
-						drawMSG(msgs_arr[LIVE_LOSED]);
-						disp_update();
-						usleep(1000000); //pauso todo el programa por 1 seg
-					}
-					// Dibuja zonas
-					drawZone((game->level).rows);
-					
-					//Dibuja obstaculos y floaters
-					drawObstacles((game->entities).obstacles);
-					drawFloaters((game->entities).floaters);
-					
-					//Dibuja rana (titila)
-					drawFrog(&(game->frog), (game->timeNow % 1000) < 300);
+		break;
+		
+		case PLAYING:
+			option = (game->state).id;
+			if(option == PAUSED){
+				drawMSG(msgsDisp[MSG_PAUSE]);
+			} else {
+				if (game->lives != lastLive) {
+					lastLive = game->lives;
+					drawMSG(msgsDisp[LIVE_LOSED]);
+					disp_update();
+					usleep(1000000); //pauso todo el programa por 1 seg
+				}
 
+				if (game->level.id != lastLevel) {
+					lastLevel = game->level.id;
+					drawMSG(msgsDisp[NEXT_LEVEL]);
+					disp_update();
+					usleep(1000000);
 				}
-			break;
-			
-			case GAME_OVER:
-				option = (game->state).gameOver.selected;
-				if(option == GAME_OVER_TITLE){
-					drawMSG(msgs_arr[MSG_GAME_OVER]);
-					if (showScore){
-						showScore = 0;
-						disp_update();
-						usleep(500000); //pauso todo el programa por 1 seg
-						drawScore(-1, game->score);
-						disp_update();
-						usleep(1000000); //pauso todo el programa por 1 seg
-					}
-				} else if(option == GAME_OVER_MENU){
-					drawMSG(msgs_arr[MSG_GO_HOME]);
-				} else if(option == GAME_OVER_EXIT){
-					drawMSG(msgs_arr[MSG_EXIT]);
-				} else {
-					printf("Error");
+				// Dibuja zonas
+				drawZone((game->level).rows);
+				drawBoxes (game->level.finishBoxes, game->timeNow % (TIME_BLINK_BOX*2) < TIME_BLINK_BOX? D_ON : D_OFF);
+
+				//Dibuja obstaculos y floaters
+				drawObstacles((game->entities).obstacles);
+				drawFloaters((game->entities).floaters);
+				
+				//Dibuja rana (titila)
+				drawFrog(&(game->frog), game->timeNow % (TIME_BLINK_FROG*2) < TIME_BLINK_FROG? D_ON : D_OFF);
+
+			}
+		break;
+		
+		case GAME_OVER:
+			option = (game->state).gameOver.selected;
+			if(option == GAME_OVER_TITLE){
+				drawMSG(msgsDisp[MSG_GAME_OVER]);
+				if (showScore){
+					showScore = 0;
+					disp_update();
+					usleep(500000); //pauso todo el programa por 1 seg
+					drawScore(-1, game->score);
+					disp_update();
+					usleep(1000000); //pauso todo el programa por 1 seg
 				}
-			break;
+			} else if(option == GAME_OVER_MENU){
+				drawMSG(msgsDisp[MSG_GO_HOME]);
+			} else if(option == GAME_OVER_EXIT){
+				drawMSG(msgsDisp[MSG_EXIT]);
+			} else {
+				printf("Error");
+			}
+		break;
 
 		case VICTORY:
 			option = (game->state).victory.selected;
 			if(option == VICTORY_TITLE){
-				drawMSG(msgs_arr[MSG_YOU_WIN]);
+				drawMSG(msgsDisp[MSG_YOU_WIN]);
 				if (showScore){
 					showScore = 0;
 					disp_update();
@@ -178,10 +187,10 @@ void frontendRender(Game * game) {
 					usleep(2000000); //pauso todo el programa por 1 seg
 				}
 			} else if(option == VICTORY_MENU){
-				drawMSG(msgs_arr[MSG_GO_HOME]);
+				drawMSG(msgsDisp[MSG_GO_HOME]);
 				showScore = 1;
 			} else if(option == VICTORY_EXIT){
-				drawMSG(msgs_arr[MSG_EXIT]);
+				drawMSG(msgsDisp[MSG_EXIT]);
 			} else {
 				printf("Error");
 			}

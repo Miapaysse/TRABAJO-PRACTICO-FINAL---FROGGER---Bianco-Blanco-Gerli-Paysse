@@ -26,6 +26,10 @@ typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
 #define SCORE_ID_YCOOR 11
 #define SCORE_ID_XCOOR 3
 
+#define TIME_BLINK_FROG 750
+#define TIME_BLINK_BOX 900
+
+
 void frontendInit(void);
 Input frontendGetInput(void);
 void frontendRender(Game * game);
