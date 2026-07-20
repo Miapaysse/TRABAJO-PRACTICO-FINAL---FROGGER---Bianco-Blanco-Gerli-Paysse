@@ -26,7 +26,7 @@
 
  void drawZones(Game * p2game){
     
-    int i, y1, y2;
+    int i, j, y1, y2;
     int x1 = 0;
     int x2 = MAP_WIDTH*SCALE;
     ALLEGRO_COLOR road_colour = al_map_rgb(45, 45, 48);
@@ -82,20 +82,23 @@
                 flag_direction = ALLEGRO_FLIP_HORIZONTAL;
             }
 
-            if ((p2game -> entities.obstacles[i].type) == CAR){
-                al_draw_scaled_bitmap(car, 0, 0, al_get_bitmap_width(car), al_get_bitmap_height(car), x, y, al_get_bitmap_width(car)-space, al_get_bitmap_height(car)-space, flag_direction);
-            }
-            else { //es camión
-                al_draw_scaled_bitmap(truck, 0, 0, al_get_bitmap_width(truck), al_get_bitmap_height(truck), x, y, al_get_bitmap_width(truck)-4*space, al_get_bitmap_height(truck)-4*space, flag_direction);
+            
+            switch (p2game -> entities.obstacles[i].type){
+                case CAR:
+                    al_draw_scaled_bitmap(car, 0, 0, al_get_bitmap_width(car), al_get_bitmap_height(car), x, y, al_get_bitmap_width(car)-space, al_get_bitmap_height(car)-space, flag_direction);
+                    break;
+                case TRUCK:
+                    al_draw_scaled_bitmap(truck, 0, 0, al_get_bitmap_width(truck), al_get_bitmap_height(truck), x, y, al_get_bitmap_width(truck)-4*space, al_get_bitmap_height(truck)-4*space, flag_direction);
+                    break;
             }
         }
 
-    }
+    } 
 
     //Bucle generador de flotadores
     for (i=0 ; i<MAX_FLOATERS ; i++){
-        //Si la entidad está activa, la dibujamos en la pantalla
         
+        //Si la entidad está activa, la dibujamos en la pantalla
         if (p2game -> entities.floaters[i].active){
             x = (p2game -> entities.floaters[i].x)*SCALE;
             y = ROW((p2game -> entities.floaters[i].y))*SCALE;
@@ -108,11 +111,23 @@
             else {
                 flag_direction = ALLEGRO_FLIP_HORIZONTAL;
             }
-            //Dibujamos el tronco con el largo correspondiente
-            al_draw_scaled_bitmap(floater_trunk, 0, 0, al_get_bitmap_width(floater_trunk),
-                al_get_bitmap_height(floater_trunk), x, y, new_lenght, new_height,flag_direction );
-        }
 
+            switch (p2game -> entities.floaters[i].type){
+                case TRUNK_FLOATER:
+                    //Dibujamos el tronco con el largo correspondiente
+                    al_draw_scaled_bitmap(floater_trunk, 0, 0, al_get_bitmap_width(floater_trunk),
+                        al_get_bitmap_height(floater_trunk), x, y, new_lenght, new_height, flag_direction );
+                    break;
+                case LEAF:
+                    //Dibujamos la cantidad de hojitas correspondientes
+                    for (j=0 ; j<(p2game -> entities.floaters[i].length) ; j++){
+                        al_draw_scaled_bitmap(floater_leaf, 0, 0, al_get_bitmap_width(floater_leaf),
+                        al_get_bitmap_height(floater_leaf), x+j*SCALE, y, SCALE, SCALE, 0);
+                    }
+                    break;
+                default: break;
+
+            }
     }
 }
 
