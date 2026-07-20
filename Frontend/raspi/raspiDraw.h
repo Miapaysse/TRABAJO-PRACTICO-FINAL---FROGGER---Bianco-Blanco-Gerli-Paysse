@@ -36,9 +36,11 @@ void drawFloaters(const Entity floaters[]);
 void drawFrog(const Frog * frog, int blink);
 
 void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
-void drawScore(int idxScore, int score);
+void drawScore(int idxScore, uint16_t score);
 void drawBoxes (FinishBox boxes[], int blink);
 
 void showRank(const Top10Status status);
 void showScore(const uint16_t score);
+void showLevelNextLevel(const LevelId currentLevel, LevelId * lastLevel);
+void showLives(const uint8_t currentLives, uint8_t * lastLives);
 #endif

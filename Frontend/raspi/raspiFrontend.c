@@ -13,9 +13,8 @@
 #include "raspiDraw.h"
 
 joyinfo_t joy;
-//static int scores[10]; 
 static Input ultimo_input = NONE;
-int lastLive, showPlayer;
+uint8_t lastLive, showPlayer;
 LevelId lastLevel;
 
 void frontendInit(void) {
@@ -127,19 +126,10 @@ void frontendRender(Game * game) {
 			if(option == PAUSED){
 				drawMSG(msgsDisp[MSG_PAUSE]);
 			} else {
-				if (game->lives != lastLive) {
-					lastLive = game->lives;
-					drawMSG(msgsDisp[LIVE_LOSED]);
-					disp_update();
-					usleep(1000000); //pauso todo el programa por 1 seg
-				}
+				showLives(game->lives, &lastLive);
 
-				if (game->level.id != lastLevel) {
-					lastLevel = game->level.id;
-					drawMSG(msgsDisp[NEXT_LEVEL]);
-					disp_update();
-					usleep(1500000);
-				}
+				showLevelNextLevel(game->level.id, &lastLevel);
+				
 				// Dibuja zonas
 				drawZone((game->level).rows);
 				drawBoxes (game->level.finishBoxes, game->timeNow % (TIME_BLINK_BOX*2) < TIME_BLINK_BOX? D_ON : D_OFF);
@@ -161,11 +151,12 @@ void frontendRender(Game * game) {
 				if (showPlayer){
 					showPlayer = 0;
 					disp_update();
-					usleep(DISPLAY_MENU_TIME);
+					usleep(DISPLAY_DEFAULT_TIME);
 					
 					showRank(game->top10.status);
 					
 					showScore(game->score);
+					lastLevel = game->level.id;
 				}
 			} else if(option == GAME_OVER_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);
@@ -183,11 +174,12 @@ void frontendRender(Game * game) {
 				if (showPlayer){
 					showPlayer = 0;
 					disp_update();
-					usleep(DISPLAY_MENU_TIME); 
+					usleep(DISPLAY_DEFAULT_TIME);
 					
 					showRank(game->top10.status);
 					
 					showScore(game->score);
+					lastLevel = game->level.id;
 				}
 			} else if(option == VICTORY_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);

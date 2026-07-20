@@ -36,7 +36,7 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 		},
 		{//Go to home 
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
-			0b1111111011111111, 0b1111110001111111, 0b1111100000111111, 0b1111000000111111,
+			0b1111111011111111, 0b1111110001111111, 0b1111100000111111, 0b1111000000011111,
 			0b1110000000001111, 0b1111001110011111, 0b1111001110011111, 0b1111001110011111,
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
@@ -136,21 +136,21 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111,
 			0b1111111111111111
 		},
-		{ //YOU'RE TOP 10
+		{ //U'RE IN TOP 10
 			0b1111111111111111,
+			0b1101010100010001,
+			0b1101010101010111,
+			0b1101011100010011,
+			0b1101011100110111,
+			0b1100011101010001,
+			0b1111111111011111,
+			0b1110001011011111,
+			0b1111011001011111,
+			0b1110001010011111,
 			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111110000111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
+			0b0001001001101000,
+			0b1011001001101010,
+			0b1011001011101000,
 			0b1111111111111111,
 			0b1111111111111111
 		},
@@ -214,7 +214,7 @@ void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){
 	}
 }
 
-void drawScore(int idxScore, int score) {
+void drawScore(int idxScore, uint16_t score) {
 	int f, c, d, id;
 
 	for (f = 0; f <= MAP_HEIGHT; f++) {
@@ -333,7 +333,6 @@ void drawBoxes (FinishBox boxes[], int blink){
 			passDrawing(x, 1, blink);
 		}
 	}
-	//printf("\nListo\n");
 }
 
 void drawFrog(const Frog * frog, int blink) {
@@ -352,12 +351,31 @@ void showRank(const Top10Status  status){
 	if(status == TOP10_CHANGED){
 		drawMSG(msgsDisp[MY_RANKING]);
 		disp_update();
-		usleep(DISPLAY_INFO_TIME);
+		usleep(DISPLAY_RANK_TIME);
 	} 
 }
 
 void showScore(const uint16_t score){
 	drawScore(-1, score);
 	disp_update();
-	usleep(DISPLAY_INFO_TIME);
+	usleep(DISPLAY_SCORE_TIME);
+}
+
+
+void showLevelNextLevel(const LevelId currentLevel, LevelId * lastLevel){
+	if (currentLevel != *lastLevel) {
+		*lastLevel = currentLevel;
+		drawMSG(msgsDisp[NEXT_LEVEL]);
+		disp_update();
+		usleep(DISPLAY_DEFAULT_TIME);
+	}
+}
+
+void showLives(const uint8_t currentLives, uint8_t * lastLives){
+	if (currentLives != *lastLives) {
+		*lastLives = currentLives;
+		drawMSG(msgsDisp[LIVE_LOSED]);
+		disp_update();
+		usleep(DISPLAY_DEFAULT_TIME); //pauso todo el programa por 1 seg
+	}
 }
