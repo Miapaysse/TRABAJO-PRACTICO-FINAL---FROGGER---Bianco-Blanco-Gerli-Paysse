@@ -41,6 +41,10 @@
  
  // +ej: extern unsigned int anio_actual;+
  
+ typedef struct {
+  Top10Status status;
+  int topScores[TOP10_SIZE];
+ } Top10_t;
  
  /*******************************************************************************
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE

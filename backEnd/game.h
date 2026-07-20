@@ -15,6 +15,7 @@
 #include "levels.h"
 #include <time.h>
 #include <stdint.h>
+#include "top10.h"
 
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
@@ -95,9 +96,9 @@ typedef struct Game {
 
    GameEntities entities;
 
-   uint8_t score;
+   uint16_t score;
    
-   int scoresTop10[TOP10_SIZE]; // Array to hold the top 10 scores
+   Top10_t top10;
 
    uint8_t  lives;
 

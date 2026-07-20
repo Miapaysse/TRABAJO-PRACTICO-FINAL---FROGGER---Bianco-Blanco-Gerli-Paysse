@@ -21,6 +21,7 @@ enum msgs {
 	MSG_YOU_WIN,
 	LIVE_LOSED,
 	NEXT_LEVEL,
+	MY_RANKING,
 	MSG_MAX_MENUS
 };
 
@@ -38,4 +39,6 @@ void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
 void drawScore(int idxScore, int score);
 void drawBoxes (FinishBox boxes[], int blink);
 
+void showRank(const Top10Status status);
+void showScore(const uint16_t score);
 #endif

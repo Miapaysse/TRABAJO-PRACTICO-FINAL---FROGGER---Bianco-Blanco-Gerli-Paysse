@@ -68,6 +68,10 @@ void updateGame(Game * game, Input input){
 
             checkLevel(game);
 
+            //Si estaba jugando y gano o perdio
+            if (game->state.id == GAME_OVER || game->state.id == VICTORY) {
+                game->top10.status = getTop10Status(game->top10.topScores, game->score);
+            }
         break;
         case PAUSED:
             processInputPaused(game, input);
@@ -98,14 +102,10 @@ void updateGame(Game * game, Input input){
 
     game->score=MIN_SCORE;
 
-    //VER BIEN ESTOOO no se si hay que sacar este for o no por los eerrores de archivso, probar
-    /*for(int i=0; i<TOP10_SIZE; i++){
-        game->scoresTop10[i] = MIN_SCORE;
-    }*/
     game->lives=MAX_LIVES;
     game->lastEntityUpdate = clock();
     
-    getTop10Status(game->scoresTop10, game->score);
+    game->top10.status = getTop10Status(game->top10.topScores, game->score);
 
     game->state.id = MENU;
     game->state.menu.selected = MENU_TITLE;
@@ -148,7 +148,7 @@ static void processInputMenu(Game * game, Input input){
                     game->state.id = POINTS;
                 break;
                 case MENU_EXIT:
-                    getTop10Status(game->scoresTop10, game->score);
+                    game->top10.status = getTop10Status(game->top10.topScores, game->score);
                     game->state.id = EXIT;
                 break;
                 default:
@@ -173,14 +173,14 @@ void processInputPaused(Game *game, Input input){
         case SELECT:
             switch ( (game->state.paused).selected ){
                 case PAUSED_MENU: 
-                    getTop10Status(game->scoresTop10, game->score);
+                    game->top10.status = getTop10Status(game->top10.topScores, game->score);
                     game->state.id = MENU;
                 break;
                 case PAUSED_PLAY:
                     game->state.id = PLAYING; //////////////ANALIZAR TEMA VIDAS REPLAY
                 break;
                 case PAUSED_EXIT:
-                    getTop10Status(game->scoresTop10, game->score);
+                    game->top10.status = getTop10Status(game->top10.topScores, game->score);
                     game->state.id = EXIT;
                 break;
             }
@@ -206,11 +206,9 @@ void processInputGameOver(Game *game, Input input){
             case SELECT:
                 switch ( game->state.gameOver.selected ){
                     case GAME_OVER_MENU: 
-                        getTop10Status(game->scoresTop10, game->score);
                         game->state.id = MENU;
                     break;
                     case GAME_OVER_EXIT:
-                        getTop10Status(game->scoresTop10, game->score);
                         game->state.id = EXIT;
                     break;
                 }
@@ -236,11 +234,9 @@ void processInputVictory(Game *game, Input input){
             case SELECT:
                 switch ( (game->state.victory).selected ){
                     case VICTORY_MENU: 
-                        getTop10Status(game->scoresTop10, game->score);
                         game->state.id = MENU;
                     break;
                     case VICTORY_EXIT:
-                        getTop10Status(game->scoresTop10, game->score);
                         game->state.id = EXIT;
                     break;
                 }
@@ -274,7 +270,7 @@ void processInputPoints(Game * game, Input input){
                     break;
 
                     case POINTS_EXIT:
-                    getTop10Status(game->scoresTop10, game->score);
+                        game->top10.status = getTop10Status(game->top10.topScores, game->score);
                         game->state.id = EXIT;
                     break;
                 }

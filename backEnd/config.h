@@ -32,7 +32,7 @@
 
 #define MAX_FLOATERS 20
 
-#define ENTITY_UPDATE_PERIOD 0.10
+#define ENTITY_UPDATE_PERIOD 0.25
 
 //FROG SETTINGS//////////////////////////////////////////////////////////
 

@@ -29,6 +29,9 @@ typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
 #define TIME_BLINK_FROG 750
 #define TIME_BLINK_BOX 900
 
+#define DISPLAY_MENU_TIME 800000
+#define DISPLAY_INFO_TIME 1000000
+
 
 void frontendInit(void);
 Input frontendGetInput(void);

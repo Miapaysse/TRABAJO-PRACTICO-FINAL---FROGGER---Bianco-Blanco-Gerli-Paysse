@@ -8,13 +8,14 @@
 #include "game.h"
 #include "entities.h"
 #include "levels.h"
+#include "top10.h"
 #include "raspiFrontend.h"
 #include "raspiDraw.h"
 
 joyinfo_t joy;
 //static int scores[10]; 
 static Input ultimo_input = NONE;
-int lastLive, showScore;
+int lastLive, showPlayer;
 LevelId lastLevel;
 
 void frontendInit(void) {
@@ -22,7 +23,7 @@ void frontendInit(void) {
     disp_init();
     disp_clear();
     disp_update();
-	showScore = 1;
+	showPlayer = 1;
 	lastLive = MAX_LIVES;
 	lastLevel = LEVEL_1;
 }
@@ -66,8 +67,8 @@ void frontendRender(Game * game) {
 		case MENU:
 
 			//Inicializo aca variables para mostras mensajes temporales en display
-			showScore = 1;
-			// si estas en menu signica que volviste a empezar el juego, por lo tanto se resetea el showScore
+			showPlayer = 1;
+			// si estas en menu signica que volviste a empezar el juego, por lo tanto se resetea el showPlayer
 			lastLive = MAX_LIVES;
 
 			option = (game->state).menu.selected;
@@ -93,7 +94,7 @@ void frontendRender(Game * game) {
 				
 				case POINT_1: case POINT_2: case POINT_3: case POINT_4: case POINT_5:
 				case POINT_6: case POINT_7: case POINT_8: case POINT_9: case POINT_10:
-				    drawScore(option-POINT_1, (game->scoresTop10)[option-POINT_1]);
+				    drawScore(option-POINT_1, (game->top10.topScores)[option-POINT_1]);
 				break;
 				
 				case POINTS_MENU:
@@ -137,7 +138,7 @@ void frontendRender(Game * game) {
 					lastLevel = game->level.id;
 					drawMSG(msgsDisp[NEXT_LEVEL]);
 					disp_update();
-					usleep(1000000);
+					usleep(1500000);
 				}
 				// Dibuja zonas
 				drawZone((game->level).rows);
@@ -157,13 +158,14 @@ void frontendRender(Game * game) {
 			option = (game->state).gameOver.selected;
 			if(option == GAME_OVER_TITLE){
 				drawMSG(msgsDisp[MSG_GAME_OVER]);
-				if (showScore){
-					showScore = 0;
+				if (showPlayer){
+					showPlayer = 0;
 					disp_update();
-					usleep(500000); //pauso todo el programa por 1 seg
-					drawScore(-1, game->score);
-					disp_update();
-					usleep(1000000); //pauso todo el programa por 1 seg
+					usleep(DISPLAY_MENU_TIME);
+					
+					showRank(game->top10.status);
+					
+					showScore(game->score);
 				}
 			} else if(option == GAME_OVER_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);
@@ -178,17 +180,17 @@ void frontendRender(Game * game) {
 			option = (game->state).victory.selected;
 			if(option == VICTORY_TITLE){
 				drawMSG(msgsDisp[MSG_YOU_WIN]);
-				if (showScore){
-					showScore = 0;
+				if (showPlayer){
+					showPlayer = 0;
 					disp_update();
-					usleep(1000000); //pauso todo el programa por 1 seg
-					drawScore(-1, game->score);
-					disp_update();
-					usleep(2000000); //pauso todo el programa por 1 seg
+					usleep(DISPLAY_MENU_TIME); 
+					
+					showRank(game->top10.status);
+					
+					showScore(game->score);
 				}
 			} else if(option == VICTORY_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);
-				showScore = 1;
 			} else if(option == VICTORY_EXIT){
 				drawMSG(msgsDisp[MSG_EXIT]);
 			} else {
@@ -202,3 +204,4 @@ void frontendRender(Game * game) {
 
 	disp_update();
 }
+

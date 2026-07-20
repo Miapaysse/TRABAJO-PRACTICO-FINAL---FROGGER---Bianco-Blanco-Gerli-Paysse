@@ -134,7 +134,25 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111,
 			0b1111111111111111,
 			0b1111111111111111
-		}
+		},
+		{ //YOU'RE TOP 10
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111110000111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111,
+			0b1111111111111111
+		},
 
 };
 
@@ -325,4 +343,20 @@ void drawFrog(const Frog * frog, int blink) {
 	} else {
 		passDrawing(x_disp, y_disp, D_OFF);
 	}
+}
+
+
+void showRank(const Top10Status  status){
+	printf("%d", status);
+	if(status == TOP10_CHANGED){
+		drawMSG(msgsDisp[MY_RANKING]);
+		disp_update();
+		usleep(DISPLAY_INFO_TIME);
+	} 
+}
+
+void showScore(const uint16_t score){
+	drawScore(-1, score);
+	disp_update();
+	usleep(DISPLAY_INFO_TIME);
 }
