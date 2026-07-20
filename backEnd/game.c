@@ -105,7 +105,8 @@ void updateGame(Game * game, Input input){
     game->lives=MAX_LIVES;
     game->lastEntityUpdate = clock();
     
-    game->top10.status = getTop10Status(game->top10.topScores, game->score);
+    // Al iniciar solo cargamos el ranking existente; no guardamos un puntaje 0.
+    game->top10.status = loadTop10(game->top10.topScores);
 
     game->state.id = MENU;
     game->state.menu.selected = MENU_TITLE;

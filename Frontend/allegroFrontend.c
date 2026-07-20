@@ -249,7 +249,7 @@ static void loadFiles (void){
     pause_img =al_load_bitmap("pause.png");
     heart = al_load_bitmap("heart.png");
     safe_box = al_load_bitmap("safe_box.png");
-    leaf = al_load_bitmap("floater_leaf.png");
+    floater_leaf = al_load_bitmap("floater_leaf.png");
 
     very_big_font = al_load_ttf_font("Tiny5-Regular.ttf", 200, 0);
     if(very_big_font == NULL){

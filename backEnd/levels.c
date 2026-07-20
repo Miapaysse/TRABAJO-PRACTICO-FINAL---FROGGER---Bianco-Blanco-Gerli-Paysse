@@ -239,6 +239,10 @@ int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en
                 return 0;
             break;
 
+            case LEVEL_3:
+                game->state.id = VICTORY;
+                return 0;
+
             default:
                 return 0;
         }

@@ -50,5 +50,6 @@
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
   ******************************************************************************/
 Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore);
+Top10Status loadTop10(int topScores[TOP10_SIZE]);
  #endif 
  

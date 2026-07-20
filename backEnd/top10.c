@@ -24,7 +24,7 @@
 
 static void sortDescending(int topScores[TOP10_SIZE]);
 
-static Top10Status LoadTop10(int topScores[TOP10_SIZE]);
+Top10Status loadTop10(int topScores[TOP10_SIZE]);
 
 /**
  * @brief Carga el top 10 desde TOP10_FILE. Si el archivo no existe o esta
@@ -63,7 +63,7 @@ static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore);
  ******************************************************************************/
 
 Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore){
-    Top10Status status = LoadTop10(topScores); //Carga archivo
+    Top10Status status = loadTop10(topScores); //Carga archivo
     if (status == TOP10_OK || status == TOP10_FILE_NOT_FOUND){ // Con cualquiera de estos status se puede devolver algo
         Top10Status rankingChanged = UpdateTop10(topScores, newScore); //Todo OK, analiza si jugador ingreso a top 10
         status = SaveTop10(topScores); // Vemos si se puede guardar el archivo
@@ -77,7 +77,7 @@ Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore){
     return status; // Hubo un error irreparable al intentar habrir el archivo
 }
 
-static Top10Status LoadTop10(int topScores[TOP10_SIZE]){
+Top10Status loadTop10(int topScores[TOP10_SIZE]){
    
     if (topScores == NULL){
         return TOP10_READ_ERROR;
@@ -187,6 +187,5 @@ static void sortDescending(int topScores[TOP10_SIZE]){
 }
  
 /******************************************************************************/
-
 
 
