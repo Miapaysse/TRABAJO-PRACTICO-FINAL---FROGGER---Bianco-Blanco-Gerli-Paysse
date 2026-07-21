@@ -250,23 +250,23 @@ void frontendDestroy(void){
   ******************************************************************************/
 
 static void loadFiles (void){
-    floater_trunk = al_load_bitmap("floater_trunk.png");
-    car = al_load_bitmap("car.png");
-    truck = al_load_bitmap("truck.png");
-    frog = al_load_bitmap("frog.png");
-    skull = al_load_bitmap("skull.png");
-    trophy = al_load_bitmap("trophy.png");
-    pause_img =al_load_bitmap("pause.png");
-    heart = al_load_bitmap("heart.png");
-    safe_box = al_load_bitmap("safe_box.png");
-    floater_leaf = al_load_bitmap("floater_leaf.png");
+    floater_trunk = al_load_bitmap("frontend/allegro/floater_trunk.png");
+    car = al_load_bitmap("frontend/allegro/car.png");
+    truck = al_load_bitmap("frontend/allegro/truck.png");
+    frog = al_load_bitmap("frontend/allegro/frog.png");
+    skull = al_load_bitmap("frontend/allegro/skull.png");
+    trophy = al_load_bitmap("frontend/allegro/trophy.png");
+    pause_img =al_load_bitmap("frontend/allegro/pause.png");
+    heart = al_load_bitmap("frontend/allegro/heart.png");
+    safe_box = al_load_bitmap("frontend/allegro/safe_box.png");
+    floater_leaf = al_load_bitmap("frontend/allegro/floater_leaf.png");
 
-    frogdies = al_load_sample("frog_dies.wav");
+    frogdies = al_load_sample("frontend/allegro/frog_dies.wav");
 
-    very_big_font = al_load_ttf_font("Tiny5-Regular.ttf", 200, 0);
-    big_font = al_load_ttf_font("Tiny5-Regular.ttf", 110, 0);
-    medium_font = al_load_ttf_font("Tiny5-Regular.ttf", 60, 0);
-    small_font = al_load_ttf_font("Tiny5-Regular.ttf", 40, 0);
+    very_big_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 200, 0);
+    big_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 110, 0);
+    medium_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 60, 0);
+    small_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 40, 0);
     
 }
 

@@ -95,7 +95,7 @@ void updateGame(Game * game, Input input){
     }
  }
 
- void gameInit(Game* game){
+ int gameInit(Game* game){
     if(game != NULL){
         game->timeNow = clock();
         
