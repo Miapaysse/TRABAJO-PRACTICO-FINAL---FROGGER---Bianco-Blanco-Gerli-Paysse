@@ -22,6 +22,13 @@ typedef enum{
     DIR_RIGHT
 } Direction_t;
 
+typedef enum {
+    FROG_UP,
+    FROG_DOWN,
+    FROG_LEFT,
+    FROG_RIGHT
+} FrogDirection_t;
+
 typedef enum{
     SLOW=1,
     MEDIUM_SPEED,
@@ -48,6 +55,7 @@ typedef struct{
     int  y;
     Speed_t speed;
     Direction_t direction;
+    FrogDirection_t frogDirection;
     CheckpointId_t lastCheckpoint;
 } Frog_t;
 

@@ -26,7 +26,7 @@
 
  void drawZones(Game_t * p2game){
     
-    int i, j, y1, y2;
+    int i, y1, y2;
     int x1 = 0;
     int x2 = MAP_WIDTH*SCALE;
     ALLEGRO_COLOR road_colour = al_map_rgb(45, 45, 48);
@@ -136,7 +136,33 @@
     int x = (p2game -> frog.x)*SCALE;
     int y = ROW((p2game -> frog.y))*SCALE;
     int space = 35;
-    al_draw_scaled_bitmap (frog, 0, 0,al_get_bitmap_width(frog), al_get_bitmap_height(frog), x, y, al_get_bitmap_width(frog)-space, al_get_bitmap_height(frog)-space, 0);
+
+    int width = al_get_bitmap_width(frog);
+    int height = al_get_bitmap_height(frog);
+
+    int draw_width = width - space;
+    int draw_height = height - space;
+
+    float angle = 0;
+
+    switch (p2game->frog.frogDirection) {
+        case FROG_UP:
+            angle = 0;
+            break;
+
+        case FROG_RIGHT:
+            angle = ALLEGRO_PI / 2;
+            break;
+
+        case FROG_DOWN:
+            angle = ALLEGRO_PI;
+            break;
+
+        case FROG_LEFT:
+            angle = -ALLEGRO_PI / 2;
+            break;
+    }
+    al_draw_scaled_rotated_bitmap(frog, width / 2.0f, height / 2.0f, x + draw_width / 2.0f, y + draw_height / 2.0f, draw_width / (float)width, draw_height / (float)height, angle, 0 );
 }
 
  void drawScore(Game_t* p2game){
