@@ -58,19 +58,19 @@ int moveFrog(Frog_t * frog , Input_t input){ //Cambiamos las coordenadas de la r
   else{
       switch(input){
         case UP:
-        frog->frogDirection = FROG_UP;
+        frog->frogOrientation = FROG_UP;
           (frog->y)++;
         break;
         case DOWN:
-          frog->frogDirection = FROG_DOWN;
+          frog->frogOrientation = FROG_DOWN;
           (frog->y)--;
         break;
         case RIGHT:
-          frog->frogDirection = FROG_RIGHT;
+          frog->frogOrientation = FROG_RIGHT;
           (frog->x)++;
         break;
         case LEFT:
-          frog->frogDirection = FROG_LEFT;
+          frog->frogOrientation = FROG_LEFT;
           (frog->x)--;
         break;
         default:
@@ -102,7 +102,7 @@ int resetFrog(Frog_t * frog){
   else{
     (frog->y)=FROG_Y0; //Ubicamos la rana en sus coordenadas iniciales, reseteamos su ultima zona segura y su velocidad
     (frog->x)=FROG_X0; 
-    frog->frogDirection = FROG_UP;
+    frog->frogOrientation = FROG_UP;
     frog->speed = 0;
     return 0;
   }
