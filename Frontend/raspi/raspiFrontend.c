@@ -14,14 +14,17 @@
 
 joyinfo_t joy;
 static Input ultimo_input = NONE;
-uint8_t lastLive, showPlayer;
-LevelId lastLevel;
+
+static uint8_t showPlayer = 1;
+static uint8_t lastLive = MAX_LIVES;
+static LevelId lastLevel = LEVEL_1;
 
 void frontendInit(void) {
     joy_init();
     disp_init();
     disp_clear();
     disp_update();
+
 	showPlayer = 1;
 	lastLive = MAX_LIVES;
 	lastLevel = LEVEL_1;
@@ -193,7 +196,7 @@ void frontendRender(Game * game) {
 		default:
 			break;
 	}
-
+	
 	disp_update();
 }
 
