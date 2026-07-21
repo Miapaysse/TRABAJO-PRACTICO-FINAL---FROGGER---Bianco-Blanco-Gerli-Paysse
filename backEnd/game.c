@@ -31,6 +31,7 @@ static void processInputGameOver(Game_t * game, Input_t input);
 static void processInputVictory(Game_t * game, Input_t input);
 static void processInputPoints(Game_t * game, Input_t input);
 static int processInputMenu(Game_t * game, Input_t input);
+static int checkTop10Status(Top10Status_t status);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -57,7 +58,7 @@ int updateGame(Game_t * game, Input_t input){
     game->timeNow = clock();
     switch ((game->state).id){
         case MENU: 
-            processInputMenu(game, input);
+            TRY(processInputMenu(game, input));
         break;
         case PLAYING:
             processInputPlaying(&(game->state),input, &(game->frog));
@@ -71,7 +72,7 @@ int updateGame(Game_t * game, Input_t input){
             //Si estaba jugando y gano o perdio
             if (game->state.id == GAME_OVER || game->state.id == VICTORY) {
                 game->top10.status = getTop10Status(game->top10.topScores, game->score);
-                TRY(game->top10.status);
+                checkTop10Status(game->top10.status);
             }
             
         break;
@@ -111,7 +112,7 @@ int updateGame(Game_t * game, Input_t input){
         
         // Al iniciar solo cargamos el ranking existente; no guardamos un puntaje 0.
         game->top10.status = loadTop10(game->top10.topScores);
-        TRY(game->top10.status);
+        checkTop10Status(game->top10.status);
 
         game->state.id = MENU;
         game->state.menu.selected = MENU_TITLE;
@@ -131,14 +132,14 @@ int updateGame(Game_t * game, Input_t input){
 }
 
 ///////////////////////////////////////////MENUS///////////////
-void menuPrevious(MenuState_t *menu){
+static void menuPrevious(MenuState_t *menu){
     if(menu->selected == 0)
         menu->selected = menu->optionCount - 1;
     else
         menu->selected--;
 }
 
-void menuNext(MenuState_t *menu){
+static void menuNext(MenuState_t *menu){
     menu->selected++;
 
     if(menu->selected >= menu->optionCount)
@@ -157,7 +158,7 @@ static int processInputMenu(Game_t * game, Input_t input){ //aca se procesa el i
                 break;
                 case MENU_POINTS: //aca se carga el top10 y se cambia el estado a POINTS
                     game->top10.status = loadTop10(game->top10.topScores);
-                    TRY(game->top10.status);
+                    checkTop10Status(game->top10.status);
                     game->state.id = POINTS;
                 break;
                 case MENU_EXIT:
@@ -336,7 +337,19 @@ void processInputPlaying(GameState_t * state, Input_t input, Frog_t * frog){
  *******************************************************************************
  ******************************************************************************/
 
-
-
+static int checkTop10Status(Top10Status_t status) {
+    switch (status) {
+        case TOP10_FILE_NOT_FOUND:
+        case TOP10_READ_ERROR:
+        case TOP10_WRITE_ERROR:
+            return ERR_FILE_TOP10_FAILED;
+            
+        case TOP10_OK:
+        case TOP10_NO_CHANGE:
+        case TOP10_CHANGED:
+        default:
+            return 0; // O el macro/valor que uses en tu frontend para indicar "sin errores"
+    }
+}
 /******************************************************************************/
  
