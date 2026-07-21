@@ -165,49 +165,6 @@ int arrivedAtFinishLine(uint8_t  y){
     return 0;
 }
 
-static int occupyFinishBox(Game *game){
-    int i;
-
-    for(i = 0; i < FINISH_BOX_COUNT; i++){
-
-        FinishBox *box = &(game->level.finishBoxes[i]);
-
-        if(!box->occupied && frogInFinishBox(&(game->frog), box)){
-
-            box->occupied = true;
-
-            game->score += POINT_WEIGHT;
-
-            if(allFinishBoxesOccupied(game)){
-                (game->frog).lastCheckpoint = NO_CHECKPOINT; //Cuando pasamos de nivel reseteamos el checkpoint de la rana para que no se quede en el ultimo
-                goToNextLevel(game);
-                resetFrog(&(game->frog));
-            }
-            else{
-                resetFrog(&(game->frog));
-            }
-
-            return 1;
-        }
-    }
-
-    /* Llegó a la meta pero no cayó en ninguna casilla libre */
-    frogDies(&(game->frog), &(game->lives), &(game->state.id));
-
-    return 0;
-}
-
-static int allFinishBoxesOccupied(Game *game){
-    int i;
-
-    for(i = 0; i < FINISH_BOX_COUNT; i++){
-        if(!game->level.finishBoxes[i].occupied){
-            return 0;   // Encontramos una libre
-        }
-    }
-
-    return 1;   // Todas están ocupadas
-}
 
 int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en una casilla libre y la ocupamos, si no esta libre la rana muere
     if(game != NULL){
@@ -384,7 +341,49 @@ static int checkLevelEntities(Level* level){ //Chequeamos que no nos excedimos d
 
 }
 
+static int occupyFinishBox(Game *game){
+    int i;
 
+    for(i = 0; i < FINISH_BOX_COUNT; i++){
+
+        FinishBox *box = &(game->level.finishBoxes[i]);
+
+        if(!box->occupied && frogInFinishBox(&(game->frog), box)){
+
+            box->occupied = true;
+
+            game->score += POINT_WEIGHT;
+
+            if(allFinishBoxesOccupied(game)){
+                (game->frog).lastCheckpoint = NO_CHECKPOINT; //Cuando pasamos de nivel reseteamos el checkpoint de la rana para que no se quede en el ultimo
+                goToNextLevel(game);
+                resetFrog(&(game->frog));
+            }
+            else{
+                resetFrog(&(game->frog));
+            }
+
+            return 1;
+        }
+    }
+
+    /* Llegó a la meta pero no cayó en ninguna casilla libre */
+    frogDies(&(game->frog), &(game->lives), &(game->state.id));
+
+    return 0;
+}
+
+static int allFinishBoxesOccupied(Game *game){
+    int i;
+
+    for(i = 0; i < FINISH_BOX_COUNT; i++){
+        if(!game->level.finishBoxes[i].occupied){
+            return 0;   // Encontramos una libre
+        }
+    }
+
+    return 1;   // Todas están ocupadas
+}
 
 /******************************************************************************/
  

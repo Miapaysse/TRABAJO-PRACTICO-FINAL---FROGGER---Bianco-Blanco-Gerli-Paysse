@@ -95,7 +95,7 @@ void updateGame(Game * game, Input input){
     }
  }
 
- void gameInit(Game* game){
+ int gameInit(Game* game){
     if(game != NULL){
         game->timeNow = clock();
         
@@ -119,6 +119,8 @@ void updateGame(Game * game, Input input){
         game->state.gameOver = (MenuState){ GAME_OVER_TITLE, GAME_OVER_COUNT };
         game->state.victory = (MenuState){ VICTORY_TITLE, VICTORY_COUNT };
         game->state.points = (MenuState){ POINTS_TITLE, POINTS_COUNT };
+
+        return 0;
     }
     else{
         return ERR_INVALID_GAME_POINTER;

@@ -32,7 +32,7 @@ static double getElapsedEntityTime(Game *game);
 static void resetEntityTimer(Game *game);
 static int entityUpdateRequired(Game *game);
 static void moveRow(Row *row);
-static int wrapEntity(Entity *entity);
+static void wrapEntity(Entity *entity);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -238,11 +238,8 @@ static void moveRow(Row *row){
     }
 }
 
-static int wrapEntity(Entity *entity){
-  if(entity == NULL){
-    return ERR_INVALID_ENTITY_POINTER;
-  }
-  else{
+static void wrapEntity(Entity *entity){
+
     int width = MAP_WIDTH + 1;
 
     while (entity->x >= width) {
@@ -251,7 +248,7 @@ static int wrapEntity(Entity *entity){
     while (entity->x < 0) {
         entity->x += width;
     }
-  }
+
 }
 
 /******************************************************************************/

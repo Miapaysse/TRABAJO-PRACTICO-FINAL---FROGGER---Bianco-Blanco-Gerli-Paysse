@@ -54,9 +54,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define ISEVEN(x) ((x)%2==0)
 ////////////////////////////////////////////////////////////////
+
 typedef enum{
   ERR_MAX_OBSTACLES_EXCEEDED=2,
   ERR_MAX_FLOATERS_EXCEEDED, 
+
   ERR_INVALID_GAME_POINTER, 
   ERR_INVALID_LEVEL_POINTER,
   ERR_INVALID_FROG_POINTER,
@@ -68,10 +70,10 @@ typedef enum{
   ERR_INVALID_ROW_POINTER,
   ERR_INVALID_ID_POINTER,
   ERR_INVALID_FINISHBOX_POINTER,
+
   ERR_INVALID_FLOATER_COUNT,
   ERR_INVALID_OBSTACLE_COUNT
-}ErrorType;
-
+}ErrorCode_t;
 
 typedef enum{ //con esto aca funco entites.h con rapsi
    UP,

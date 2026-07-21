@@ -116,8 +116,6 @@ typedef struct Game {
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: extern unsigned int anio_actual;+
-
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -132,7 +130,7 @@ typedef struct Game {
  * @return Descripcion valor que devuelve
 */
 
- void gameInit(Game*game);
+ int gameInit(Game*game);
  /**
  * @brief TODO: initialize the game
  * @param param1 Descripcion parametro 1
