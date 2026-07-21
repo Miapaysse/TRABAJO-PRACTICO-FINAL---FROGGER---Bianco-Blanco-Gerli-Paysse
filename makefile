@@ -3,8 +3,8 @@ CC := gcc
 CFLAGS := -g -Wall
 
 # Directorios del proyecto (Con las mayúsculas exactas de tus carpetas)
-BACKEND_DIR := backEnd
-FRONTEND_DIR := Frontend
+BACKEND_DIR := backend
+FRONTEND_DIR := frontend
 ALLEGRO_DIR := $(FRONTEND_DIR)/allegro
 RASPI_DIR := $(FRONTEND_DIR)/raspi
 RASPI_LIBS_DIR := $(RASPI_DIR)/libs
