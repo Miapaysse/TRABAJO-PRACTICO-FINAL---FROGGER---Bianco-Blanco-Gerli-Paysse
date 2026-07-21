@@ -100,6 +100,34 @@ const char *errorMessage(ErrorCode_t error){
             return "Maximum number of obstacles exceeded";
         break;
         
+                case ERR_ALLEGRO_INIT_FAILED:
+            return "Unable to start allegro";
+        break;
+        case ERR_DISPLAY_INIT_FAILED:
+            return "Unable to start display";
+        case ERR_INIT_TTF_FAILED:
+            return "Unable to start ttf addon";
+
+        case ERR_KEYBOARD_INIT_FAILED:
+            return "Unable to show display";
+        break;     
+        case ERR_IMAGE_ADDON_FAILED:
+            return "Unable to start image addon";
+        break;
+        case ERR_PRIMITIVES_ADDON_FAILED:
+            return "Unable to start primitives addon";
+        break;
+        case ERR_FONT_ADDON_FAILED:
+            return "Unable to start font addon";
+        break;
+        case ERR_EVENT_QUEUE_FAILED:
+            return "Unable to start event queue";
+        break;
+        case ERR_LOAD_IMAGES_FAILED:
+            return "Unable to load files";
+        break;
+        case ERR_LOAD_FONTS_FAILED:
+            return "Unable to load fonts";
         
     }
 

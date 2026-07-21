@@ -24,6 +24,7 @@
 #include "entities.h"
 #include "config.h"
 #include "allegroFrontendInternal.h"
+#include "errors.h"
 
 
 /*******************************************************************************
@@ -32,7 +33,6 @@
 
 static ALLEGRO_EVENT_QUEUE *queue = NULL;
 static ALLEGRO_DISPLAY *display;
-static ALLEGRO_SAMPLE *frogdies = NULL;
 
 ALLEGRO_BITMAP* floater_trunk = NULL;
 ALLEGRO_BITMAP* car = NULL;
@@ -56,7 +56,7 @@ ALLEGRO_COLOR pink;
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
- static void loadFiles(void);
+ static int loadFiles(void);
 
 /*******************************************************************************
  *******************************************************************************
@@ -64,58 +64,45 @@ ALLEGRO_COLOR pink;
  *******************************************************************************
  ******************************************************************************/
 
-void frontendInit(void) {
+int frontendInit(void) {
 
     //Inicializa el núcleo de Allegro y todos los subsistemas necesarios para el juego. 
     if (al_init() == false) {
-        printf("Fallo al_init\n");
-        return;
+        return ERR_ALLEGRO_INIT_FAILED;
     }
     //Inicializa
     if (al_install_keyboard() == false) {
-        printf("Fallo teclado\n");
+        return ERR_KEYBOARD_INIT_FAILED;
     }
 
     if (al_init_image_addon() == false) {
-        printf("Fallo image addon\n");
+        return ERR_IMAGE_ADDON_FAILED;
     }
 
     if (al_init_primitives_addon() == false) {
-        printf("Fallo primitives addon\n");
-    }
-
-    if (al_install_audio() == false) {
-     printf("Fallo audio\n");
+        return ERR_PRIMITIVES_ADDON_FAILED;
     }
 
     if (al_init_font_addon() == false) {
-        printf("Fallo font addon\n");
+        return ERR_FONT_ADDON_FAILED;
     }
-
-    if (!al_init_acodec_addon()) {
-        printf("Fallo audio codecs\n");
-        return;
-    }
-
-
 
     //Creamos ventana del juego
     al_set_new_display_flags(ALLEGRO_WINDOWED);
 
     display = al_create_display(MAP_WIDTH*SCALE, (MAP_HEIGHT+1)*SCALE);
     if(display == NULL) {
-        printf("Fallo al_create_display\n");
-        return;
+        return ERR_DISPLAY_INIT_FAILED;
     }
 
-    al_init_ttf_addon();
+    if (al_init_ttf_addon() == false) {
+        return ERR_FONT_ADDON_FAILED;
+    }
 
     //Creamos la cola de eventos para manejar el teclado y la ventana
     queue = al_create_event_queue();
     if(queue == NULL) {
-        printf("Fallo al_create_event_queue\n");
-        al_destroy_display(display); // Limpiamos la ventana antes de salir
-        return;
+        return ERR_EVENT_QUEUE_FAILED;
     }
 
     // Registramos teclado y eventos de la ventana en la cola
@@ -127,7 +114,10 @@ void frontendInit(void) {
     pink = al_map_rgb(255, 105, 180);
 
     // Cargamos archivos
-    loadFiles();
+    int files_loaded = loadFiles();
+    if (files_loaded == -1) {
+        return ERR_FILE_LOAD_FAILED;
+    }
 }
 
 /**
@@ -238,8 +228,20 @@ void frontendDestroy(void){
     
     if (queue) al_destroy_event_queue(queue);
     if (display) al_destroy_display(display);
+}
 
-    al_uninstall_audio();
+void frontManageError(err){
+    //si el error es de inicializacion de allegro o de carga de fuentes, no se 
+    //puede mostrar el mensaje en pantalla, por lo que se imprime en consola
+    if (err == ERR_ALLEGRO_INIT_FAILED || err == ERR_FONT_ADDON_FAILED ||  err == ERR_INIT_TTF_FAILED
+         || err == ERR_DISPLAY_INIT_FAILED || err == ERR_LOAD_FONTS_FAILED){
+        printf("Unable to load resources to show display\n");
+        return;
+    }
+    else {
+        al_draw_text(medium_font, al_map_rgb(255, 0, 0), MAP_WIDTH*SCALE/2, (MAP_HEIGHT+1)*SCALE/2, ALLEGRO_ALIGN_CENTRE, errorMessage(err));
+        return;
+    }
 }
 
 
@@ -249,7 +251,8 @@ void frontendDestroy(void){
   *******************************************************************************
   ******************************************************************************/
 
-static void loadFiles (void){
+
+static int loadFiles (void){
     floater_trunk = al_load_bitmap("ALLEGRO_DIRfloater_trunk.png");
     car = al_load_bitmap("ALLEGRO_DIRcar.png");
     truck = al_load_bitmap("ALLEGRO_DIRtruck.png");
@@ -261,12 +264,26 @@ static void loadFiles (void){
     safe_box = al_load_bitmap("ALLEGRO_DIRsafe_box.png");
     floater_leaf = al_load_bitmap("ALLEGRO_DIRfloater_leaf.png");
 
-    frogdies = al_load_sample("ALLEGRO_DIRfrog_dies.wav");
-
     very_big_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 200, 0);
     big_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 110, 0);
     medium_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 60, 0);
     small_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 40, 0);
     
+    if (!floater_trunk || !car || !truck || !frog || !skull || !trophy || !pause_img ||
+        !heart || !safe_box || !floater_leaf) {
+        return -1;
+    }
+    else if (!very_big_font || !big_font || !medium_font || !small_font) {
+        return -2;
+    }
+    else {
+        return 0;
+    }
 }
+
+/**
+ * @brief Carga todos los archivos necesarios para el juego
+ * @return 0 si se cargaron correctamente, -1 si hubo un error de carga de imágenes, -2
+ * si hubo un error de carga de fuentes
+ */
 
