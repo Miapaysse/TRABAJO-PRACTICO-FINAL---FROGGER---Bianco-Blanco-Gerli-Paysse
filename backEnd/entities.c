@@ -141,6 +141,10 @@ int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
 }
 
 int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del juego, si paso el tiempo suficiente desde la ultima actualizacion
+  if(game == NULL){
+    return ERR_INVALID_GAME_POINTER;
+  }
+  else{
     int i;
 
     if(entityUpdateRequired(game)){
@@ -154,28 +158,44 @@ int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del 
       }
       for(i=0; i<MAP_HEIGHT; i++){
           Row *row = &(game->level.rows[i]);
+          if(row == NULL){
+              return ERR_INVALID_ROW_POINTER;
+          }
           if(row->entityCount > 0){
-              moveRow(row);
+                moveRow(row);
           }
       }
     }
     return 0;
+  }
 }
 
 int frogInFinishBox(Frog *frog, FinishBox *finishBox){
-    if((frog->x == finishBox->x)){
-    //&& (frog->x <= finishBox->x + finishBox->length - 1)){
+  if(frog == NULL){
+    return ERR_INVALID_FROG_POINTER;
+  }
+  if(finishBox == NULL){
+    return ERR_INVALID_FINISHBOX_POINTER;
+  }
+  else{
+    if((frog->x == finishBox->x)&& (frog->x <= finishBox->x + finishBox->length - 1)){
         return 1;
     }
 
     return 0;
+  }
 }
 
 void resetFinishBoxes(FinishBox *finishBox){
-  int i;
-    for(i = 0; i < FINISH_BOX_COUNT; i++){
-        finishBox[i].occupied = false;
-    }
+  if(finishBox == NULL){
+    return ERR_INVALID_FINISHBOX_POINTER;
+  }
+  else{
+    int i;
+      for(i = 0; i < FINISH_BOX_COUNT; i++){
+          finishBox[i].occupied = false;
+      }
+  }
 }
 
 
@@ -219,6 +239,10 @@ static void moveRow(Row *row){
 }
 
 static void wrapEntity(Entity *entity){
+  if(entity == NULL){
+    return ERR_INVALID_ENTITY_POINTER;
+  }
+  else{
     int width = MAP_WIDTH + 1;
 
     while (entity->x >= width) {
@@ -227,6 +251,7 @@ static void wrapEntity(Entity *entity){
     while (entity->x < 0) {
         entity->x += width;
     }
+  }
 }
 
 /******************************************************************************/

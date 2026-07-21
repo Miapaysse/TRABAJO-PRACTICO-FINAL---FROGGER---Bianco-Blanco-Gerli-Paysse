@@ -48,67 +48,67 @@
  ******************************************************************************/
 
    int manageInteractions(Game *game){
-     if(game!=NULL){
-        int errorType;
+        if(game!=NULL){
+            int errorType;
 
-        if (frogOutOfBounds(&game->frog)) { //Chequeamos que la rana siga en los limites del juego, sino muere
-            frogDies(&(game->frog),&(game->lives), &game->state.id);
-            return 0;
-        }
-
-        else{ //Si la rana esta dentro de los limites analizamos el resto de interacciones
-
-            Row *currentRow = &(game->level.rows[game->frog.y]); // Tomamos la fila en la que esta la rana
-
-            switch(currentRow->zone){ //Dependiendo la zona en la que esta analizamos como y con que puede interactuar
-
-                case ROAD://Si la rana esta en la calle lo unico que le puede pasar es que sea atropellada por un obstaculo
-
-                    errorType = runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
-                    if (errorType == 1){ 
-                        frogDies(&(game->frog), &(game->lives), &((game->state).id)); //Si fue atropellada muere
-                    }
-                    else if(errorType){
-                        return errorType;
-                    }
-
-                break;
-
-                case WATER://Si la rana esta en el agua lo unico que le puede pasar es que se mueva con un flotador, sino se muere
-
-                {
-                    Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
-
-                    if(floaterP != NULL){
-                        moveFrogWithFloater(&(game->frog), floaterP);
-                    }
-                    else{
-                        frogDies(&(game->frog), &(game->lives), &(game->state.id));
-                    }
-                }
-                
-                break;
-
-                case SAFE://Si esta en una zona segura hay que chequear de sumarle puntos
-                    errorType = updateScore(&(game->frog), &(game->score), currentRow->checkpoint);
-                    if(errorType){
-                        return errorType;
-                    }
-                    game->frog.speed = 0; //Si esta en una zona segura la rana no se mueve
-                    game->frog.direction = 0; //Si esta en una zona segura la rana no tiene direccion
-                    
-                break;
-
-                case START: default:
-                //no hace  nada
-                break;
+            if (frogOutOfBounds(&game->frog)) { //Chequeamos que la rana siga en los limites del juego, sino muere
+                frogDies(&(game->frog),&(game->lives), &game->state.id);
+                return 0;
             }
-        }
 
-     }
-     else{
-        return ERR_INVALID_GAME_POINTER;
-     }
+            else{ //Si la rana esta dentro de los limites analizamos el resto de interacciones
+
+                Row *currentRow = &(game->level.rows[game->frog.y]); // Tomamos la fila en la que esta la rana
+
+                switch(currentRow->zone){ //Dependiendo la zona en la que esta analizamos como y con que puede interactuar
+
+                    case ROAD://Si la rana esta en la calle lo unico que le puede pasar es que sea atropellada por un obstaculo
+
+                        errorType = runOverFrog(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
+                        if (errorType == 1){ 
+                            frogDies(&(game->frog), &(game->lives), &((game->state).id)); //Si fue atropellada muere
+                        }
+                        else if(errorType){
+                            return errorType;
+                        }
+
+                    break;
+
+                    case WATER://Si la rana esta en el agua lo unico que le puede pasar es que se mueva con un flotador, sino se muere
+
+                    {
+                        Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
+
+                        if(floaterP != NULL){
+                            moveFrogWithFloater(&(game->frog), floaterP);
+                        }
+                        else{
+                            frogDies(&(game->frog), &(game->lives), &(game->state.id));
+                        }
+                    }
+                    
+                    break;
+
+                    case SAFE://Si esta en una zona segura hay que chequear de sumarle puntos
+                        errorType = updateScore(&(game->frog), &(game->score), currentRow->checkpoint);
+                        if(errorType){
+                            return errorType;
+                        }
+                        game->frog.speed = 0; //Si esta en una zona segura la rana no se mueve
+                        game->frog.direction = 0; //Si esta en una zona segura la rana no tiene direccion
+                        
+                    break;
+
+                    case START: default:
+                    //no hace  nada
+                    break;
+                }
+            }
+
+        }
+        else{
+            return ERR_INVALID_GAME_POINTER;
+        }
      return 0;
     }
 
@@ -180,25 +180,25 @@
     }
 
 
-static int frogOutOfBounds(Frog *frog){ //Comparamos las coordenadas de la rana con los limites del juego
-        if (frog == NULL){
-            return ERR_INVALID_LEVEL_POINTER;
-        }   
+    static int frogOutOfBounds(Frog *frog){ //Comparamos las coordenadas de la rana con los limites del juego
+            if (frog == NULL){
+                return ERR_INVALID_LEVEL_POINTER;
+            }   
 
-        if (frog->x < 0){
-            return 1;
+            if (frog->x < 0){
+                return 1;
+            }
+
+            if (frog->x >= MAP_WIDTH){
+                return 1;
+            }
+
+            if (frog->y < 0){
+                return 1;
+            }
+
+            return 0;
         }
-
-        if (frog->x >= MAP_WIDTH){
-            return 1;
-        }
-
-        if (frog->y < 0){
-            return 1;
-        }
-
-        return 0;
-    }
 
 
 
