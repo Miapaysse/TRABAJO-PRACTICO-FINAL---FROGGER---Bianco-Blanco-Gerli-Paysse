@@ -17,32 +17,32 @@
  ******************************************************************************/
 typedef struct Game Game_t; //necesario aca 
 
-typedef enum{
+typedef enum{//enum para la direccion de las entidades
     DIR_LEFT,
     DIR_RIGHT
 } Direction_t;
 
-typedef enum {
+typedef enum {//enum para la orientacion de la rana
     FROG_UP,
     FROG_DOWN,
     FROG_LEFT,
     FROG_RIGHT
 } FrogOrientation_t;
 
-typedef enum{
+typedef enum{//enum para la velocidad de las entidades
     SLOW=1,
     MEDIUM_SPEED,
     FAST
 } Speed_t;
 
-typedef enum{
+typedef enum{//enum para los checkpoints
     NO_CHECKPOINT,
     CHECKPOINT_1,
     CHECKPOINT_FINISH_LINE,
     CHECKPOINT_COUNT
 } CheckpointId_t;
 
-typedef enum{
+typedef enum{//enum para los tipos de entidades
     NO_TYPE,
     CAR,
     TRUCK,
@@ -50,8 +50,8 @@ typedef enum{
     LEAF
 } EntityType_t;
 
-typedef struct{
-    int  x; //int para x negativos
+typedef struct{ //struct para la rana
+    int  x; 
     int  y;
     Speed_t speed;
     Direction_t direction;
@@ -59,8 +59,8 @@ typedef struct{
     CheckpointId_t lastCheckpoint;
 } Frog_t;
 
-typedef struct{
-    int  x; //int para x negativos
+typedef struct{//struct para las entidades
+    int  x; 
     int  y;
     uint8_t  length;
     Speed_t speed;
@@ -69,12 +69,12 @@ typedef struct{
     bool active;
 } Entity_t;
 
-typedef struct{
+typedef struct{//struct para las entidades del juego
     Entity_t obstacles[MAX_OBSTACLES];
     Entity_t floaters[MAX_FLOATERS];
 } GameEntities_t;
 
-typedef struct{
+typedef struct{//struct para los espacios de llegada
     uint8_t x;
     uint8_t length;
     bool occupied;
