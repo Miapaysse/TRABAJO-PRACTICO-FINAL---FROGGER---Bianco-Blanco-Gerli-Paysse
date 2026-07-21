@@ -13,11 +13,10 @@
 #include "raspiDraw.h"
 
 joyinfo_t joy;
-static Input ultimo_input = NONE;
-
+static Input_t ultimo_input = NONE;
 static uint8_t showPlayer = 1;
 static uint8_t lastLive = MAX_LIVES;
-static LevelId lastLevel = LEVEL_1;
+static LevelId_t lastLevel = LEVEL_1;
 
 int frontendInit(void) {
     joy_init();
@@ -36,8 +35,8 @@ void frontendDestroy(void) {
     disp_update();
 }
 
-Input frontendGetInput(void) {
-    Input input_actual = NONE;
+Input_t frontendGetInput(void) {
+    Input_t input_actual = NONE;
     joy = joy_read();
 
     if (joy.sw == J_PRESS) {
@@ -62,7 +61,7 @@ Input frontendGetInput(void) {
     }
 }
 
-void frontendRender(Game * game) {
+void frontendRender(Game_t * game) {
     int option = 0;
 	disp_clear();
 

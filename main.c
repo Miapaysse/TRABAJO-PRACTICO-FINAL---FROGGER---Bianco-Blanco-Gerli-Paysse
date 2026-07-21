@@ -2,7 +2,7 @@
 #include "game.h"
 
 int main(void){
-    Game game = {0};
+    Game_t game = {0};
     ErrorCode_t err;
 
     if((err=gameInit(&game))){
@@ -15,7 +15,7 @@ int main(void){
     }
     
     while(game.state.id != EXIT){
-        Input input = frontendGetInput();
+        Input_t input = frontendGetInput();
         if(updateGame(&game, input)){
             frontManageError(err); //aca el front imprime "errorMessage(err)"
             return err;

@@ -27,8 +27,8 @@
   * @brief Funciones para incializar, actualizar y apagar frontend 
  */
 int frontendInit(void);
-Input frontendGetInput(void);
-void frontendRender(Game * game);
+Input_t frontendGetInput(void);
+void frontendRender(Game_t * game);
 void frontendDestroy(void);
 void frontManageError(ErrorCode_t err);
 

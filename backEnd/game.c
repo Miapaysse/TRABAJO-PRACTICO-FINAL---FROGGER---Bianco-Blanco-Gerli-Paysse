@@ -25,12 +25,12 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static void processInputPlaying(GameState * state, Input input, Frog * frog);
-static void processInputPaused(Game * game, Input input);
-static void processInputGameOver(Game * game, Input input);
-static void processInputVictory(Game * game, Input input);
-static void processInputPoints(Game * game, Input input);
-static void processInputMenu(Game * game, Input input);
+static void processInputPlaying(GameState_t * state, Input_t input, Frog_t * frog);
+static void processInputPaused(Game_t * game, Input_t input);
+static void processInputGameOver(Game_t * game, Input_t input);
+static void processInputVictory(Game_t * game, Input_t input);
+static void processInputPoints(Game_t * game, Input_t input);
+static void processInputMenu(Game_t * game, Input_t input);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -53,7 +53,7 @@ static void processInputMenu(Game * game, Input input);
  ******************************************************************************/
 
 
-int updateGame(Game * game, Input input){
+int updateGame(Game_t * game, Input_t input){
     game->timeNow = clock();
     switch ((game->state).id){
         case MENU: 
@@ -96,7 +96,7 @@ int updateGame(Game * game, Input input){
     return 0;
  }
 
- int gameInit(Game* game){
+ int gameInit(Game_t* game){
     if(game != NULL){
         game->timeNow = clock();
         
@@ -115,11 +115,11 @@ int updateGame(Game * game, Input input){
         game->state.menu.selected = MENU_TITLE;
         game->state.menu.optionCount = MENU_COUNT;
 
-        game->state.menu = (MenuState){ MENU_TITLE, MENU_COUNT };
-        game->state.paused = (MenuState){ PAUSED_TITLE, PAUSED_COUNT };
-        game->state.gameOver = (MenuState){ GAME_OVER_TITLE, GAME_OVER_COUNT };
-        game->state.victory = (MenuState){ VICTORY_TITLE, VICTORY_COUNT };
-        game->state.points = (MenuState){ POINTS_TITLE, POINTS_COUNT };
+        game->state.menu = (MenuState_t){ MENU_TITLE, MENU_COUNT };
+        game->state.paused = (MenuState_t){ PAUSED_TITLE, PAUSED_COUNT };
+        game->state.gameOver = (MenuState_t){ GAME_OVER_TITLE, GAME_OVER_COUNT };
+        game->state.victory = (MenuState_t){ VICTORY_TITLE, VICTORY_COUNT };
+        game->state.points = (MenuState_t){ POINTS_TITLE, POINTS_COUNT };
 
         return 0;
     }
@@ -129,14 +129,14 @@ int updateGame(Game * game, Input input){
 }
 
 ///////////////////////////////////////////MENUS///////////////
-void menuPrevious(MenuState *menu){
+void menuPrevious(MenuState_t *menu){
     if(menu->selected == 0)
         menu->selected = menu->optionCount - 1;
     else
         menu->selected--;
 }
 
-void menuNext(MenuState *menu){
+void menuNext(MenuState_t *menu){
     menu->selected++;
 
     if(menu->selected >= menu->optionCount)
@@ -144,8 +144,8 @@ void menuNext(MenuState *menu){
 }
 
 /////////////////////////////////////////////////////////////////MENU
-static void processInputMenu(Game * game, Input input){
-    MenuState *menu = &game->state.menu;
+static void processInputMenu(Game_t * game, Input_t input){
+    MenuState_t *menu = &game->state.menu;
     switch(input){
         case SELECT:
             switch(menu->selected){
@@ -177,7 +177,7 @@ static void processInputMenu(Game * game, Input input){
 }
 
 ////////////////////////////////////////////////////////////////////////PAUSED
-void processInputPaused(Game *game, Input input){
+void processInputPaused(Game_t *game, Input_t input){
     switch(input){
         case SELECT:
             switch ( (game->state.paused).selected ){
@@ -208,7 +208,7 @@ void processInputPaused(Game *game, Input input){
 }
 
 ///////////////////////////////////////////////////////////GAME OVER
-void processInputGameOver(Game *game, Input input){
+void processInputGameOver(Game_t *game, Input_t input){
         switch(input){
             case SELECT:
                 switch ( game->state.gameOver.selected ){
@@ -236,7 +236,7 @@ void processInputGameOver(Game *game, Input input){
 }
 
 ///////////////////////////////////////////////////////////VICTORY
-void processInputVictory(Game *game, Input input){
+void processInputVictory(Game_t *game, Input_t input){
         switch(input){
             case SELECT:
                 switch ( (game->state.victory).selected ){
@@ -263,7 +263,7 @@ void processInputVictory(Game *game, Input input){
     }
 }
 //////////////////////////////////////////////////////////POINTS
-void processInputPoints(Game * game, Input input){
+void processInputPoints(Game_t * game, Input_t input){
         switch(input){
             case SELECT:
                 switch ( (game->state.points).selected ){
@@ -296,7 +296,7 @@ void processInputPoints(Game * game, Input input){
     }
 }
 /////////////////////////////GAME LOGIC///////////////////////
-void processInputPlaying(GameState * state, Input input, Frog * frog){
+void processInputPlaying(GameState_t * state, Input_t input, Frog_t * frog){
     switch(input){
                 case SELECT:
                     state->id = PAUSED;

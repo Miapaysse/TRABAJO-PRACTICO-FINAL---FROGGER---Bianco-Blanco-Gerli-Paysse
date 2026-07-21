@@ -56,14 +56,14 @@ extern const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1];
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-void drawZone(const Row * rows);
+void drawZone(const Row_t * rows);
 /**
  * @brief TODO: dibuja zona en display, fila por fila según backend
  * @param param1 rows puntero a arreglo con las caracteristicas de cada fila
  * @return Nada
 */
 
-void drawObstacles(const Entity obstacles[]);
+void drawObstacles(const Entity_t obstacles[]);
 /**
  * @brief TODO: dibuja obstáculos 
  * @param param1 Descripcion parametro 1
@@ -71,7 +71,7 @@ void drawObstacles(const Entity obstacles[]);
  * @return Nada
 */
 
-void drawFloaters(const Entity floaters[]);
+void drawFloaters(const Entity_t floaters[]);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -79,7 +79,7 @@ void drawFloaters(const Entity floaters[]);
  * @return Nada
 */
 
-void drawFrog(const Frog * frog, int blink);
+void drawFrog(const Frog_t * frog, int blink);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -103,7 +103,7 @@ void drawScore(int idxScore, uint16_t score);
  * @return Devuelve un entero para manejo de errores
 */
 
-void drawBoxes (FinishBox boxes[], int blink);
+void drawBoxes (FinishBox_t boxes[], int blink);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -111,8 +111,8 @@ void drawBoxes (FinishBox boxes[], int blink);
  * @return Nada
 */
 
-void showRank(const Top10Status status);
+void showRank(const Top10Status_t status);
 void showScore(const uint16_t score);
-void showLevelNextLevel(const LevelId currentLevel, LevelId * lastLevel);
+void showLevelNextLevel(const LevelId_t currentLevel, LevelId_t* lastLevel);
 void showLives(const uint8_t currentLives, uint8_t * lastLives);
 #endif

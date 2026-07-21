@@ -24,7 +24,7 @@
 
 static void sortDescending(int topScores[TOP10_SIZE]);
 
-Top10Status loadTop10(int topScores[TOP10_SIZE]);
+Top10Status_t loadTop10(int topScores[TOP10_SIZE]);
 
 /**
  * @brief Carga el top 10 desde TOP10_FILE. Si el archivo no existe o esta
@@ -34,7 +34,7 @@ Top10Status loadTop10(int topScores[TOP10_SIZE]);
  * @return TOP10_OK, TOP10_FILE_NOT_FOUND o TOP10_READ_ERROR
  */
 
-static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore);
+static Top10Status_t UpdateTop10(int topScores[TOP10_SIZE], int newScore);
 
  /**
  * @brief Inserta newScore en el ranking si corresponde, manteniendo el
@@ -44,7 +44,7 @@ static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore);
  * @return true si entro al top 10, false si no
  */
  
- static Top10Status SaveTop10(const int topScores[TOP10_SIZE]);
+ static Top10Status_t SaveTop10(const int topScores[TOP10_SIZE]);
 
  /**
  * @brief Guarda el top 10 en TOP10_FILE de forma atomica (escribe a un
@@ -62,10 +62,10 @@ static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore);
  *******************************************************************************
  ******************************************************************************/
 
-Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore){
-    Top10Status status = loadTop10(topScores); //Carga archivo
+Top10Status_t getTop10Status(int topScores[TOP10_SIZE], int newScore){
+    Top10Status_t status = loadTop10(topScores); //Carga archivo
     if (status == TOP10_OK || status == TOP10_FILE_NOT_FOUND){ // Con cualquiera de estos status se puede devolver algo
-        Top10Status rankingChanged = UpdateTop10(topScores, newScore); //Todo OK, analiza si jugador ingreso a top 10
+        Top10Status_t rankingChanged = UpdateTop10(topScores, newScore); //Todo OK, analiza si jugador ingreso a top 10
         status = SaveTop10(topScores); // Vemos si se puede guardar el archivo
         if (status != TOP10_OK) { //Si no es asi
             return TOP10_WRITE_ERROR; // Avisamos que no se pudo guardar
@@ -77,7 +77,7 @@ Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore){
     return status; // Hubo un error irreparable al intentar habrir el archivo
 }
 
-Top10Status loadTop10(int topScores[TOP10_SIZE]){
+Top10Status_t loadTop10(int topScores[TOP10_SIZE]){
    
     if (topScores == NULL){
         return TOP10_READ_ERROR;
@@ -93,7 +93,7 @@ Top10Status loadTop10(int topScores[TOP10_SIZE]){
         return TOP10_FILE_NOT_FOUND;
     }
 
-    Top10Status status = TOP10_OK;
+    Top10Status_t status = TOP10_OK;
 
     for(i=0; i < TOP10_SIZE; i++){
         int value;
@@ -119,7 +119,7 @@ Top10Status loadTop10(int topScores[TOP10_SIZE]){
 }
 
 
-static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore){
+static Top10Status_t UpdateTop10(int topScores[TOP10_SIZE], int newScore){
     if(topScores == NULL){
         return TOP10_WRITE_ERROR; // Avisa que hubo un error al acceder a los puntajes
     }
@@ -136,7 +136,7 @@ static Top10Status UpdateTop10(int topScores[TOP10_SIZE], int newScore){
     return TOP10_CHANGED;
 }
 
-static Top10Status SaveTop10(const int topScores[TOP10_SIZE]){
+static Top10Status_t SaveTop10(const int topScores[TOP10_SIZE]){
 
     if(topScores == NULL){ // No se pudo acceder al rankin
         return TOP10_WRITE_ERROR;

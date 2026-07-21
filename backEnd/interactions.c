@@ -24,10 +24,10 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-    static int runOverFrog(Frog *frog, Entity *obstacles, uint8_t obstacleCount);
-    static Entity *frogOnFloater(Frog *frog, Entity *floaters, uint8_t floaterCount);
-    static int collided(Frog* frog , Entity* entity);
-    static int frogOutOfBounds(Frog *frog);
+    static int runOverFrog(Frog_t *frog, Entity_t *obstacles, uint8_t obstacleCount);
+    static Entity_t *frogOnFloater(Frog_t *frog, Entity_t *floaters, uint8_t floaterCount);
+    static int collided(Frog_t* frog , Entity_t* entity);
+    static int frogOutOfBounds(Frog_t *frog);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -47,7 +47,7 @@
  *******************************************************************************
  ******************************************************************************/
 
-   int manageInteractions(Game *game){
+   int manageInteractions(Game_t *game){
      if(game!=NULL){
         int errorType;
 
@@ -58,7 +58,7 @@
 
         else{ //Si la rana esta dentro de los limites analizamos el resto de interacciones
 
-            Row *currentRow = &(game->level.rows[game->frog.y]); // Tomamos la fila en la que esta la rana
+            Row_t *currentRow = &(game->level.rows[game->frog.y]); // Tomamos la fila en la que esta la rana
 
             switch(currentRow->zone){ //Dependiendo la zona en la que esta analizamos como y con que puede interactuar
 
@@ -77,7 +77,7 @@
                 case WATER://Si la rana esta en el agua lo unico que le puede pasar es que se mueva con un flotador, sino se muere
 
                 {
-                    Entity *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
+                    Entity_t *floaterP = frogOnFloater(&(game->frog), currentRow->firstEntity, currentRow->entityCount);
 
                     if(floaterP != NULL){
                         moveFrogWithFloater(&(game->frog), floaterP);
@@ -112,7 +112,7 @@
      return 0;
     }
 
-    int updateScore(Frog *frog, uint16_t *score, CheckpointId checkpoint){
+    int updateScore(Frog_t *frog, uint16_t *score, CheckpointId_t checkpoint){
         if(frog == NULL){
             return ERR_INVALID_FROG_POINTER;
         }
@@ -139,7 +139,7 @@
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-    static int runOverFrog(Frog *frog, Entity *obstacles, uint8_t obstacleCount){
+    static int runOverFrog(Frog_t *frog, Entity_t *obstacles, uint8_t obstacleCount){
         if(frog==NULL){
             return ERR_INVALID_FROG_POINTER;
         }
@@ -157,7 +157,7 @@
         }
     }
 
-    static Entity *frogOnFloater(Frog *frog, Entity *floaters, uint8_t floaterCount){
+    static Entity_t *frogOnFloater(Frog_t *frog, Entity_t *floaters, uint8_t floaterCount){
         int i;
         for(i=0; i<floaterCount; i++){
             if(collided(frog,&(floaters[i])) ){ //Analizamos los flotadores de la fila en la que esta la rana, si no colisiona con ninguno esta ahogada
@@ -168,7 +168,7 @@
     }
 
 
-    static int collided(Frog* frog , Entity* entity){
+    static int collided(Frog_t* frog , Entity_t* entity){
         if( ( (frog->x) >= entity->x ) && ( (frog->x) <= (entity->x + entity->length - 1) )){ //La rana colisiona con una entidad de su fila si esta posicionada entre el espacio inicial de la entidad y el final
             return 1;
         }
@@ -179,7 +179,7 @@
     }
 
 
-    static int frogOutOfBounds(Frog *frog){ //Comparamos las coordenadas de la rana con los limites del juego
+    static int frogOutOfBounds(Frog_t *frog){ //Comparamos las coordenadas de la rana con los limites del juego
 
         if (frog->x < 0){
             return 1;

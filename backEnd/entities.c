@@ -28,11 +28,11 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static double getElapsedEntityTime(Game *game);
-static void resetEntityTimer(Game *game);
-static int entityUpdateRequired(Game *game);
-static void moveRow(Row *row);
-static void wrapEntity(Entity *entity);
+static double getElapsedEntityTime(Game_t *game);
+static void resetEntityTimer(Game_t *game);
+static int entityUpdateRequired(Game_t *game);
+static void moveRow(Row_t *row);
+static void wrapEntity(Entity_t *entity);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -53,7 +53,7 @@ static void wrapEntity(Entity *entity);
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-int moveFrog(Frog * frog , Input input){ //Cambiamos las coordenadas de la rana segun las indicaciones del jugador 
+int moveFrog(Frog_t * frog , Input_t input){ //Cambiamos las coordenadas de la rana segun las indicaciones del jugador 
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
   }
@@ -78,7 +78,7 @@ int moveFrog(Frog * frog , Input input){ //Cambiamos las coordenadas de la rana 
   return 0;
 }
 
-int moveFrogWithFloater(Frog * frog , Entity* floater){ 
+int moveFrogWithFloater(Frog_t * frog , Entity_t* floater){ 
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
   }
@@ -92,7 +92,7 @@ int moveFrogWithFloater(Frog * frog , Entity* floater){
   return 0;
 }
 
-int resetFrog(Frog * frog){
+int resetFrog(Frog_t * frog){
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
   }
@@ -106,7 +106,7 @@ int resetFrog(Frog * frog){
   
 }
 
-int initFrog(Frog * frog){
+int initFrog(Frog_t * frog){
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
   }
@@ -116,7 +116,7 @@ int initFrog(Frog * frog){
   }
 }
 
-int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
+int frogDies(Frog_t* frog , uint8_t* lives, GameStateId_t* id ){
   if(lives == NULL){
     return ERR_INVALID_LIVES_POINTER;
   }
@@ -140,7 +140,7 @@ int frogDies(Frog* frog , uint8_t* lives, GameStateId* id ){
   }
 }
 
-int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del juego, si paso el tiempo suficiente desde la ultima actualizacion
+int updateEntities(Game_t *game){ //Actualizamos la posicion de las entidades del juego, si paso el tiempo suficiente desde la ultima actualizacion
   if(game == NULL){
     return ERR_INVALID_GAME_POINTER;
   }
@@ -157,7 +157,7 @@ int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del 
         }
       }
       for(i=0; i<MAP_HEIGHT; i++){
-          Row *row = &(game->level.rows[i]);
+          Row_t *row = &(game->level.rows[i]);
           if(row == NULL){
               return ERR_INVALID_ROW_POINTER;
           }
@@ -170,7 +170,7 @@ int updateEntities(Game *game){ //Actualizamos la posicion de las entidades del 
   }
 }
 
-int frogInFinishBox(Frog *frog, FinishBox *finishBox){
+int frogInFinishBox(Frog_t *frog, FinishBox_t *finishBox){
   if(frog == NULL){
     return ERR_INVALID_FROG_POINTER;
   }
@@ -186,7 +186,7 @@ int frogInFinishBox(Frog *frog, FinishBox *finishBox){
   }
 }
 
-int resetFinishBoxes(FinishBox *finishBox){
+int resetFinishBoxes(FinishBox_t *finishBox){
   if(finishBox == NULL){
     return ERR_INVALID_FINISHBOX_POINTER;
   }
@@ -206,15 +206,15 @@ int resetFinishBoxes(FinishBox *finishBox){
  *******************************************************************************
  ******************************************************************************/
 
-static double getElapsedEntityTime(Game *game){
+static double getElapsedEntityTime(Game_t *game){
     return (double)(clock() - game->lastEntityUpdate) / CLOCKS_PER_SEC;
 }
 
-static void resetEntityTimer(Game *game){
+static void resetEntityTimer(Game_t *game){
     game->lastEntityUpdate = clock();
 }
 
-static int entityUpdateRequired(Game *game){
+static int entityUpdateRequired(Game_t *game){
     if(getElapsedEntityTime(game) < ENTITY_UPDATE_PERIOD){
       return 0;
     }
@@ -225,7 +225,7 @@ static int entityUpdateRequired(Game *game){
 }
 
 
-static void moveRow(Row *row){
+static void moveRow(Row_t *row){
     int i;
     for(i=0; i<row->entityCount; i++){
         if(row->direction == DIR_RIGHT){
@@ -239,7 +239,7 @@ static void moveRow(Row *row){
     }
 }
 
-static void wrapEntity(Entity *entity){
+static void wrapEntity(Entity_t *entity){
 
     int width = MAP_WIDTH + 1;
 

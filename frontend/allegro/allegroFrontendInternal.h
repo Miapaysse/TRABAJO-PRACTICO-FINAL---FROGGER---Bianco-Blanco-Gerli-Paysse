@@ -48,24 +48,24 @@ extern ALLEGRO_COLOR pink;
 /*******************************************************************************
  * FUNCTION PROTOTYPES - allegroPlay.c
  ******************************************************************************/
-void drawZones(Game * p2game);
-void drawEntities(Game * p2game);
-void drawFrog(Game * p2game);
-void drawScore(Game * p2game);
-void drawLevel(Game * p2game);
-void drawLives(Game * p2game);
-void drawFinishBoxes(Game * p2game);
-void cloneFrog(Game * p2game);
+void drawZones(Game_t * p2game);
+void drawEntities(Game_t * p2game);
+void drawFrog(Game_t * p2game);
+void drawScore(Game_t * p2game);
+void drawLevel(Game_t * p2game);
+void drawLives(Game_t * p2game);
+void drawFinishBoxes(Game_t * p2game);
+void cloneFrog(Game_t * p2game);
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES - allegroMenus.c
  ******************************************************************************/
-void drawMainMenu(Game * p2game);
-void drawGameOver(Game * p2game);
-void drawPaused(Game * p2game);
-void drawVictory(Game * p2game);
-void drawTop10(Game * p2game);
-void top10_notify(Game * p2game, int x, int y);
+void drawMainMenu(Game_t * p2game);
+void drawGameOver(Game_t * p2game);
+void drawPaused(Game_t * p2game);
+void drawVictory(Game_t * p2game);
+void drawTop10(Game_t * p2game);
+void top10_notify(Game_t * p2game, int x, int y);
 /******************************************************************************/
  
 #endif // _FRONTEND_INTERNAL_H_

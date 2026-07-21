@@ -18,7 +18,7 @@
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef struct Game Game;
+typedef struct Game Game_t;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -31,14 +31,14 @@ typedef struct Game Game;
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-int manageInteractions(Game* game);
+int manageInteractions(Game_t* game);
 /**
  * @brief TODO: Esta funcion detecta y maneja las interacciones de la rana con las otras entidades del juego, con las zonas y los bordes
  * @param game Recibe un puntero a estructura del juego para acceder a todas las entidades, el nivel, el estado y demas.
  * @return devuelve un entero para control de errores
 */
 
-int updateScore(Frog *frog, uint16_t *score, CheckpointId checkpoint);
+int updateScore(Frog_t *frog, uint16_t *score, CheckpointId_t checkpoint);
 /**
  * @brief TODO: Esta funcion actualiza el puntaje cada vez que la rana llega a una zona segura. 
  * @param frog Recibe el puntero a la rana para analizar si llego a una zona segura

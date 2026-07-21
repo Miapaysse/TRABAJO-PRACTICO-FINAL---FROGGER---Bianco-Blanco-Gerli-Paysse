@@ -26,7 +26,7 @@
  ******************************************************************************/
 
 
- void drawMainMenu (Game* p2game){
+ void drawMainMenu (Game_t* p2game){
 
     int spacing1 = 140;
     int spacing2 = 100;
@@ -57,7 +57,7 @@
     al_draw_text(medium_font, color, x_menu, y_option1 + 2*spacing2, ALLEGRO_ALIGN_LEFT, "Exit");
 }
 
- void drawGameOver (Game* p2game){
+ void drawGameOver (Game_t* p2game){
     ALLEGRO_COLOR color;
 
     int option_selected = (p2game -> state.gameOver.selected);
@@ -93,7 +93,7 @@
     top10_notify(p2game, x_options, y_options + 4*spacing2);
 }
 
- void drawVictory(Game* p2game){
+ void drawVictory(Game_t* p2game){
 
     ALLEGRO_COLOR color;
 
@@ -131,7 +131,7 @@
     
 }
 
- void drawPaused (Game* p2game){
+ void drawPaused (Game_t* p2game){
 
     ALLEGRO_COLOR color;
 
@@ -162,7 +162,7 @@
     al_draw_text(medium_font, color, x_options, y_options + 2*spacing2, ALLEGRO_ALIGN_LEFT, "Exit");
 }
 
- void drawTop10(Game* p2game){
+ void drawTop10(Game_t* p2game){
 
     ALLEGRO_COLOR color;
 
@@ -214,7 +214,7 @@
     al_draw_text(medium_font, color, x_trophy1,y_top1 + (TOP10_SIZE+3)*spacing2, ALLEGRO_ALIGN_LEFT, "Exit");
 }
 
- void top10_notify(Game* p2game, int x, int y){
+ void top10_notify(Game_t* p2game, int x, int y){
     if (p2game->top10.status == TOP10_CHANGED){
         al_draw_text(medium_font, pink, x, y, ALLEGRO_ALIGN_LEFT,
                 "YOU MADE IT TO THE TOP 10!");

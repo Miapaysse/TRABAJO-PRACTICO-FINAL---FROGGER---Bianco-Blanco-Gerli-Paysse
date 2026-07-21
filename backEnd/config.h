@@ -86,8 +86,10 @@ typedef enum{
    ERR_INIT_TTF_FAILED,
    ERR_LOAD_IMAGES_FAILED,
    ERR_LOAD_FONTS_FAILED,
-   ERR_FILE_LOAD_FAILED
-}ErrorCode_t;
+   ERR_FILE_LOAD_FAILED,
+
+   ERR_OUT_OF_DISPLAY_BOUNDS
+} ErrorCode_t;
 
 
 
@@ -98,7 +100,7 @@ typedef enum{ //con esto aca funco entites.h con rapsi
    RIGHT,
    SELECT,
    NONE,  
-} Input;
+} Input_t;
 
 typedef enum{ //con esto aca funco entites.h con rapsi
    MENU,
@@ -108,7 +110,7 @@ typedef enum{ //con esto aca funco entites.h con rapsi
    GAME_OVER,
    POINTS,
    EXIT
-} GameStateId;
+} GameStateId_t;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

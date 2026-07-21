@@ -33,7 +33,7 @@
   TOP10_FILE_NOT_FOUND,  // no existe el archivo todavia (primera ejecucion, no es un error)
   TOP10_READ_ERROR,      // el archivo existe pero esta corrupto/incompleto
   TOP10_WRITE_ERROR      // no se pudo escribir o guardar el archivo
-} Top10Status;
+} Top10Status_t;
 
  /*******************************************************************************
   * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -42,14 +42,14 @@
  // +ej: extern unsigned int anio_actual;+
  
  typedef struct {
-  Top10Status status;
+  Top10Status_t status;
   int topScores[TOP10_SIZE];
  } Top10_t;
  
  /*******************************************************************************
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
   ******************************************************************************/
-Top10Status getTop10Status(int topScores[TOP10_SIZE], int newScore);
-Top10Status loadTop10(int topScores[TOP10_SIZE]);
+Top10Status_t getTop10Status(int topScores[TOP10_SIZE], int newScore);
+Top10Status_t loadTop10(int topScores[TOP10_SIZE]);
  #endif 
  

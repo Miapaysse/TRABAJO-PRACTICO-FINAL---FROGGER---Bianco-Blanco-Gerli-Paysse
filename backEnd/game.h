@@ -27,7 +27,7 @@ typedef enum{
     MENU_POINTS,
     MENU_EXIT,
     MENU_COUNT
-}MenuOption;
+} MenuOption_t;
 
 typedef enum{
     PAUSED_TITLE,
@@ -35,21 +35,21 @@ typedef enum{
     PAUSED_PLAY, 
     PAUSED_EXIT,
     PAUSED_COUNT
-}PausedOption;
+}PausedOption_t;
 
 typedef enum{
     GAME_OVER_TITLE,
     GAME_OVER_MENU,
     GAME_OVER_EXIT,
     GAME_OVER_COUNT
-}GameOverOption;
+}GameOverOption_t;
 
 typedef enum{
     VICTORY_TITLE,
     VICTORY_MENU,
     VICTORY_EXIT,
     VICTORY_COUNT
-}VictoryOption;
+}VictoryOption_t;
 
 typedef enum{
     POINTS_TITLE,
@@ -66,7 +66,7 @@ typedef enum{
     POINTS_MENU,
     POINTS_EXIT,
     POINTS_COUNT
-}PointsOption;
+}PointsOption_t;
 
 typedef struct{
 
@@ -74,27 +74,27 @@ typedef struct{
 
     int optionCount;
 
-} MenuState;
+} MenuState_t;
 
 typedef struct{
 
-    MenuState menu;
-    MenuState paused;
-    MenuState gameOver;
-    MenuState victory;
-    MenuState points;
+    MenuState_t menu;
+    MenuState_t paused;
+    MenuState_t gameOver;
+    MenuState_t victory;
+    MenuState_t points;
 
-    GameStateId id;
+    GameStateId_t id;
 
-} GameState;
+} GameState_t;
 
 
 
 typedef struct Game {
 
-   Frog frog;
+   Frog_t frog;
 
-   GameEntities entities;
+   GameEntities_t entities;
 
    uint16_t score;
    
@@ -102,15 +102,15 @@ typedef struct Game {
 
    uint8_t  lives;
 
-   Level level;
+   Level_t level;
 
-   GameState state;
+   GameState_t state;
 
    clock_t lastEntityUpdate;
 
    clock_t timeNow;
    
-} Game;
+} Game_t;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -122,7 +122,7 @@ typedef struct Game {
  ******************************************************************************/
 
 
-int updateGame(Game * game, Input input);
+int updateGame(Game_t * game, Input_t input);
  /**
  * @brief TODO: updates the game
  * @param param1 Descripcion parametro 1
@@ -130,7 +130,7 @@ int updateGame(Game * game, Input input);
  * @return Descripcion valor que devuelve
 */
 
- int gameInit(Game*game);
+ int gameInit(Game_t* game);
  /**
  * @brief TODO: initialize the game
  * @param param1 Descripcion parametro 1
@@ -138,8 +138,8 @@ int updateGame(Game * game, Input input);
  * @return Descripcion valor que devuelve
 */
 
-void menuNext(MenuState *menu);
-void menuPrevious(MenuState *menu);
+void menuNext(MenuState_t *menu);
+void menuPrevious(MenuState_t *menu);
 
 /******************************************************************************/
 

@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 
- void drawZones(Game * p2game){
+ void drawZones(Game_t * p2game){
     
     int i, j, y1, y2;
     int x1 = 0;
@@ -62,7 +62,7 @@
 
 }
 
- void drawEntities( Game* p2game){
+ void drawEntities( Game_t* p2game){
 
     int i, x, y,j, new_lenght, new_height, space = 10;
     int flag_direction = 0; //flag para rotar el dibujo
@@ -132,14 +132,14 @@
 }
 }
 
- void drawFrog(Game * p2game){
+ void drawFrog(Game_t * p2game){
     int x = (p2game -> frog.x)*SCALE;
     int y = ROW((p2game -> frog.y))*SCALE;
     int space = 35;
     al_draw_scaled_bitmap (frog, 0, 0,al_get_bitmap_width(frog), al_get_bitmap_height(frog), x, y, al_get_bitmap_width(frog)-space, al_get_bitmap_height(frog)-space, 0);
 }
 
- void drawScore(Game* p2game){
+ void drawScore(Game_t* p2game){
     int score = ( p2game->score);
     int spacing = 30;
     char score_as_string[11];
@@ -147,7 +147,7 @@
     al_draw_text(small_font, white, spacing, spacing, ALLEGRO_ALIGN_LEFT, score_as_string);
 }
 
- void drawLevel(Game* p2game){
+ void drawLevel(Game_t* p2game){
     int level = (p2game->level.id)+1;
     int spacing = 30;
     char level_as_string[11];
@@ -155,7 +155,7 @@
     al_draw_text(small_font, white, spacing, MAP_HEIGHT*SCALE - spacing, ALLEGRO_ALIGN_LEFT, level_as_string);
 }
 
- void drawLives(Game* p2game){
+ void drawLives(Game_t* p2game){
     int text_height = al_get_font_line_height(small_font);
     int i, spacing = 30;
     int lives = (p2game->lives);
@@ -164,7 +164,7 @@
     }
 }
 
- void drawFinishBoxes(Game* p2game){
+ void drawFinishBoxes(Game_t* p2game){
     
     int i, x, y;
 
@@ -175,7 +175,7 @@
     }
 }
 
- void cloneFrog(Game * p2game){
+ void cloneFrog(Game_t * p2game){
     int i, x, y,zones_occupied;
 
     for (i=0,zones_occupied = 1; i<FINISH_BOX_COUNT ; i++){

@@ -128,6 +128,11 @@ const char *errorMessage(ErrorCode_t error){
         break;
         case ERR_LOAD_FONTS_FAILED:
             return "Unable to load fonts";
+        break;
+
+        case ERR_OUT_OF_DISPLAY_BOUNDS:
+            return "Coordinates out of display bounds. Invalid";
+        break;
         
     }
 

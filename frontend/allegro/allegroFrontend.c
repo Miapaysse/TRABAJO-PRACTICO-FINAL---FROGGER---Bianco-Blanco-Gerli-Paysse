@@ -124,7 +124,7 @@ int frontendInit(void) {
  */
 
 
-Input frontendGetInput(void){
+Input_t frontendGetInput(void){
     ALLEGRO_EVENT event;
     
     if (al_get_next_event(queue, &event) == true){
@@ -150,7 +150,7 @@ Input frontendGetInput(void){
 }
   
 
-void frontendRender(Game * game){
+void frontendRender(Game_t * game){
 
     //pintamos todo el fondo de negro para borrar el fotograma anterior
    al_clear_to_color(al_map_rgb(0, 0, 0));

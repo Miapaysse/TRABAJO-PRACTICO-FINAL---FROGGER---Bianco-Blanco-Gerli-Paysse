@@ -35,8 +35,8 @@ typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
 
 
 int frontendInit(void);
-Input frontendGetInput(void);
-void frontendRender(Game * game);
+Input_t frontendGetInput(void);
+void frontendRender(Game_t * game);
 void frontendDestroy(void);
 void  frontManageError(ErrorCode_t err);
 

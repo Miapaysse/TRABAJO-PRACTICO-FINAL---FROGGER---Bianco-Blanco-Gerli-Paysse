@@ -17,25 +17,25 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef struct Game Game; //necesario aca 
+typedef struct Game Game_t; //necesario aca 
 
 typedef enum{
     DIR_LEFT,
     DIR_RIGHT
-} Direction;
+} Direction_t;
 
 typedef enum{
     SLOW=1,
     MEDIUM_SPEED,
     FAST
-}Speed;
+} Speed_t;
 
 typedef enum{
     NO_CHECKPOINT,
     CHECKPOINT_1,
     CHECKPOINT_FINISH_LINE,
     CHECKPOINT_COUNT
-} CheckpointId;
+} CheckpointId_t;
 
 typedef enum{
     NO_TYPE,
@@ -43,36 +43,36 @@ typedef enum{
     TRUCK,
     TRUNK_FLOATER,
     LEAF
-} EntityType;
+} EntityType_t;
 
 typedef struct{
     int  x; //int para x negativos
     int  y;
-    Speed speed;
-    Direction direction;
-    CheckpointId lastCheckpoint;
-} Frog;
+    Speed_t speed;
+    Direction_t direction;
+    CheckpointId_t lastCheckpoint;
+} Frog_t;
 
 typedef struct{
     int  x; //int para x negativos
     int  y;
     uint8_t  length;
-    Speed speed;
-    Direction direction;
-    EntityType type;
+    Speed_t speed;
+    Direction_t direction;
+    EntityType_t type;
     bool active;
-}Entity;
+} Entity_t;
 
 typedef struct{
-    Entity obstacles[MAX_OBSTACLES];
-    Entity floaters[MAX_FLOATERS];
-}GameEntities;
+    Entity_t obstacles[MAX_OBSTACLES];
+    Entity_t floaters[MAX_FLOATERS];
+} GameEntities_t;
 
 typedef struct{
     uint8_t x;
     uint8_t length;
     bool occupied;
-} FinishBox;
+} FinishBox_t;
 
 
 
@@ -87,14 +87,14 @@ typedef struct{
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-int initFrog(Frog * frog);
+int initFrog(Frog_t * frog);
 /**
  * @brief TODO: Inicializamos la rana, la ubicamos en su posicion inical 
  * @param frog Recibimos un puntero a la rana del juego para settear sus condiciones iniciales
  * @return Devuelve un entero para manejo de errores
 */
 
-int resetFrog(Frog * frog);
+int resetFrog(Frog_t * frog);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -102,7 +102,7 @@ int resetFrog(Frog * frog);
  * @return Devuelve un entero para manejo de errores
 */
 
-int moveFrog(Frog * frog , Input input);
+int moveFrog(Frog_t * frog , Input_t input);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -110,7 +110,7 @@ int moveFrog(Frog * frog , Input input);
  * @return Devuelve un entero para manejo de errores
 */
 
-int moveFrogWithFloater(Frog * frog , Entity* floater);
+int moveFrogWithFloater(Frog_t * frog , Entity_t* floater);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -118,21 +118,21 @@ int moveFrogWithFloater(Frog * frog , Entity* floater);
  * @return Descripcion valor que devuelve
 */
 
-int updateEntities(Game *game);
+int updateEntities(Game_t *game);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-int frogDies(Frog * frog, uint8_t* lives, GameStateId* id);
+int frogDies(Frog_t * frog, uint8_t* lives, GameStateId_t* id);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-int frogInFinishBox(Frog *frog, FinishBox *finishBox);
+int frogInFinishBox(Frog_t * frog, FinishBox_t *finishBox);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
@@ -140,7 +140,7 @@ int frogInFinishBox(Frog *frog, FinishBox *finishBox);
  * @return Descripcion valor que devuelve
 */
 
-int resetFinishBoxes(FinishBox *finishBox);
+int resetFinishBoxes(FinishBox_t *finishBox);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1

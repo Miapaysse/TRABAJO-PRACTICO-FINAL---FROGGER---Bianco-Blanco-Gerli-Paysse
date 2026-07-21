@@ -16,7 +16,7 @@
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-static Level level1={
+static Level_t level1={
     LEVEL_1,
     NULL, 
     {
@@ -51,7 +51,7 @@ static Level level1={
     }
 };
 
-static Level level2={
+static Level_t level2={
     LEVEL_2,
     NULL, 
     {
@@ -85,7 +85,7 @@ static Level level2={
     }
 };
 
-static Level level3={
+static Level_t level3={
     LEVEL_3,
     NULL, 
     {
@@ -131,13 +131,13 @@ static Level level3={
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-static int loadLevel(Level * level);
-static void loadLevelEntities(Level* level);
-static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity);
-static void loadRowEntities(Row* row, uint8_t  rowNumber);
-static int checkLevelEntities(Level* level);
-static int occupyFinishBox(Game *game);
-static int allFinishBoxesOccupied(Game *game);
+static int loadLevel(Level_t * level);
+static void loadLevelEntities(Level_t* level);
+static void loadZoneEntities(Row_t* rows, uint8_t  zoneStart, Entity_t* firstEntity);
+static void loadRowEntities(Row_t* row, uint8_t  rowNumber);
+static int checkLevelEntities(Level_t* level);
+static int occupyFinishBox(Game_t *game);
+static int allFinishBoxesOccupied(Game_t *game);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -166,7 +166,7 @@ int arrivedAtFinishLine(uint8_t  y){
 }
 
 
-int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en una casilla libre y la ocupamos, si no esta libre la rana muere
+int checkLevel(Game_t * game){ //Si llego a la linea de meta chequeamos si cayo en una casilla libre y la ocupamos, si no esta libre la rana muere
     if(game != NULL){
         if (arrivedAtFinishLine((game->frog).y)){
                 occupyFinishBox(game); 
@@ -178,7 +178,7 @@ int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en
     }
 }
 
-int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
+int goToNextLevel(Game_t * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
     int errorType;
     if(game != NULL){ 
         game->lastEntityUpdate = clock();
@@ -214,7 +214,7 @@ int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del n
     }
 }
 
-int initLevel(Game * game){
+int initLevel(Game_t * game){
     int errorType;
     if(game != NULL){ //Validacion de puntero
         initFrog(&game->frog);
@@ -236,7 +236,7 @@ int initLevel(Game * game){
  *******************************************************************************
  ******************************************************************************/
 
-static int loadLevel(Level * level){
+static int loadLevel(Level_t * level){
  if(level != NULL){ 
     int errorType;
     resetFinishBoxes(level->finishBoxes);
@@ -255,11 +255,11 @@ static int loadLevel(Level * level){
 }
 
 
-static void loadLevelEntities(Level* level){
+static void loadLevelEntities(Level_t* level){
     uint8_t  i;
-    Entity * firstObstacle;
-    Entity * firstFloater;
-    *(level->entities) = (GameEntities){0}; //inicializa en cero para sacar basura
+    Entity_t * firstObstacle;
+    Entity_t * firstFloater;
+    *(level->entities) = (GameEntities_t){0}; //inicializa en cero para sacar basura
     firstObstacle = level->entities->obstacles;
     firstFloater = level->entities->floaters;
     for(i=0; i <= MAP_HEIGHT; i++){ //Recorremos las filas del mapa 
@@ -281,7 +281,7 @@ static void loadLevelEntities(Level* level){
     }
 }
 
-static void loadRowEntities(Row* row, uint8_t rowNumber){
+static void loadRowEntities(Row_t* row, uint8_t rowNumber){
     uint8_t  k;
     int x0 = 0;
     for(k = 0; k<(row->entityCount); k++){ //Inicializamos cada entidad de la fila con las caracteristicas del nivel
@@ -295,9 +295,9 @@ static void loadRowEntities(Row* row, uint8_t rowNumber){
     }
 }
 
-static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity){
+static void loadZoneEntities(Row_t* rows, uint8_t  zoneStart, Entity_t* firstEntity){
     uint8_t  j;
-    Entity *current = firstEntity;
+    Entity_t *current = firstEntity;
     for(j=0; j<MAX_PLAYING_ZONE_HEIGHT; j++ ){ 
         rows[zoneStart + j].firstEntity = current; //Apuntamos el primer elemento de la fila segun los ultimos de las otras 
         current += rows[zoneStart + j].entityCount;
@@ -305,7 +305,7 @@ static void loadZoneEntities(Row* rows, uint8_t  zoneStart, Entity* firstEntity)
     }
 }
 
-static int checkLevelEntities(Level* level){ //Chequeamos que no nos excedimos del maximo de cada tipo de entidad al disenar el nivel 
+static int checkLevelEntities(Level_t* level){ //Chequeamos que no nos excedimos del maximo de cada tipo de entidad al disenar el nivel 
 
     if(level != NULL){
             uint8_t  i; 
@@ -341,12 +341,12 @@ static int checkLevelEntities(Level* level){ //Chequeamos que no nos excedimos d
 
 }
 
-static int occupyFinishBox(Game *game){
+static int occupyFinishBox(Game_t *game){
     int i;
 
     for(i = 0; i < FINISH_BOX_COUNT; i++){
 
-        FinishBox *box = &(game->level.finishBoxes[i]);
+        FinishBox_t *box = &(game->level.finishBoxes[i]);
 
         if(!box->occupied && frogInFinishBox(&(game->frog), box)){
 
@@ -373,7 +373,7 @@ static int occupyFinishBox(Game *game){
     return 0;
 }
 
-static int allFinishBoxesOccupied(Game *game){
+static int allFinishBoxesOccupied(Game_t *game){
     int i;
 
     for(i = 0; i < FINISH_BOX_COUNT; i++){

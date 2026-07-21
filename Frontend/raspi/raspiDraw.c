@@ -239,12 +239,17 @@ static int popFromOtherSide(int x) { //Dibuja la parte de la entity que debe apa
     return x;
 }
 
-static void passDrawing(int x, int y, dlevel_t val) {
+static int passDrawing(int x, int y, dlevel_t val) {
     if (y < 0 || y > MAP_HEIGHT) {
-        return;
+        return ERR_OUT_OF_DISPLAY_BOUNDS;
     }
     x = popFromOtherSide(x);
+
+	if (x < 0 || x > MAP_HEIGHT) {
+        return ERR_OUT_OF_DISPLAY_BOUNDS;
+    }
     disp_write((dcoord_t){ .x = x, .y = y }, val);
+	return 0;
 }
 
 
@@ -309,7 +314,7 @@ void drawScore(int idxScore, uint16_t score) {
 }
 
 
-void drawZone(const Row *rows) {
+void drawZone(const Row_t *rows) {
     int r, c, rDisp;
 
     for (r = 0; r <= MAP_HEIGHT; r++) {
@@ -345,7 +350,7 @@ void drawZone(const Row *rows) {
 }
 
 
-void drawObstacles(const Entity obstacles[]){
+void drawObstacles(const Entity_t obstacles[]){
 	int idxObs, len, rDisp;
 	int cDisp;
 
@@ -360,7 +365,7 @@ void drawObstacles(const Entity obstacles[]){
 	}
 }
 
-void drawFloaters(const Entity floaters[]){
+void drawFloaters(const Entity_t floaters[]){
 	int idxFlo, len, rDisp;
 	int cDisp;
 
@@ -375,7 +380,7 @@ void drawFloaters(const Entity floaters[]){
 	}
 }
 
-void drawBoxes (FinishBox boxes[], int blink){
+void drawBoxes (FinishBox_t boxes[], int blink){
 	int x, i = 0;
 	for (; i < FINISH_BOX_COUNT; i++){
 		x = boxes[i].x;
@@ -387,7 +392,7 @@ void drawBoxes (FinishBox boxes[], int blink){
 	}
 }
 
-void drawFrog(const Frog * frog, int blink) {
+void drawFrog(const Frog_t * frog, int blink) {
 	int cDisp = frog->x;
 	int y_disp = ROW(frog->y);
 	if (blink) {
@@ -397,7 +402,7 @@ void drawFrog(const Frog * frog, int blink) {
 	}
 }
 
-void showRank(const Top10Status  status){
+void showRank(const Top10Status_t  status){
 	printf("%d", status);
 	if(status == TOP10_CHANGED){
 		drawMSG(msgsDisp[MY_RANKING]);
@@ -412,7 +417,7 @@ void showScore(const uint16_t score){
 	usleep(DISPLAY_SCORE_TIME);
 }
 
-void showLevelNextLevel(const LevelId currentLevel, LevelId * lastLevel){
+void showLevelNextLevel(const LevelId_t currentLevel, LevelId_t * lastLevel){
 	if (currentLevel != *lastLevel) {
 		*lastLevel = currentLevel;
 		drawMSG(msgsDisp[NEXT_LEVEL]);

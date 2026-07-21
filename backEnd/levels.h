@@ -18,24 +18,24 @@
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef struct Game Game; //va aca
+typedef struct Game Game_t; //va aca
 
 typedef enum{
     SMALL=2,
     MEDIUM,
     LARGE
-}FloaterLength;
+}FloaterLength_t;
 
 typedef enum{
     CAR_LENGTH=1,
     TRUCK_LENGTH
-}ObstacleLength;
+}ObstacleLength_t;
 
 typedef enum{
     MIN_GAP=1,
     MEDIUM_GAP,
     MAX_GAP
-}RowGap;
+}RowGap_t;
 
 typedef enum{
     ROAD,
@@ -43,45 +43,45 @@ typedef enum{
     WATER,
     START,
     DEFAULT
-} Zone;
+} Zone_t;
 
 typedef enum{
     LEVEL_1,
     LEVEL_2,
     LEVEL_3,
     LEVEL_COUNT
-} LevelId;
+} LevelId_t;
 
 
 
 typedef struct{
 
-    CheckpointId checkpoint;
+    CheckpointId_t checkpoint;
 
-    Entity* firstEntity;
+    Entity_t* firstEntity;
 
-    EntityType type;
+    EntityType_t type;
 
-    Zone zone;
+    Zone_t zone;
 
     uint8_t  entityCount;
 
     int  entityLength;
 
-    RowGap gap;
+    RowGap_t gap;
 
-    Speed speed;
+    Speed_t speed;
 
-    Direction direction;
+    Direction_t direction;
 
-}Row;
+}Row_t;
 
 typedef struct {
-    LevelId id;
-    GameEntities* entities;
-    Row rows[MAP_HEIGHT+1];
-    FinishBox finishBoxes[5];
-} Level;
+    LevelId_t id;
+    GameEntities_t* entities;
+    Row_t rows[MAP_HEIGHT+1];
+    FinishBox_t finishBoxes[5];
+} Level_t;
 
 
 /*******************************************************************************
@@ -93,9 +93,9 @@ typedef struct {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-int initLevel(Game * game);
-int checkLevel(Game * game);
-int goToNextLevel(Game * game);
+int initLevel(Game_t * game);
+int checkLevel(Game_t * game);
+int goToNextLevel(Game_t * game);
 int arrivedAtFinishLine(uint8_t  y);
 
 /**
