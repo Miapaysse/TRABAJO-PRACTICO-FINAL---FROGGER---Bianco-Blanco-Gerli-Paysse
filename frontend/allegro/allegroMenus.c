@@ -148,7 +148,6 @@
     int image_width = al_get_bitmap_width(pause_img);
     x_options = x_center - title_width/2;
 
-    //imprime imagen de pausa y título "GAME PAUSED" y opciones de menu
     al_draw_bitmap(pause_img, x_center- image_width/2, y_image, 0);
 
     al_draw_text(big_font, white, x_center, y_title, ALLEGRO_ALIGN_CENTER, "GAME PAUSED");
