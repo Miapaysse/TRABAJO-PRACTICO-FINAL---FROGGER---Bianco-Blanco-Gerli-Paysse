@@ -148,6 +148,7 @@
     int image_width = al_get_bitmap_width(pause_img);
     x_options = x_center - title_width/2;
 
+    //imprime imagen de pausa y título "GAME PAUSED" y opciones de menu
     al_draw_bitmap(pause_img, x_center- image_width/2, y_image, 0);
 
     al_draw_text(big_font, white, x_center, y_title, ALLEGRO_ALIGN_CENTER, "GAME PAUSED");
@@ -214,6 +215,7 @@
     al_draw_text(medium_font, color, x_trophy1,y_top1 + (TOP10_SIZE+3)*spacing2, ALLEGRO_ALIGN_LEFT, "Exit");
 }
 
+//Muestra un mensaje en pantalla si el usuario entro al top10
  void top10_notify(Game_t* p2game, int x, int y){
     if (p2game->top10.status == TOP10_CHANGED){
         al_draw_text(medium_font, pink, x, y, ALLEGRO_ALIGN_LEFT,
