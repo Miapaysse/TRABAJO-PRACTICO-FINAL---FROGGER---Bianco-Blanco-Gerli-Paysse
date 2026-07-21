@@ -212,7 +212,7 @@ void frontendRender(Game * game){
 
    al_flip_display();
 }
-
+ 
 
 void frontendDestroy(void){
 
