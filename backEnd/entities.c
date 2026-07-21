@@ -32,7 +32,7 @@ static double getElapsedEntityTime(Game *game);
 static void resetEntityTimer(Game *game);
 static int entityUpdateRequired(Game *game);
 static void moveRow(Row *row);
-static void wrapEntity(Entity *entity);
+static int wrapEntity(Entity *entity);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -186,7 +186,7 @@ int frogInFinishBox(Frog *frog, FinishBox *finishBox){
   }
 }
 
-void resetFinishBoxes(FinishBox *finishBox){
+int resetFinishBoxes(FinishBox *finishBox){
   if(finishBox == NULL){
     return ERR_INVALID_FINISHBOX_POINTER;
   }
@@ -238,7 +238,7 @@ static void moveRow(Row *row){
     }
 }
 
-static void wrapEntity(Entity *entity){
+static int wrapEntity(Entity *entity){
   if(entity == NULL){
     return ERR_INVALID_ENTITY_POINTER;
   }

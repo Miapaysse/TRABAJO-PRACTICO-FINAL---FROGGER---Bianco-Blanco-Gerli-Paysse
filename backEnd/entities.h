@@ -140,7 +140,7 @@ int frogInFinishBox(Frog *frog, FinishBox *finishBox);
  * @return Descripcion valor que devuelve
 */
 
-void resetFinishBoxes(FinishBox *finishBox);
+int resetFinishBoxes(FinishBox *finishBox);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
