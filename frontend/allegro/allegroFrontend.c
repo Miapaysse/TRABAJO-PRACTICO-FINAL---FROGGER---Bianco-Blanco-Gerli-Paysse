@@ -54,7 +54,7 @@ ALLEGRO_COLOR pink;
  ******************************************************************************/
 
  static int loadFiles(void);
- /**
+ /*
  * @brief Carga todos los archivos necesarios para correr el frontend del juego
  * @return 0 si se cargaron correctamente, -1 si hubo un error de carga de imágenes, -2
  * si hubo un error de carga de fuentes de texto
@@ -116,6 +116,7 @@ int frontendInit(void) {
     if (files_loaded == -1) {
         return ERR_FILE_LOAD_FAILED;
     }
+    return 0;
 }
 
 Input_t frontendGetInput(void){

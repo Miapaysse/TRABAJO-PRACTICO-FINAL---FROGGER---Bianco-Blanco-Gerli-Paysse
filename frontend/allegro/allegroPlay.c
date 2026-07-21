@@ -145,7 +145,7 @@
 
     float angle = 0;
 
-    switch (p2game->frog.frogDirection) {
+    switch (p2game->frog.frogOrientation) {
         case FROG_UP:
             angle = 0;
             break;

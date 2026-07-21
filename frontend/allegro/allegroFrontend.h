@@ -23,7 +23,7 @@
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
   ******************************************************************************/
  
- /**
+ /*
   * @brief Funciones para incializar, actualizar y apagar frontend 
  */
 int frontendInit(void);
@@ -40,7 +40,7 @@ Input_t frontendGetInput(void);
  * @brief TODO: Esta funcion recibe input del usuario e informa al backend que tecla fue presionada.
  * @param none
  * @return Devuelve el tipo de input que fue recibido.
-*/
+**/
 
 void frontendRender(Game_t * game);
 
@@ -49,6 +49,7 @@ void frontendRender(Game_t * game);
  *  los enemigos, el puntaje, el nivel y las vidas restantes.
  * @param game Recibe el puntero a la estructura que contiene el estado del juego.
  * @return No devuelve nada.
+*/
 
 void frontendDestroy(void);
 
