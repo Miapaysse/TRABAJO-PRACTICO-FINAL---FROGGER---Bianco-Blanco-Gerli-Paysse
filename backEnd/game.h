@@ -137,10 +137,6 @@ int updateGame(Game_t * game, Input_t input);
  * @param param2 Descripcion parametro 2
  * @return Descripcion valor que devuelve
 */
-
-void menuNext(MenuState_t *menu);
-void menuPrevious(MenuState_t *menu);
-
 /******************************************************************************/
 
 #endif // _GAME_H_

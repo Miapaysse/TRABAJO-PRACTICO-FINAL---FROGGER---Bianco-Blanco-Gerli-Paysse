@@ -131,6 +131,10 @@ const char *errorMessage(ErrorCode_t error){
         case ERR_OUT_OF_DISPLAY_BOUNDS:
             return "Coordinates out of display bounds. Invalid";
         break;
+
+          case ERR_FILE_TOP10_FAILED:
+            return "Unable to acces top10.txt";
+        break;
         
     }
 
