@@ -1,6 +1,5 @@
 /*
   @file     +allegroFrontend.c+
-  @brief    +Descripcion del archivo+
   @author   +Bianco-Blanco-Gerli-Paysse+
 */
 

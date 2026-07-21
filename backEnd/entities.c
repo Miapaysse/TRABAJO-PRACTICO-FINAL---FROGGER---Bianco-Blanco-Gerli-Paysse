@@ -1,6 +1,4 @@
 /***************************************************************************//**
-  @file     +Nombre del archivo (ej: template.c)+
-  @brief    +Descripcion del archivo+
   @author   +Bianco-Blanco-Gerli-Paysse+
  ******************************************************************************/
 
