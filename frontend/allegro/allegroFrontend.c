@@ -16,8 +16,6 @@
 #include <allegro5/allegro_ttf.h> 
 #include <allegro5/allegro_image.h>   
 #include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_audio.h> 
-#include <allegro5/allegro_acodec.h>
 
 #include "allegroFrontend.h"   
 #include "game.h"
@@ -177,7 +175,6 @@ void frontendRender(Game * game){
     break;
 
     case GAME_OVER:
-    al_play_sample(frogdies, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL); //reproduce sonido
     drawGameOver(game);
     break;
 
@@ -218,8 +215,6 @@ void frontendDestroy(void){
     if (safe_box) al_destroy_bitmap(safe_box);
     if (floater_leaf) al_destroy_bitmap(floater_leaf);
 
-    if (frogdies) al_destroy_sample(frogdies);
-    
     if (very_big_font) al_destroy_font(very_big_font);
     if (medium_font) al_destroy_font(medium_font);
     if (big_font) al_destroy_font(big_font);
@@ -230,7 +225,7 @@ void frontendDestroy(void){
     if (display) al_destroy_display(display);
 }
 
-void frontManageError(err){
+void frontManageError(ErrorCode_t err){
     //si el error es de inicializacion de allegro o de carga de fuentes, no se 
     //puede mostrar el mensaje en pantalla, por lo que se imprime en consola
     if (err == ERR_ALLEGRO_INIT_FAILED || err == ERR_FONT_ADDON_FAILED ||  err == ERR_INIT_TTF_FAILED
@@ -253,21 +248,21 @@ void frontManageError(err){
 
 
 static int loadFiles (void){
-    floater_trunk = al_load_bitmap("ALLEGRO_DIRfloater_trunk.png");
-    car = al_load_bitmap("ALLEGRO_DIRcar.png");
-    truck = al_load_bitmap("ALLEGRO_DIRtruck.png");
-    frog = al_load_bitmap("ALLEGRO_DIRfrog.png");
-    skull = al_load_bitmap("ALLEGRO_DIRskull.png");
-    trophy = al_load_bitmap("ALLEGRO_DIRtrophy.png");
-    pause_img =al_load_bitmap("ALLEGRO_DIRpause.png");
-    heart = al_load_bitmap("ALLEGRO_DIRheart.png");
-    safe_box = al_load_bitmap("ALLEGRO_DIRsafe_box.png");
-    floater_leaf = al_load_bitmap("ALLEGRO_DIRfloater_leaf.png");
+    floater_trunk = al_load_bitmap(ALLEGRO_DIR"floater_trunk.png");
+    car = al_load_bitmap(ALLEGRO_DIR"car.png");
+    truck = al_load_bitmap(ALLEGRO_DIR"truck.png");
+    frog = al_load_bitmap(ALLEGRO_DIR"frog.png");
+    skull = al_load_bitmap(ALLEGRO_DIR"skull.png");
+    trophy = al_load_bitmap(ALLEGRO_DIR"trophy.png");
+    pause_img =al_load_bitmap(ALLEGRO_DIR"pause.png");
+    heart = al_load_bitmap(ALLEGRO_DIR"heart.png");
+    safe_box = al_load_bitmap(ALLEGRO_DIR"safe_box.png");
+    floater_leaf = al_load_bitmap(ALLEGRO_DIR"floater_leaf.png");
 
-    very_big_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 200, 0);
-    big_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 110, 0);
-    medium_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 60, 0);
-    small_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 40, 0);
+    very_big_font = al_load_ttf_font(ALLEGRO_DIR"Tiny5-Regular.ttf", 200, 0);
+    big_font = al_load_ttf_font(ALLEGRO_DIR"Tiny5-Regular.ttf", 110, 0);
+    medium_font = al_load_ttf_font(ALLEGRO_DIR"Tiny5-Regular.ttf", 60, 0);
+    small_font = al_load_ttf_font(ALLEGRO_DIR"Tiny5-Regular.ttf", 40, 0);
     
     if (!floater_trunk || !car || !truck || !frog || !skull || !trophy || !pause_img ||
         !heart || !safe_box || !floater_leaf) {

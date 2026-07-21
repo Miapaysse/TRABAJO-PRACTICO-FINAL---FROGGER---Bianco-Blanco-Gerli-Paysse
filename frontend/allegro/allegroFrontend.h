@@ -18,7 +18,7 @@
  /*******************************************************************************
   * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
   ******************************************************************************/
- #define ALLEGRO_DIR "frontend/allegro"
+ #define ALLEGRO_DIR "frontend/allegro/"
  /***************************************************************************
   * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
   ******************************************************************************/
@@ -26,11 +26,11 @@
  /**
   * @brief Funciones para incializar, actualizar y apagar frontend 
  */
-void frontendInit(void);
+int frontendInit(void);
 Input frontendGetInput(void);
 void frontendRender(Game * game);
 void frontendDestroy(void);
-void frontManageError(err);
+void frontManageError(ErrorCode_t err);
 
 #endif
  

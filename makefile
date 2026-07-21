@@ -23,8 +23,6 @@ ALLEGRO_PACKAGES := \
 	allegro_font-5 \
 	allegro_ttf-5 \
 	allegro_primitives-5 \
-	allegro_audio-5 \
-	allegro_acodec-5 \
 	allegro_image-5
 
 ALLEGRO_CFLAGS := $(shell pkg-config --cflags $(ALLEGRO_PACKAGES))
@@ -36,7 +34,8 @@ BACKEND_OBJS := \
 	$(BACKEND_DIR)/entities.o \
 	$(BACKEND_DIR)/interactions.o \
 	$(BACKEND_DIR)/levels.o \
-	$(BACKEND_DIR)/top10.o
+	$(BACKEND_DIR)/top10.o \
+	$(BACKEND_DIR)/errors.o
 
 # main.c se compila de forma diferente para cada plataforma.
 MAIN_ALLEGRO_OBJ := main-allegro.o
@@ -104,6 +103,12 @@ $(BACKEND_DIR)/levels.o: \
 $(BACKEND_DIR)/top10.o: \
 	$(BACKEND_DIR)/top10.c \
 	$(BACKEND_DIR)/top10.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(BACKEND_DIR)/errors.o: \
+	$(BACKEND_DIR)/errors.c \
+	$(BACKEND_DIR)/errors.h \
+	$(BACKEND_DIR)/config.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # -----------------------------------------------------------------------------
