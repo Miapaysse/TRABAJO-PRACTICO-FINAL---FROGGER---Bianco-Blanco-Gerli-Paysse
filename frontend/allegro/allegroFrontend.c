@@ -31,7 +31,8 @@
  ******************************************************************************/
 
 static ALLEGRO_EVENT_QUEUE *queue = NULL;
-static ALLEGRO_DISPLAY* display;
+static ALLEGRO_DISPLAY *display;
+static ALLEGRO_SAMPLE *frogdies = NULL;
 
 ALLEGRO_BITMAP* floater_trunk = NULL;
 ALLEGRO_BITMAP* car = NULL;
@@ -80,7 +81,7 @@ void frontendInit(void) {
     }
 
     if (al_init_primitives_addon() == false) {
-        printf("Fallo image addon\n");
+        printf("Fallo primitives addon\n");
     }
 
     if (al_install_audio() == false) {
@@ -91,12 +92,8 @@ void frontendInit(void) {
         printf("Fallo font addon\n");
     }
 
-       if (!al_install_audio()) {
-        printf("failed to initialize audio!\n");
-        return;
-    }
     if (!al_init_acodec_addon()) {
-        printf("failed to initialize audio codecs!\n");
+        printf("Fallo audio codecs\n");
         return;
     }
 
@@ -129,7 +126,7 @@ void frontendInit(void) {
     white = al_map_rgb(255, 255, 255);
     pink = al_map_rgb(255, 105, 180);
 
-    // Cargamos imagenes y fuentes
+    // Cargamos archivos
     loadFiles();
 }
 
@@ -190,6 +187,7 @@ void frontendRender(Game * game){
     break;
 
     case GAME_OVER:
+    al_play_sample(frogdies, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL); //reproduce sonido
     drawGameOver(game);
     break;
 
@@ -230,14 +228,18 @@ void frontendDestroy(void){
     if (safe_box) al_destroy_bitmap(safe_box);
     if (floater_leaf) al_destroy_bitmap(floater_leaf);
 
+    if (frogdies) al_destroy_sample(frogdies);
     
     if (very_big_font) al_destroy_font(very_big_font);
     if (medium_font) al_destroy_font(medium_font);
     if (big_font) al_destroy_font(big_font);
     if (small_font) al_destroy_font(small_font);
 
+    
     if (queue) al_destroy_event_queue(queue);
     if (display) al_destroy_display(display);
+
+    al_uninstall_audio();
 }
 
 
@@ -259,12 +261,12 @@ static void loadFiles (void){
     safe_box = al_load_bitmap("safe_box.png");
     floater_leaf = al_load_bitmap("floater_leaf.png");
 
+    frogdies = al_load_sample("frog_dies.wav");
+
     very_big_font = al_load_ttf_font("Tiny5-Regular.ttf", 200, 0);
-    if(very_big_font == NULL){
-        printf("ERROR: fuente no cargada\n");
-    }
     big_font = al_load_ttf_font("Tiny5-Regular.ttf", 110, 0);
     medium_font = al_load_ttf_font("Tiny5-Regular.ttf", 60, 0);
     small_font = al_load_ttf_font("Tiny5-Regular.ttf", 40, 0);
+    
 }
 
