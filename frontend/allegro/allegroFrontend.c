@@ -54,6 +54,11 @@ ALLEGRO_COLOR pink;
  ******************************************************************************/
 
  static int loadFiles(void);
+ /**
+ * @brief Carga todos los archivos necesarios para correr el frontend del juego
+ * @return 0 si se cargaron correctamente, -1 si hubo un error de carga de imágenes, -2
+ * si hubo un error de carga de fuentes de texto
+ */
 
 /*******************************************************************************
  *******************************************************************************
@@ -113,12 +118,6 @@ int frontendInit(void) {
     }
 }
 
-/**
- * @brief Inicializa todo el entorno gráfico, periféricos y recursos de Allegro.
- * @return 
- */
-
-
 Input_t frontendGetInput(void){
     ALLEGRO_EVENT event;
     
@@ -130,7 +129,6 @@ Input_t frontendGetInput(void){
                 case ALLEGRO_KEY_LEFT:  return LEFT;
                 case ALLEGRO_KEY_RIGHT: return RIGHT;
                 case ALLEGRO_KEY_ENTER: return SELECT;
-                //case ALLEGRO_EVENT_DISPLAY_CLOSE: return EXIT;
                 default: return NONE;
             }
         }
@@ -144,14 +142,12 @@ Input_t frontendGetInput(void){
     }
 }
   
-
 void frontendRender(Game_t * game){
 
     //pintamos todo el fondo de negro para borrar el fotograma anterior
    al_clear_to_color(al_map_rgb(0, 0, 0));
 
    int game_state = (game -> state.id);
-   //int game_state = PAUSED;
 
    switch (game_state){
     case MENU:
@@ -192,10 +188,10 @@ void frontendRender(Game_t * game){
     break;
    }
 
+   //mostramos lo dibujado
    al_flip_display();
 }
  
-
 void frontendDestroy(void){
 
     //Liberamos memoria al finalizar el programa
@@ -240,8 +236,7 @@ void frontManageError(ErrorCode_t err){
                          LOCAL FUNCTION DEFINITIONS
   *******************************************************************************
   ******************************************************************************/
-
-
+ 
 static int loadFiles (void){
     floater_trunk = al_load_bitmap(ALLEGRO_DIR"floater_trunk.png");
     car = al_load_bitmap(ALLEGRO_DIR"car.png");
@@ -259,21 +254,19 @@ static int loadFiles (void){
     medium_font = al_load_ttf_font(ALLEGRO_DIR"Tiny5-Regular.ttf", 60, 0);
     small_font = al_load_ttf_font(ALLEGRO_DIR"Tiny5-Regular.ttf", 40, 0);
     
+    // Verificamos si se cargaron correctamente todos los archivos necesarios
     if (!floater_trunk || !car || !truck || !frog || !skull || !trophy || !pause_img ||
         !heart || !safe_box || !floater_leaf) {
         return -1;
     }
+    // Verificamos si se cargaron correctamente los recursos para mostrar texto en pantalla
     else if (!very_big_font || !big_font || !medium_font || !small_font) {
         return -2;
     }
+    //No hubo error
     else {
         return 0;
     }
 }
 
-/**
- * @brief Carga todos los archivos necesarios para el juego
- * @return 0 si se cargaron correctamente, -1 si hubo un error de carga de imágenes, -2
- * si hubo un error de carga de fuentes
- */
 
