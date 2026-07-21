@@ -250,23 +250,23 @@ void frontendDestroy(void){
   ******************************************************************************/
 
 static void loadFiles (void){
-    floater_trunk = al_load_bitmap("frontend/allegro/floater_trunk.png");
-    car = al_load_bitmap("frontend/allegro/car.png");
-    truck = al_load_bitmap("frontend/allegro/truck.png");
-    frog = al_load_bitmap("frontend/allegro/frog.png");
-    skull = al_load_bitmap("frontend/allegro/skull.png");
-    trophy = al_load_bitmap("frontend/allegro/trophy.png");
-    pause_img =al_load_bitmap("frontend/allegro/pause.png");
-    heart = al_load_bitmap("frontend/allegro/heart.png");
-    safe_box = al_load_bitmap("frontend/allegro/safe_box.png");
-    floater_leaf = al_load_bitmap("frontend/allegro/floater_leaf.png");
+    floater_trunk = al_load_bitmap("ALLEGRO_DIRfloater_trunk.png");
+    car = al_load_bitmap("ALLEGRO_DIRcar.png");
+    truck = al_load_bitmap("ALLEGRO_DIRtruck.png");
+    frog = al_load_bitmap("ALLEGRO_DIRfrog.png");
+    skull = al_load_bitmap("ALLEGRO_DIRskull.png");
+    trophy = al_load_bitmap("ALLEGRO_DIRtrophy.png");
+    pause_img =al_load_bitmap("ALLEGRO_DIRpause.png");
+    heart = al_load_bitmap("ALLEGRO_DIRheart.png");
+    safe_box = al_load_bitmap("ALLEGRO_DIRsafe_box.png");
+    floater_leaf = al_load_bitmap("ALLEGRO_DIRfloater_leaf.png");
 
-    frogdies = al_load_sample("frontend/allegro/frog_dies.wav");
+    frogdies = al_load_sample("ALLEGRO_DIRfrog_dies.wav");
 
-    very_big_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 200, 0);
-    big_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 110, 0);
-    medium_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 60, 0);
-    small_font = al_load_ttf_font("frontend/allegro/Tiny5-Regular.ttf", 40, 0);
+    very_big_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 200, 0);
+    big_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 110, 0);
+    medium_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 60, 0);
+    small_font = al_load_ttf_font("ALLEGRO_DIRTiny5-Regular.ttf", 40, 0);
     
 }
 
