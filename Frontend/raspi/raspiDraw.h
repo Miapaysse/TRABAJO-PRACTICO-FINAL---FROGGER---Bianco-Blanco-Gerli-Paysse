@@ -1,118 +1,107 @@
 /***************************************************************************//**
-  @file     +raspiDraw.h+
-  @brief    +Parametros y prototipos de funciones para dibujar sobre el display+
-  @author   +Bianco-Blanco-Gerli-Paysse+
+  @file     raspiDraw.h
+  @brief    Prototipos de las funciones de dibujo en la pantalla LED
+  @author   Bianco-Blanco-Gerli-Paysse
  ******************************************************************************/
 
 #ifndef RASPI_DRAW_H
 #define RASPI_DRAW_H
 
-
-/*******************************************************************************
- * INCLUDE HEADER FILES
- ******************************************************************************/
-
-
 #include <stdint.h>
 #include "config.h"
 #include "levels.h"
-// Para usar el typedef DISP y los macros
 
-
-/*******************************************************************************
- * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-// Enumerador de mensajes para acceder a la matriz
+// Lista de mensajes indexados para la pantalla
 enum msgs {
-	MSG_HOME,
-	MSG_PAUSE,
-	MSG_TOP_10,
-	MSG_PLAY,
-	MSG_GO_HOME,
-	MSG_DESPAUSE,
-	MSG_GO_TOP_10,
-	MSG_GO_BACK,
-	MSG_EXIT,
-	MSG_GAME_OVER,
-	MSG_YOU_WIN,
-	LIVE_LOSED,
-	NEXT_LEVEL,
-	MY_RANKING,
-	MSG_ERROR,
-	MSG_MAX_MENUS
+	MSG_HOME,       // Titulo principal
+	MSG_PAUSE,      // Pantalla de pausa
+	MSG_TOP_10,     // Titulo del Top 10
+	MSG_PLAY,       // Opcion jugar
+	MSG_GO_HOME,    // Opcion volver al menu
+	MSG_DESPAUSE,   // Opcion reanudar
+	MSG_GO_TOP_10,  // Opcion ir a puntuaciones
+	MSG_GO_BACK,    // Flecha para atras
+	MSG_EXIT,       // Opcion salir
+	MSG_GAME_OVER,  // Pantalla perdiste
+	MSG_YOU_WIN,    // Pantalla ganaste
+	LIVE_LOSED,     // Animacion de vida perdida
+	NEXT_LEVEL,     // Pantalla de cambio de nivel
+	MY_RANKING,     // Cartel especial si entraste al top 10
+	MSG_ERROR,      // Pantalla de error (?)
+	MSG_MAX_MENUS   
 };
 
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// Exponemos la matriz de mensajes para que frontendRender pueda usarla
 extern const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1];
 
-
-/*******************************************************************************
- * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
+/**
+ * @brief Dibuja el fondo (rio, calle, veredas) segun el backend.
+ * @param rows Puntero a las filas del nivel actual.
+ */
 void drawZone(const Row_t * rows);
-/**
- * @brief TODO: dibuja zona en display, fila por fila según backend
- * @param param1 rows puntero a arreglo con las caracteristicas de cada fila
- * @return Nada
-*/
 
+/**
+ * @brief Dibuja los autos activos en la calle (prendidos).
+ * @param obstacles Arreglo de obstaculos del juego.
+ */
 void drawObstacles(const Entity_t obstacles[]);
-/**
- * @brief TODO: dibuja obstáculos 
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Nada
-*/
 
+/**
+ * @brief Dibuja los troncos en el agua (apagados sobre fondo prendido).
+ * @param floaters Arreglo de plataformas flotantes.
+ */
 void drawFloaters(const Entity_t floaters[]);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Nada
-*/
 
+/**
+ * @brief Dibuja la rana titilando.
+ * @param frog Puntero a la rana.
+ * @param blink Estado actual del parpadeo (D_ON o D_OFF).
+ */
 void drawFrog(const Frog_t * frog, int blink);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Nada
-*/
 
+/**
+ * @brief Dibuja una pantalla fija completa (bitmaps 16x16).
+ * @param bitmap Arreglo de bits de la imagen a mostrar.
+ */
 void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Nada
-*/
 
+/**
+ * @brief Dibuja los tres digitos de una puntuacion en la pantalla.
+ * @param idxScore Puesto en el ranking para prender los leds de abajo.
+ * @param score El puntaje numerico a mostrar.
+ */
 void drawScore(int idxScore, uint16_t score);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Devuelve un entero para manejo de errores
-*/
 
+/**
+ * @brief Dibuja los nidos de llegada.
+ * @param boxes Arreglo de los casilleros de meta.
+ * @param blink Estado de parpadeo para los nidos ocupados.
+ */
 void drawBoxes (FinishBox_t boxes[], int blink);
-/**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Nada
-*/
 
+/**
+ * @brief Frena el juego y muestra el cartel si entraste al ranking.
+ * @param status Estado del ranking enviado por el backend.
+ */
 void showRank(const Top10Status_t status);
+
+/**
+ * @brief Muestra el puntaje final de la partida.
+ * @param score Puntos acumulados.
+ */
 void showScore(const uint16_t score);
+
+/**
+ * @brief Frena el juego para avisar que pasaste de nivel.
+ * @param currentLevel ID del nivel actual.
+ * @param lastLevel Puntero al nivel anterior para chequear cambios.
+ */
 void showLevelNextLevel(const LevelId_t currentLevel, LevelId_t* lastLevel);
+
+/**
+ * @brief Frena el juego y muestra animacion si perdiste una vida.
+ * @param currentLives Vidas actuales.
+ * @param lastLives Puntero a vidas anteriores para chequear cambios.
+ */
 void showLives(const uint8_t currentLives, uint8_t * lastLives);
+
 #endif

@@ -4,11 +4,6 @@
   @author   +Bianco-Blanco-Gerli-Paysse+
  ******************************************************************************/
 
- 
-/*******************************************************************************
- * INCLUDE HEADER FILES
- ******************************************************************************/
-
 #include <stdio.h>
 #include <stdint.h>
 #include "disdrv.h"
@@ -19,12 +14,7 @@
 #include "entities.h"
 #include "config.h"
 
-
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// Defino arreglo de bitmaps con distintos mensajes
+// Bitmaps de 16x16 para los carteles y opciones del juego
 const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 		{//Home title
 			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
@@ -81,124 +71,49 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
 		{//GAME OVER
-			0b0000000100000000, 
-			0b0000001110000000, 
-			0b0000000000000000,
-			0b1111111111111111,
-			0b1111111111111111, 
-			0b0011000100010011,
-			0b0101011101010101, 
-			0b0101000100010101,
-			0b0101011101010101,
-			0b0011000101010011,
-			0b1111111111111111, 
-			0b1000000000000001,
-			0b1111111111111111,
-			0b0000000000000000,
-			0b0000001110000000,
-			0b0000000100000000
+			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
+			0b1111111111111111, 0b0011000100010011, 0b0101011101010101, 0b0101000100010101,
+			0b0101011101010101, 0b0011000101010011, 0b1111111111111111, 0b1000000000000001,
+			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
 		{ //YOU WIN
-			0b0000000100000000, 
-			0b0000001110000000, 
-			0b0000000000000000,
-			0b1111111111111111,
-			0b1101010001010111, 
-			0b1110110101010111, 
-			0b1110110001000111, 
-			0b1111111111111111, 
-			0b1101010101101111, 
-			0b1101010100101111, 
-			0b1100010101001111, 
-			0b1101010101101111,
-			0b1111111111111111,
-			0b0000000000000000,
-			0b0000001110000000,
-			0b0000000100000000
+			0b0000000100000000, 0b0000001110000000, 0b0000000000000000, 0b1111111111111111,
+			0b1101010001010111, 0b1110110101010111, 0b1110110001000111, 0b1111111111111111,
+			0b1101010101101111, 0b1101010100101111, 0b1100010101001111, 0b1101010101101111,
+			0b1111111111111111, 0b0000000000000000, 0b0000001110000000, 0b0000000100000000
 		},
 		{ //-corazon, perdio vida
-			0b1111111111111111,
-			0b1111111111111111,
-			0b0000000000000000,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111001001111,
-			0b1111110000000111,
-			0b1001111000001111,
-			0b1111111100011111,
-			0b1111111110111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b0000000000000000,
-			0b1111111111111111,
-			0b1111111111111111
+			0b1111111111111111, 0b1111111111111111, 0b0000000000000000, 0b1111111111111111,
+			0b1111111111111111, 0b1111111001001111, 0b1111110000000111, 0b1001111000001111,
+			0b1111111100011111, 0b1111111110111111, 0b1111111111111111, 0b1111111111111111,
+			0b1111111111111111, 0b0000000000000000, 0b1111111111111111, 0b1111111111111111
 		},
 		{ //Next level
-			0b1111111111111111,
-			0b1111111111111111,
-			0b0110100101010001,
-			0b0010101101011011,
-			0b0100100110111011,
-			0b0110101101011011,
-			0b1110100101011111,
-			0b1111111111111111,
-			0b0110010101001011,
-			0b0110110101011011,
-			0b0110010101001011,
-			0b0110111011011011,
-			0b0010011011001001,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111
+			0b1111111111111111, 0b1111111111111111, 0b0110100101010001, 0b0010101101011011,
+			0b0100100110111011, 0b0110101101011011, 0b1110100101011111, 0b1111111111111111,
+			0b0110010101001011, 0b0110110101011011, 0b0110010101001011, 0b0110111011011011,
+			0b0010011011001001, 0b1111111111111111, 0b1111111111111111, 0b1111111111111111
 		},
 		{ //Reached top 10, "IN TOP 10"
-			0b1111111111111111,
-			0b1110001011011111,
-			0b1111011001011111,
-			0b1110001010011111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1100010001000111,
-			0b1110110101010111,
-			0b1110110101000111,
-			0b1110110001011111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111101000111111,
-			0b1111101010111111,
-			0b1111101000111111,
-			0b1111111111111111
+			0b1111111111111111, 0b1110001011011111, 0b1111011001011111, 0b1110001010011111,
+			0b1111111111111111, 0b1111111111111111, 0b1100010001000111, 0b1110110101010111,
+			0b1110110101000111, 0b1110110001011111, 0b1111111111111111, 0b1111111111111111,
+			0b1111101000111111, 0b1111101010111111, 0b1111101000111111, 0b1111111111111111
 		},
-		{ //ERROR "?""
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111000000111111,
-			0b1111111110111111,
-			0b1111111110111111,
-			0b1111000000111111,
-			0b1111011111111111,
-			0b1111011111111111,
-			0b1111011111111111,
-			0b1111111111111111,
-			0b1111011111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111,
-			0b1111111111111111
+		{ //ERROR "?"
+			0b1111111111111111, 0b1111111111111111, 0b1111111111111111, 0b1111000000111111,
+			0b1111111110111111, 0b1111111110111111, 0b1111000000111111, 0b1111011111111111,
+			0b1111011111111111, 0b1111011111111111, 0b1111111111111111, 0b1111011111111111,
+			0b1111111111111111, 0b1111111111111111, 0b1111111111111111, 0b1111111111111111
 		}
 };
-
 
 /*******************************************************************************
  * STATIC VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
+static DISP bufferDisplay; // Buffer para armar el score antes de imprimir
 
-static DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
-
-
-static const DISP menuBackground = {
+static const DISP menuBackground = { // Fondo decorativo del ranking
 	{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -209,20 +124,18 @@ static const DISP menuBackground = {
 	{0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}
 };
 
-static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = { //Arreglo con todos los dibujos de los dijitos para el display
-	{ {0,0,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,0,0} }, // Nro 0
-	{ {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1} }, // Nro 1
-	{ {0,0,0}, {1,1,0}, {0,0,0}, {0,1,1}, {0,0,0} }, // Nro 2
-	{ {0,0,0}, {1,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }, // Nro 3
-	{ {0,1,0}, {0,1,0}, {0,0,0}, {1,1,0}, {1,1,0} }, // Nro 4
-	{ {0,0,0}, {0,1,1}, {0,0,0}, {1,1,0}, {0,0,0} }, // Nro 5
-	{ {0,0,0}, {0,1,1}, {0,0,0}, {0,1,0}, {0,0,0} }, // Nro 6
-	{ {0,0,0}, {1,1,0}, {1,1,0}, {1,1,0}, {1,1,0} }, // Nro 7
-	{ {0,0,0}, {0,1,0}, {0,0,0}, {0,1,0}, {0,0,0} }, // Nro 8
-	{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }  // Nro 9
+static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = { // Dibujos de los numeros 0-9
+	{ {0,0,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,0,0} }, 
+	{ {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1}, {1,0,1} }, 
+	{ {0,0,0}, {1,1,0}, {0,0,0}, {0,1,1}, {0,0,0} }, 
+	{ {0,0,0}, {1,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }, 
+	{ {0,1,0}, {0,1,0}, {0,0,0}, {1,1,0}, {1,1,0} }, 
+	{ {0,0,0}, {0,1,1}, {0,0,0}, {1,1,0}, {0,0,0} }, 
+	{ {0,0,0}, {0,1,1}, {0,0,0}, {0,1,0}, {0,0,0} }, 
+	{ {0,0,0}, {1,1,0}, {1,1,0}, {1,1,0}, {1,1,0} }, 
+	{ {0,0,0}, {0,1,0}, {0,0,0}, {0,1,0}, {0,0,0} }, 
+	{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }  
 };
-
-
 
 /*******************************************************************************
  *******************************************************************************
@@ -230,16 +143,16 @@ static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = { //Arreglo con todos l
  *******************************************************************************
  ******************************************************************************/
 
-static int popFromOtherSide(int x) { //Dibuja la parte de la entity que debe aparecer por el otro lado
+static int popFromOtherSide(int x) { // Logica Pac-Man para envolver coordenadas horizontales
     int width = MAP_WIDTH + 1;
-    x %= width; //toma su cordenada en x y ve cuanto se fue del mapa
-    if (x < 0) { // Si es negativa, es por que debe aparecer por la izquierda
+    x %= width;
+    if (x < 0) { // Reaparece por la izquierda si es negativo
         x += width;
     }
     return x;
 }
 
-static int passDrawing(int x, int y, dlevel_t val) {
+static int passDrawing(int x, int y, dlevel_t val) { // Chequea limites y manda el pixel al driver real
     if (y < 0 || y > MAP_HEIGHT) {
         return ERR_OUT_OF_DISPLAY_BOUNDS;
     }
@@ -252,14 +165,13 @@ static int passDrawing(int x, int y, dlevel_t val) {
 	return 0;
 }
 
-
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
-void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){
+void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){ // Muestra una pantalla fija bit a bit
 	int f, c, ledState = 0;
 	for (f = 0; f <= MAP_HEIGHT; f++) {
 		for (c = 0; c <= MAP_WIDTH; c++) {
@@ -273,20 +185,20 @@ void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){
 	}
 }
 
-void drawScore(int idxScore, uint16_t score) {
+void drawScore(int idxScore, uint16_t score) { // Descompone el puntaje y lo dibuja en pantalla
 	int f, c, d, id;
 
-	for (f = 0; f <= MAP_HEIGHT; f++) {
+	for (f = 0; f <= MAP_HEIGHT; f++) { // Carga el fondo decorativo
 		for (c = 0; c <= MAP_WIDTH; c++) {
 			bufferDisplay[f][c] = menuBackground[f][c];
 		}
 	}
 
-	int d1 = (score/100), d2 = (score%100)/10, d3 = (score%10);
+	int d1 = (score/100), d2 = (score%100)/10, d3 = (score%10); // Centenas, decenas, unidades
 	int scoreDigits[DIGITS] = {d1,d2,d3};
 	int currentDigit = 0, x_offset = 0, y_offset = 0;
 
-	for (d = 0; d < DIGITS; d++) {
+	for (d = 0; d < DIGITS; d++) { // Pega cada numero en el buffer
 		currentDigit = scoreDigits[d];
 		x_offset = SCORE_XCOORD + d*(DIGIT_WIDTH + SPACE_DIGITS);
 		y_offset = SCORE_YCOORD;
@@ -298,7 +210,7 @@ void drawScore(int idxScore, uint16_t score) {
 		}
 	}
 
-	for (f = 0; f <= MAP_HEIGHT; f++) {
+	for (f = 0; f <= MAP_HEIGHT; f++) { // Pasa el buffer a la pantalla real
 		for (c = 0; c <= MAP_WIDTH; c++) {
 			if(bufferDisplay[f][c]){
 				disp_write((dcoord_t){.y = f, .x = c}, D_ON);
@@ -308,13 +220,12 @@ void drawScore(int idxScore, uint16_t score) {
 		}
 	}
 
-	for(id = 0; id <= idxScore; id++){
+	for(id = 0; id <= idxScore; id++){ // Puntos inferiores para marcar el puesto en el top 10
 		disp_write((dcoord_t){.y = SCORE_ID_YCOOR, .x = SCORE_ID_XCOOR + id}, D_OFF);
 	}
 }
 
-
-void drawZone(const Row_t *rows) {
+void drawZone(const Row_t *rows) { // Dibuja el fondo segun la zona de cada fila
     int r, c, rDisp;
 
     for (r = 0; r <= MAP_HEIGHT; r++) {
@@ -324,14 +235,14 @@ void drawZone(const Row_t *rows) {
             int drawFlag = 0;
 
             switch (rows[r].zone) {
-                case WATER:
+                case WATER: // Agua prendida
                     drawFlag = 1;
                     break;
-                case ROAD:
+                case ROAD: // Calle apagada
                     drawFlag = 0;
                     break;
 				case START:
-				case SAFE:
+				case SAFE: // Veredas ajedrezadas, meta fija brillante
 					if (r == FINISH_LINE || r == FINISH_LINE + 1) {
 						drawFlag = 1;
 					} else {
@@ -349,38 +260,37 @@ void drawZone(const Row_t *rows) {
     }
 }
 
-
-void drawObstacles(const Entity_t obstacles[]){
+void drawObstacles(const Entity_t obstacles[]){ // Pinta los autos (Prendidos)
 	int idxObs, len, rDisp;
 	int cDisp;
 
 	for (idxObs = 0; idxObs < MAX_OBSTACLES; idxObs++){
-		if (obstacles[idxObs].active){ // si existe obstáculo
+		if (obstacles[idxObs].active){
 			rDisp = ROW(obstacles[idxObs].y);
-			for (len = 0; len < obstacles[idxObs].length; len++){ // itera por largo
+			for (len = 0; len < obstacles[idxObs].length; len++){
 				cDisp = obstacles[idxObs].x + len;
-				passDrawing(cDisp, rDisp, D_ON); // obstaculos prendidos
+				passDrawing(cDisp, rDisp, D_ON);
 			}
 		}
 	}
 }
 
-void drawFloaters(const Entity_t floaters[]){
+void drawFloaters(const Entity_t floaters[]){ // Apaga leds sobre el rio para recortar los troncos
 	int idxFlo, len, rDisp;
 	int cDisp;
 
 	for (idxFlo = 0; idxFlo < MAX_FLOATERS; idxFlo++){
-		if (floaters[idxFlo].active){ // si existe floater
+		if (floaters[idxFlo].active){
 			rDisp = ROW(floaters[idxFlo].y);
-			for (len = 0; len < floaters[idxFlo].length; len++){ // itera por largo
+			for (len = 0; len < floaters[idxFlo].length; len++){
 				cDisp = floaters[idxFlo].x + len;
-				passDrawing(cDisp, rDisp, D_OFF); // Floaters apagados sobre agua
+				passDrawing(cDisp, rDisp, D_OFF); 
 			}
 		}
 	}
 }
 
-void drawBoxes (FinishBox_t boxes[], int blink){
+void drawBoxes (FinishBox_t boxes[], int blink){ // Dibuja nidos y los hace titilar si la rana llego
 	int x, i = 0;
 	for (; i < FINISH_BOX_COUNT; i++){
 		x = boxes[i].x;
@@ -392,7 +302,7 @@ void drawBoxes (FinishBox_t boxes[], int blink){
 	}
 }
 
-void drawFrog(const Frog_t * frog, int blink) {
+void drawFrog(const Frog_t * frog, int blink) { // Dibuja la rana prendida o apagada (para el efecto titilante)
 	int cDisp = frog->x;
 	int y_disp = ROW(frog->y);
 	if (blink) {
@@ -402,22 +312,22 @@ void drawFrog(const Frog_t * frog, int blink) {
 	}
 }
 
-void showRank(const Top10Status_t  status){
+void showRank(const Top10Status_t status){ // Si entro al ranking muestra festejo, sino pasa de largo
 	printf("%d", status);
-	if(status == TOP10_CHANGED){
+	if(status == TOP10_CHANGED){ 
 		drawMSG(msgsDisp[MY_RANKING]);
 		disp_update();
 		usleep(DISPLAY_RANK_TIME);
 	} 
 }
 
-void showScore(const uint16_t score){
+void showScore(const uint16_t score){ // Fuerza la muestra de los puntos totales ganados
 	drawScore(-1, score);
 	disp_update();
 	usleep(DISPLAY_SCORE_TIME);
 }
 
-void showLevelNextLevel(const LevelId_t currentLevel, LevelId_t * lastLevel){
+void showLevelNextLevel(const LevelId_t currentLevel, LevelId_t * lastLevel){ // Frena un segundo para avisar cambio de nivel
 	if (currentLevel != *lastLevel) {
 		*lastLevel = currentLevel;
 		drawMSG(msgsDisp[NEXT_LEVEL]);
@@ -426,11 +336,11 @@ void showLevelNextLevel(const LevelId_t currentLevel, LevelId_t * lastLevel){
 	}
 }
 
-void showLives(const uint8_t currentLives, uint8_t * lastLives){
+void showLives(const uint8_t currentLives, uint8_t * lastLives){ // Frena un segundo y muestra corazon roto si moriste
 	if (currentLives != *lastLives) {
 		*lastLives = currentLives;
 		drawMSG(msgsDisp[LIVE_LOSED]);
 		disp_update();
-		usleep(DISPLAY_DEFAULT_TIME); //pauso todo el programa por 1 seg
+		usleep(DISPLAY_DEFAULT_TIME); 
 	}
 }

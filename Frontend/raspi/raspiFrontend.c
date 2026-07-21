@@ -1,3 +1,9 @@
+/***************************************************************************//**
+  @file     raspiFrontend.c
+  @brief    Implementacion del loop de renderizado e inputs de hardware
+  @author   Bianco-Blanco-Gerli-Paysse
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdint.h>
 #include "unistd.h"
@@ -13,12 +19,12 @@
 #include "raspiDraw.h"
 
 joyinfo_t joy;
-static Input_t ultimo_input = NONE;
-static uint8_t showPlayer = 1;
-static uint8_t lastLive = MAX_LIVES;
-static LevelId_t lastLevel = LEVEL_1;
+static Input_t ultimo_input = NONE; // Evita que se disparen comandos seguidos al mantener apretado
+static uint8_t showPlayer = 1;      // Controla que las pantallas finales se muestren una sola vez
+static uint8_t lastLive = MAX_LIVES;   // Cache para chequear si bajaron las vidas
+static LevelId_t lastLevel = LEVEL_1; // Cache para chequear si cambio el nivel
 
-int frontendInit(void) {
+int frontendInit(void) { // Arranca perifericos y resetea las banderas del frontend
     joy_init();
     disp_init();
     disp_clear();
@@ -30,30 +36,30 @@ int frontendInit(void) {
 	return 0;
 }
 
-void frontendDestroy(void) {
+void frontendDestroy(void) { // Apaga la pantalla al cerrar
     disp_clear();
     disp_update();
 }
 
-Input_t frontendGetInput(void) {
+Input_t frontendGetInput(void) { // Lee el joystick y bloquea rebotes
     Input_t input_actual = NONE;
     joy = joy_read();
 
     if (joy.sw == J_PRESS) {
         input_actual = SELECT;
-    } else if (joy.y > JOY_LIM && joy.x < JOY_LIM && joy.x > -JOY_LIM) { //solamente arriba
+    } else if (joy.y > JOY_LIM && joy.x < JOY_LIM && joy.x > -JOY_LIM) { 
         input_actual = UP;
-    } else if (joy.y < -JOY_LIM && joy.x < JOY_LIM && joy.x > -JOY_LIM) { //solamente abajo
+    } else if (joy.y < -JOY_LIM && joy.x < JOY_LIM && joy.x > -JOY_LIM) { 
         input_actual = DOWN;
-    } else if (joy.x > JOY_LIM && joy.y < JOY_LIM && joy.y > -JOY_LIM) { // solo a la derecha
+    } else if (joy.x > JOY_LIM && joy.y < JOY_LIM && joy.y > -JOY_LIM) { 
         input_actual = RIGHT;
-    } else if (joy.x < -JOY_LIM && joy.y < JOY_LIM && joy.y > -JOY_LIM) { //solo a la izquierda
+    } else if (joy.x < -JOY_LIM && joy.y < JOY_LIM && joy.y > -JOY_LIM) { 
         input_actual = LEFT;
     } else {
         input_actual = NONE;
     }
 
-    if (input_actual != ultimo_input) {
+    if (input_actual != ultimo_input) { // Obliga a soltar el joystick para marcar otro movimiento
         ultimo_input = input_actual;
         return input_actual;
     } else {
@@ -61,16 +67,13 @@ Input_t frontendGetInput(void) {
     }
 }
 
-void frontendRender(Game_t * game) {
+void frontendRender(Game_t * game) { // Escanea el estado del backend y decide que dibujar
     int option = 0;
 	disp_clear();
 
 	switch((game->state).id) {
-		case MENU:
-
-			//Inicializo aca variables para mostras mensajes temporales en display
+		case MENU: // Resetea variables locales y dibuja items del menu principal
 			showPlayer = 1;
-			// si estas en menu signica que volviste a empezar el juego, por lo tanto se resetea el showPlayer
 			lastLive = MAX_LIVES;
 			lastLevel = LEVEL_1;
 
@@ -88,7 +91,7 @@ void frontendRender(Game_t * game) {
 			}
 			break;
 
-		case POINTS:
+		case POINTS: // Dibuja la lista de puntuaciones records obtenidas del backend
 			option = (game->state).points.selected;			
             switch (option) {	
 				case POINTS_TITLE:
@@ -110,7 +113,7 @@ void frontendRender(Game_t * game) {
             }
 			break;
 
-		case PAUSED:
+		case PAUSED: // Pantalla fija de pausa
 			option = (game->state).paused.selected;
 			if(option == PAUSED_TITLE){
 				drawMSG(msgsDisp[MSG_PAUSE]);
@@ -125,30 +128,25 @@ void frontendRender(Game_t * game) {
 			}
 		break;
 		
-		case PLAYING:
+		case PLAYING: // Dibuja la accion del juego en tiempo real
 			option = (game->state).id;
 			if(option == PAUSED){
 				drawMSG(msgsDisp[MSG_PAUSE]);
 			} else {
-				showLives(game->lives, &lastLive);
-
-				showLevelNextLevel(game->level.id, &lastLevel);
+				showLives(game->lives, &lastLive); // Chequea muerte
+				showLevelNextLevel(game->level.id, &lastLevel); // Chequea cambio de nivel
 				
-				// Dibuja zonas
-				drawZone((game->level).rows);
-				drawBoxes (game->level.finishBoxes, game->timeNow % (TIME_BLINK_BOX*2) < TIME_BLINK_BOX? D_ON : D_OFF);
+				drawZone((game->level).rows); // Dibuja terreno base
+				drawBoxes (game->level.finishBoxes, game->timeNow % (TIME_BLINK_BOX*2) < TIME_BLINK_BOX? D_ON : D_OFF); // Nidos
 
-				//Dibuja obstaculos y floaters
-				drawObstacles((game->entities).obstacles);
-				drawFloaters((game->entities).floaters);
+				drawObstacles((game->entities).obstacles); // Dibuja autos
+				drawFloaters((game->entities).floaters); // Dibuja troncos
 				
-				//Dibuja rana (titila)
-				drawFrog(&(game->frog), game->timeNow % (TIME_BLINK_FROG*2) < TIME_BLINK_FROG? D_ON : D_OFF);
-
+				drawFrog(&(game->frog), game->timeNow % (TIME_BLINK_FROG*2) < TIME_BLINK_FROG? D_ON : D_OFF); // Dibuja la rana
 			}
 		break;
 		
-		case GAME_OVER:
+		case GAME_OVER: // Secuencia final si perdiste todas las vidas
 			option = (game->state).gameOver.selected;
 			if(option == GAME_OVER_TITLE){
 				drawMSG(msgsDisp[MSG_GAME_OVER]);
@@ -157,9 +155,9 @@ void frontendRender(Game_t * game) {
 					disp_update();
 					usleep(DISPLAY_DEFAULT_TIME);
 					
-					showRank(game->top10.status);
+					showRank(game->top10.status); // Te avisa si entraste al ranking leaderboard
 					
-					showScore(game->score);
+					showScore(game->score); // Muestra tus puntos logrados
 				}
 			} else if(option == GAME_OVER_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);
@@ -170,7 +168,7 @@ void frontendRender(Game_t * game) {
 			}
 		break;
 
-		case VICTORY:
+		case VICTORY: // Secuencia final si completaste exitosamente el juego
 			option = (game->state).victory.selected;
 			if(option == VICTORY_TITLE){
 				drawMSG(msgsDisp[MSG_YOU_WIN]);
@@ -179,7 +177,7 @@ void frontendRender(Game_t * game) {
 					disp_update();
 					usleep(DISPLAY_DEFAULT_TIME);
 					
-					showRank(game->top10.status);
+					showRank(game->top10.status); // Chequea si entraste a la tabla de records
 					
 					showScore(game->score);
 				}
@@ -196,10 +194,10 @@ void frontendRender(Game_t * game) {
 			break;
 	}
 	
-	disp_update();
+	disp_update(); // Dibuja el buffer completo definitivo
 }
 
-void frontManageError(ErrorCode_t err){
+void frontManageError(ErrorCode_t err){ // Despliega cartel con "?" si explota algo internamente
 	drawMSG(msgsDisp[MSG_ERROR]);
 	disp_update();
 	usleep(2000000);
