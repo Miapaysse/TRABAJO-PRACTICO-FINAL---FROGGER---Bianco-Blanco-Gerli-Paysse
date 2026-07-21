@@ -72,6 +72,7 @@ void frontendRender(Game * game) {
 			showPlayer = 1;
 			// si estas en menu signica que volviste a empezar el juego, por lo tanto se resetea el showPlayer
 			lastLive = MAX_LIVES;
+			lastLevel = LEVEL_1;
 
 			option = (game->state).menu.selected;
 			if(option == MENU_TITLE){
@@ -159,7 +160,6 @@ void frontendRender(Game * game) {
 					showRank(game->top10.status);
 					
 					showScore(game->score);
-					lastLevel = game->level.id;
 				}
 			} else if(option == GAME_OVER_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);
@@ -182,7 +182,6 @@ void frontendRender(Game * game) {
 					showRank(game->top10.status);
 					
 					showScore(game->score);
-					lastLevel = game->level.id;
 				}
 			} else if(option == VICTORY_MENU){
 				drawMSG(msgsDisp[MSG_GO_HOME]);
