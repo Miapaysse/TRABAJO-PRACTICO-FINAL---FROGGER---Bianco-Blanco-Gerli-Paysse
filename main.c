@@ -6,18 +6,18 @@ int main(void){
     ErrorCode_t err;
 
     if((err=gameInit(&game))){
-        frontManageError(err); //aca el front imprime "errorMessage(err)"
+        frontManageError(err); //aca el front imprime el mensaje de error correspondiente
         return err;
     }
     if(frontendInit()){
-        frontManageError(err); //aca el front imprime "errorMessage(err)"
+        frontManageError(err); //aca el front imprime el mensaje de error correspondiente
         return err;
     }
     
     while(game.state.id != EXIT){
         Input_t input = frontendGetInput();
         if(updateGame(&game, input)){
-            frontManageError(err); //aca el front imprime "errorMessage(err)"
+            frontManageError(err); //aca el front imprime el mensaje de error correspondiente
             return err;
         }
         frontendRender(&game);

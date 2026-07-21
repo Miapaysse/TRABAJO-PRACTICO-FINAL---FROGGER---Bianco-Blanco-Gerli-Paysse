@@ -30,7 +30,7 @@ static void processInputPaused(Game_t * game, Input_t input);
 static void processInputGameOver(Game_t * game, Input_t input);
 static void processInputVictory(Game_t * game, Input_t input);
 static void processInputPoints(Game_t * game, Input_t input);
-static void processInputMenu(Game_t * game, Input_t input);
+static int processInputMenu(Game_t * game, Input_t input);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -71,6 +71,7 @@ int updateGame(Game_t * game, Input_t input){
             //Si estaba jugando y gano o perdio
             if (game->state.id == GAME_OVER || game->state.id == VICTORY) {
                 game->top10.status = getTop10Status(game->top10.topScores, game->score);
+                TRY(game->top10.status);
             }
             
         break;
@@ -110,6 +111,7 @@ int updateGame(Game_t * game, Input_t input){
         
         // Al iniciar solo cargamos el ranking existente; no guardamos un puntaje 0.
         game->top10.status = loadTop10(game->top10.topScores);
+        TRY(game->top10.status);
 
         game->state.id = MENU;
         game->state.menu.selected = MENU_TITLE;
@@ -144,17 +146,18 @@ void menuNext(MenuState_t *menu){
 }
 
 /////////////////////////////////////////////////////////////////MENU
-static void processInputMenu(Game_t * game, Input_t input){
+static int processInputMenu(Game_t * game, Input_t input){ //aca se procesa el input del menu y se cambia el estado del juego segun corresponda
     MenuState_t *menu = &game->state.menu;
     switch(input){
         case SELECT:
             switch(menu->selected){
-                case MENU_PLAY:
+                case MENU_PLAY: //aca se inicializa el juego y se cambia el estado a PLAYING
                     gameInit(game);
                     game->state.id = PLAYING;
                 break;
-                case MENU_POINTS:
+                case MENU_POINTS: //aca se carga el top10 y se cambia el estado a POINTS
                     game->top10.status = loadTop10(game->top10.topScores);
+                    TRY(game->top10.status);
                     game->state.id = POINTS;
                 break;
                 case MENU_EXIT:
@@ -174,6 +177,8 @@ static void processInputMenu(Game_t * game, Input_t input){
         case NONE: case RIGHT: case LEFT: default:
         break;
     }
+
+    return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////PAUSED
