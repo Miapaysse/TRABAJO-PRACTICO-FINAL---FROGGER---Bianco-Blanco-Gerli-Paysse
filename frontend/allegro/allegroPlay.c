@@ -33,7 +33,7 @@
     ALLEGRO_COLOR water_colour = al_map_rgb(0, 119, 190);
     ALLEGRO_COLOR safe_colour = al_map_rgb(46, 139, 87);
 
-
+    //Leemos cada fila del mapa y dibujamos un rectángulo de color correspondiente a la zona
     for (i=0 ; i <= MAP_HEIGHT ; i++){
         y1 = ROW(i)*SCALE;
         y2 = y1 + SCALE;
@@ -65,7 +65,7 @@
  void drawEntities( Game_t* p2game){
 
     int i, x, y,j, new_lenght, new_height, space = 10;
-    int flag_direction = 0; //flag para rotar el dibujo
+    int flag_direction = 0; //flag para rotar el dibujo segun la direccion de la entidad
 
     //Bucle generador de vehículos
     for (i=0 ; i<MAX_OBSTACLES ; i++){
@@ -82,7 +82,7 @@
                 flag_direction = ALLEGRO_FLIP_HORIZONTAL;
             }
 
-            
+            //dibujamos el vehículo correspondiente según su tipo
             switch (p2game -> entities.obstacles[i].type){
                 case CAR:
                     al_draw_scaled_bitmap(car, 0, 0, al_get_bitmap_width(car), al_get_bitmap_height(car), x, y, al_get_bitmap_width(car)-space, al_get_bitmap_height(car)-space, flag_direction);
@@ -133,6 +133,7 @@
 }
 
  void drawFrog(Game_t * p2game){
+    //Obtenemos coordenadas de la rana
     int x = (p2game -> frog.x)*SCALE;
     int y = ROW((p2game -> frog.y))*SCALE;
     int space = 35;
@@ -145,6 +146,7 @@
 
     float angle = 0;
 
+    //Rotamos la rana según la orientación en la que se encuentra
     switch (p2game->frog.frogOrientation) {
         case FROG_UP:
             angle = 0;
@@ -162,9 +164,12 @@
             angle = -ALLEGRO_PI / 2;
             break;
     }
+
+    //Dibujamos la rana en pantalla
     al_draw_scaled_rotated_bitmap(frog, width / 2.0f, height / 2.0f, x + draw_width / 2.0f, y + draw_height / 2.0f, draw_width / (float)width, draw_height / (float)height, angle, 0 );
 }
 
+//dibuja el puntaje en pantalla
  void drawScore(Game_t* p2game){
     int score = ( p2game->score);
     int spacing = 30;
@@ -173,6 +178,7 @@
     al_draw_text(small_font, white, spacing, spacing, ALLEGRO_ALIGN_LEFT, score_as_string);
 }
 
+//dibuja el numero de nivel en pantalla
  void drawLevel(Game_t* p2game){
     int level = (p2game->level.id)+1;
     int spacing = 30;
@@ -181,6 +187,7 @@
     al_draw_text(small_font, white, spacing, MAP_HEIGHT*SCALE - spacing, ALLEGRO_ALIGN_LEFT, level_as_string);
 }
 
+//dibuja las vidas restantes en pantalla
  void drawLives(Game_t* p2game){
     int text_height = al_get_font_line_height(small_font);
     int i, spacing = 30;
@@ -190,6 +197,7 @@
     }
 }
 
+//dibuja las cajas a las que deben llegar las ranas
  void drawFinishBoxes(Game_t* p2game){
     
     int i, x, y;
@@ -201,6 +209,7 @@
     }
 }
 
+//clona a la rana cuando llega a una finish box para que la muestre como ocupada
  void cloneFrog(Game_t * p2game){
     int i, x, y,zones_occupied;
 
