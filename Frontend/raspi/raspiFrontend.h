@@ -30,7 +30,7 @@ typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
 #define TIME_BLINK_BOX 900
 
 #define DISPLAY_DEFAULT_TIME 1000000
-#define DISPLAY_RANK_TIME 2500000
+#define DISPLAY_RANK_TIME 4000000
 #define DISPLAY_SCORE_TIME 1000000
 
 
