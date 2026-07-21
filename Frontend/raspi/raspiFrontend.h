@@ -34,7 +34,7 @@ typedef int DISP[MAP_WIDTH + 1][MAP_HEIGHT + 1]; //matriz 2D que simula display
 #define DISPLAY_SCORE_TIME 1000000
 
 
-void frontendInit(void);
+int frontendInit(void);
 Input frontendGetInput(void);
 void frontendRender(Game * game);
 void frontendDestroy(void);

@@ -75,18 +75,18 @@ int updateGame(Game * game, Input input){
             
         break;
         case PAUSED:
-            TRY(processInputPaused(game, input));
+            processInputPaused(game, input);
         break;
         case VICTORY:
             resetFrog(&(game->frog));
-            TRY(processInputVictory(game, input));
+            processInputVictory(game, input);
         break;
         case GAME_OVER:
             resetFrog(&(game->frog));
-            TRY(processInputGameOver(game, input));
+            processInputGameOver(game, input);
         break;
         case POINTS:
-            TRY(processInputPoints(game, input));
+            processInputPoints(game, input);
         break;
 
         case EXIT:

@@ -19,7 +19,7 @@ static uint8_t showPlayer = 1;
 static uint8_t lastLive = MAX_LIVES;
 static LevelId lastLevel = LEVEL_1;
 
-void frontendInit(void) {
+int frontendInit(void) {
     joy_init();
     disp_init();
     disp_clear();
@@ -28,6 +28,7 @@ void frontendInit(void) {
 	showPlayer = 1;
 	lastLive = MAX_LIVES;
 	lastLevel = LEVEL_1;
+	return 0;
 }
 
 void frontendDestroy(void) {
