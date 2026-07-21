@@ -72,6 +72,7 @@ void updateGame(Game * game, Input input){
             if (game->state.id == GAME_OVER || game->state.id == VICTORY) {
                 game->top10.status = getTop10Status(game->top10.topScores, game->score);
             }
+            
         break;
         case PAUSED:
             processInputPaused(game, input);
@@ -95,29 +96,33 @@ void updateGame(Game * game, Input input){
  }
 
  void gameInit(Game* game){
-    game->timeNow = clock();
-    
-    initLevel(game);
-    initFrog(&(game->frog));
+    if(game != NULL){
+        game->timeNow = clock();
+        
+        initLevel(game);
+        initFrog(&(game->frog));
 
-    game->score=MIN_SCORE;
+        game->score=MIN_SCORE;
 
-    game->lives=MAX_LIVES;
-    game->lastEntityUpdate = clock();
-    
-    // Al iniciar solo cargamos el ranking existente; no guardamos un puntaje 0.
-    game->top10.status = loadTop10(game->top10.topScores);
+        game->lives=MAX_LIVES;
+        game->lastEntityUpdate = clock();
+        
+        // Al iniciar solo cargamos el ranking existente; no guardamos un puntaje 0.
+        game->top10.status = loadTop10(game->top10.topScores);
 
-    game->state.id = MENU;
-    game->state.menu.selected = MENU_TITLE;
-    game->state.menu.optionCount = MENU_COUNT;
+        game->state.id = MENU;
+        game->state.menu.selected = MENU_TITLE;
+        game->state.menu.optionCount = MENU_COUNT;
 
-    game->state.menu = (MenuState){ MENU_TITLE, MENU_COUNT };
-    game->state.paused = (MenuState){ PAUSED_TITLE, PAUSED_COUNT };
-    game->state.gameOver = (MenuState){ GAME_OVER_TITLE, GAME_OVER_COUNT };
-    game->state.victory = (MenuState){ VICTORY_TITLE, VICTORY_COUNT };
-    game->state.points = (MenuState){ POINTS_TITLE, POINTS_COUNT };
-
+        game->state.menu = (MenuState){ MENU_TITLE, MENU_COUNT };
+        game->state.paused = (MenuState){ PAUSED_TITLE, PAUSED_COUNT };
+        game->state.gameOver = (MenuState){ GAME_OVER_TITLE, GAME_OVER_COUNT };
+        game->state.victory = (MenuState){ VICTORY_TITLE, VICTORY_COUNT };
+        game->state.points = (MenuState){ POINTS_TITLE, POINTS_COUNT };
+    }
+    else{
+        return ERR_INVALID_GAME_POINTER;
+    }
 }
 
 ///////////////////////////////////////////MENUS///////////////

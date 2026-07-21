@@ -32,7 +32,7 @@ typedef enum{
 typedef enum{
     PAUSED_TITLE,
     PAUSED_MENU,
-    PAUSED_PLAY, //DISTINTO SERIA REPLAY!!!!! MANTENER VIDAS 
+    PAUSED_PLAY, 
     PAUSED_EXIT,
     PAUSED_COUNT
 }PausedOption;
