@@ -93,6 +93,7 @@ int updateGame(Game * game, Input input){
             //no hace nada, main lo lee y termina programa
         break;
     }
+    return 0;
  }
 
  int gameInit(Game* game){

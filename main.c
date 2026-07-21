@@ -5,7 +5,7 @@ int main(void){
     Game game = {0};
     ErrorCode_t err;
 
-    if(err=gameInit(&game)){
+    if((err=gameInit(&game))){
         frontManageError(err); //aca el front imprime "errorMessage(err)"
         return err;
     }

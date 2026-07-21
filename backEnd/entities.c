@@ -195,6 +195,7 @@ int resetFinishBoxes(FinishBox *finishBox){
       for(i = 0; i < FINISH_BOX_COUNT; i++){
           finishBox[i].occupied = false;
       }
+      return 0;
   }
 }
 
