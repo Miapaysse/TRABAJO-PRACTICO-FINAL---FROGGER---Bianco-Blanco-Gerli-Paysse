@@ -14,9 +14,10 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h> 
-#include <allegro5/allegro_image.h>       // Para al_init_image_addon
-#include <allegro5/allegro_audio.h>       // Para al_install_audio
+#include <allegro5/allegro_image.h>   
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h> 
+#include <allegro5/allegro_acodec.h>
 
 #include "allegroFrontend.h"   
 #include "game.h"
@@ -89,6 +90,16 @@ void frontendInit(void) {
     if (al_init_font_addon() == false) {
         printf("Fallo font addon\n");
     }
+
+       if (!al_install_audio()) {
+        printf("failed to initialize audio!\n");
+        return;
+    }
+    if (!al_init_acodec_addon()) {
+        printf("failed to initialize audio codecs!\n");
+        return;
+    }
+
 
 
     //Creamos ventana del juego
@@ -239,11 +250,8 @@ void frontendDestroy(void){
 static void loadFiles (void){
     floater_trunk = al_load_bitmap("floater_trunk.png");
     car = al_load_bitmap("car.png");
-    printf("car=%p\n", car);
     truck = al_load_bitmap("truck.png");
-    printf("truck=%p\n", truck);
     frog = al_load_bitmap("frog.png");
-    printf("frog=%p\n", frog);
     skull = al_load_bitmap("skull.png");
     trophy = al_load_bitmap("trophy.png");
     pause_img =al_load_bitmap("pause.png");
