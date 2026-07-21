@@ -5,13 +5,14 @@ CFLAGS := -g -Wall
 # Directorios del proyecto (Con las mayúsculas exactas de tus carpetas)
 BACKEND_DIR := backEnd
 FRONTEND_DIR := Frontend
+ALLEGRO_DIR := $(FRONTEND_DIR)/allegro
 RASPI_DIR := $(FRONTEND_DIR)/raspi
 RASPI_LIBS_DIR := $(RASPI_DIR)/libs
 
 # Directorios donde se buscan los archivos .h
 INCLUDES := \
 	-I$(BACKEND_DIR) \
-	-I$(FRONTEND_DIR) \
+	-I$(ALLEGRO_DIR) \
 	-I$(RASPI_DIR) \
 	-I$(RASPI_LIBS_DIR)
 
@@ -43,9 +44,9 @@ MAIN_RASPI_OBJ := main-raspi.o
 
 # Frontend Allegro para PC
 ALLEGRO_OBJS := \
-	$(FRONTEND_DIR)/allegroFrontend.o \
-	$(FRONTEND_DIR)/allegroMenus.o \
-	$(FRONTEND_DIR)/allegroPlay.o
+	$(ALLEGRO_DIR)/allegroFrontend.o \
+	$(ALLEGRO_DIR)/allegroMenus.o \
+	$(ALLEGRO_DIR)/allegroPlay.o
 
 # Frontend Raspberry Pi
 RASPI_OBJS := \
@@ -112,14 +113,14 @@ $(BACKEND_DIR)/top10.o: \
 $(MAIN_ALLEGRO_OBJ): \
 	main.c \
 	$(BACKEND_DIR)/game.h \
-	$(FRONTEND_DIR)/allegroFrontend.h \
+	$(ALLEGRO_DIR)/allegroFrontend.h \
 	$(RASPI_DIR)/raspiFrontend.h
 	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -include allegro5/allegro.h -c $< -o $@
 
 $(MAIN_RASPI_OBJ): \
 	main.c \
 	$(BACKEND_DIR)/game.h \
-	$(FRONTEND_DIR)/allegroFrontend.h \
+	$(ALLEGRO_DIR)/allegroFrontend.h \
 	$(RASPI_DIR)/raspiFrontend.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
@@ -130,27 +131,27 @@ $(MAIN_RASPI_OBJ): \
 allegro: $(BACKEND_OBJS) $(MAIN_ALLEGRO_OBJ) $(ALLEGRO_OBJS)
 	$(CC) $(CFLAGS) $(BACKEND_OBJS) $(MAIN_ALLEGRO_OBJ) $(ALLEGRO_OBJS) -o frogger $(ALLEGRO_LIBS)
 
-$(FRONTEND_DIR)/allegroFrontend.o: \
-	$(FRONTEND_DIR)/allegroFrontend.c \
-	$(FRONTEND_DIR)/allegroFrontend.h \
-	$(FRONTEND_DIR)/allegroFrontendInternal.h \
+$(ALLEGRO_DIR)/allegroFrontend.o: \
+	$(ALLEGRO_DIR)/allegroFrontend.c \
+	$(ALLEGRO_DIR)/allegroFrontend.h \
+	$(ALLEGRO_DIR)/allegroFrontendInternal.h \
 	$(BACKEND_DIR)/game.h \
 	$(BACKEND_DIR)/entities.h \
 	$(BACKEND_DIR)/config.h
 	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -c $< -o $@
 
-$(FRONTEND_DIR)/allegroMenus.o: \
-	$(FRONTEND_DIR)/allegroMenus.c \
-	$(FRONTEND_DIR)/allegroFrontendInternal.h \
-	$(FRONTEND_DIR)/allegroFrontend.h \
+$(ALLEGRO_DIR)/allegroMenus.o: \
+	$(ALLEGRO_DIR)/allegroMenus.c \
+	$(ALLEGRO_DIR)/allegroFrontendInternal.h \
+	$(ALLEGRO_DIR)/allegroFrontend.h \
 	$(BACKEND_DIR)/game.h \
 	$(BACKEND_DIR)/entities.h \
 	$(BACKEND_DIR)/config.h
 	$(CC) $(CFLAGS) $(INCLUDES) $(ALLEGRO_CFLAGS) -c $< -o $@
 
-$(FRONTEND_DIR)/allegroPlay.o: \
-	$(FRONTEND_DIR)/allegroPlay.c \
-	$(FRONTEND_DIR)/allegroFrontendInternal.h \
+$(ALLEGRO_DIR)/allegroPlay.o: \
+	$(ALLEGRO_DIR)/allegroPlay.c \
+	$(ALLEGRO_DIR)/allegroFrontendInternal.h \
 	$(BACKEND_DIR)/game.h \
 	$(BACKEND_DIR)/entities.h \
 	$(BACKEND_DIR)/config.h
@@ -195,5 +196,5 @@ raspi-libs:
 clean:
 	rm -f frogger $(MAIN_ALLEGRO_OBJ) $(MAIN_RASPI_OBJ)
 	rm -f $(BACKEND_DIR)/*.o
-	rm -f $(FRONTEND_DIR)/*.o
+	rm -f $(ALLEGRO_DIR)/*.o
 	rm -f $(RASPI_DIR)/*.o

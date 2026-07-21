@@ -146,10 +146,10 @@ static void processInputMenu(Game * game, Input input){
                     game->state.id = PLAYING;
                 break;
                 case MENU_POINTS:
+                    game->top10.status = loadTop10(game->top10.topScores);
                     game->state.id = POINTS;
                 break;
                 case MENU_EXIT:
-                    game->top10.status = getTop10Status(game->top10.topScores, game->score);
                     game->state.id = EXIT;
                 break;
                 default:
@@ -174,14 +174,12 @@ void processInputPaused(Game *game, Input input){
         case SELECT:
             switch ( (game->state.paused).selected ){
                 case PAUSED_MENU: 
-                    game->top10.status = getTop10Status(game->top10.topScores, game->score);
                     game->state.id = MENU;
                 break;
                 case PAUSED_PLAY:
                     game->state.id = PLAYING; //////////////ANALIZAR TEMA VIDAS REPLAY
                 break;
                 case PAUSED_EXIT:
-                    game->top10.status = getTop10Status(game->top10.topScores, game->score);
                     game->state.id = EXIT;
                 break;
             }
@@ -271,7 +269,6 @@ void processInputPoints(Game * game, Input input){
                     break;
 
                     case POINTS_EXIT:
-                        game->top10.status = getTop10Status(game->top10.topScores, game->score);
                         game->state.id = EXIT;
                     break;
                 }
