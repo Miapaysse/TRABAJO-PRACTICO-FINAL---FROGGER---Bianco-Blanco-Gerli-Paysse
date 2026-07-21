@@ -210,10 +210,15 @@ static int allFinishBoxesOccupied(Game *game){
 }
 
 int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en una casilla libre y la ocupamos, si no esta libre la rana muere
-    if (arrivedAtFinishLine((game->frog).y)){
-            occupyFinishBox(game); 
+    if(game != NULL){
+        if (arrivedAtFinishLine((game->frog).y)){
+                occupyFinishBox(game); 
+        }
+        return 0;
     }
-    return 0;
+    else {
+        return ERR_INVALID_GAME_POINTER;
+    }
 }
 
 int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
