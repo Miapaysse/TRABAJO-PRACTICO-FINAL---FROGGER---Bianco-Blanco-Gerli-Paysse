@@ -16,20 +16,16 @@
 /*******************************************************************************
  * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-#define MAX_ERRORS 10
-typedef struct{
-    int code;
-    char *message;
-}Error_t;
 
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-const char * errorMessage(ErrorCode_t error);
-/*******************************************************************************
+
+ /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+const char * errorMessage(ErrorCode_t error);
 
 /**
  * @brief TODO: completar descripcion
