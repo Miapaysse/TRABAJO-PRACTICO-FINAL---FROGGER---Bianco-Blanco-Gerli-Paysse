@@ -1,3 +1,14 @@
+/***************************************************************************//**
+  @file     +raspiDraw.c+
+  @brief    +Funciones y variables para dibujar sobre el display de LEDs+
+  @author   +Bianco-Blanco-Gerli-Paysse+
+ ******************************************************************************/
+
+ 
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdint.h>
 #include "disdrv.h"
@@ -7,6 +18,11 @@
 #include "levels.h"
 #include "entities.h"
 #include "config.h"
+
+
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
 
 // Defino arreglo de bitmaps con distintos mensajes
 const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
@@ -136,7 +152,7 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111,
 			0b1111111111111111
 		},
-		{ //U'RE IN TOP 10
+		{ //Reached top 10, "IN TOP 10"
 			0b1111111111111111,
 			0b1110001011011111,
 			0b1111011001011111,
@@ -154,7 +170,7 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111101000111111,
 			0b1111111111111111
 		},
-		{ //ERROR
+		{ //ERROR "?""
 			0b1111111111111111,
 			0b1111111111111111,
 			0b1111111111111111,
@@ -172,10 +188,15 @@ const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1] = {
 			0b1111111111111111,
 			0b1111111111111111
 		}
-
 };
 
+
+/*******************************************************************************
+ * STATIC VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
 static DISP bufferDisplay; // buffer para cargar lo que muestra finalmente
+
 
 static const DISP menuBackground = {
 	{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
@@ -201,7 +222,15 @@ static const int digits[10][DIGIT_HEIGHT][DIGIT_WIDTH] = { //Arreglo con todos l
 	{ {0,0,0}, {0,1,0}, {0,0,0}, {1,1,0}, {0,0,0} }  // Nro 9
 };
 
-static int popFromOtherSide(int x) { //Dibuja la parte de la entitie que debe aparece por el otro lado
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+static int popFromOtherSide(int x) { //Dibuja la parte de la entity que debe aparecer por el otro lado
     int width = MAP_WIDTH + 1;
     x %= width; //toma su cordenada en x y ve cuanto se fue del mapa
     if (x < 0) { // Si es negativa, es por que debe aparecer por la izquierda
@@ -217,6 +246,13 @@ static void passDrawing(int x, int y, dlevel_t val) {
     x = popFromOtherSide(x);
     disp_write((dcoord_t){ .x = x, .y = y }, val);
 }
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        GLOBAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
 
 void drawMSG(const uint16_t msg[MAP_HEIGHT+1]){
 	int f, c, ledState = 0;
@@ -311,15 +347,14 @@ void drawZone(const Row *rows) {
 
 void drawObstacles(const Entity obstacles[]){
 	int idxObs, len, rDisp;
-	int x_disp, y_disp;
+	int cDisp;
 
 	for (idxObs = 0; idxObs < MAX_OBSTACLES; idxObs++){
 		if (obstacles[idxObs].active){ // si existe obstáculo
 			rDisp = ROW(obstacles[idxObs].y);
-			y_disp = rDisp;
 			for (len = 0; len < obstacles[idxObs].length; len++){ // itera por largo
-				x_disp = obstacles[idxObs].x + len;
-				passDrawing(x_disp, y_disp, D_ON); // obstaculos prendidos
+				cDisp = obstacles[idxObs].x + len;
+				passDrawing(cDisp, rDisp, D_ON); // obstaculos prendidos
 			}
 		}
 	}
@@ -327,15 +362,14 @@ void drawObstacles(const Entity obstacles[]){
 
 void drawFloaters(const Entity floaters[]){
 	int idxFlo, len, rDisp;
-	int x_disp, y_disp;
+	int cDisp;
 
 	for (idxFlo = 0; idxFlo < MAX_FLOATERS; idxFlo++){
 		if (floaters[idxFlo].active){ // si existe floater
 			rDisp = ROW(floaters[idxFlo].y);
-			y_disp = rDisp;
 			for (len = 0; len < floaters[idxFlo].length; len++){ // itera por largo
-				x_disp = floaters[idxFlo].x + len;
-				passDrawing(x_disp, y_disp, D_OFF); // Floaters apagados sobre agua
+				cDisp = floaters[idxFlo].x + len;
+				passDrawing(cDisp, rDisp, D_OFF); // Floaters apagados sobre agua
 			}
 		}
 	}
@@ -354,12 +388,12 @@ void drawBoxes (FinishBox boxes[], int blink){
 }
 
 void drawFrog(const Frog * frog, int blink) {
-	int x_disp = frog->x;
+	int cDisp = frog->x;
 	int y_disp = ROW(frog->y);
 	if (blink) {
-		passDrawing(x_disp, y_disp, D_ON);
+		passDrawing(cDisp, y_disp, D_ON);
 	} else {
-		passDrawing(x_disp, y_disp, D_OFF);
+		passDrawing(cDisp, y_disp, D_OFF);
 	}
 }
 

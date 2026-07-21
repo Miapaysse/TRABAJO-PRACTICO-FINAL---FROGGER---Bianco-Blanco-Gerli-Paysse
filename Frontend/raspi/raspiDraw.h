@@ -1,10 +1,27 @@
+/***************************************************************************//**
+  @file     +raspiDraw.h+
+  @brief    +Parametros y prototipos de funciones para dibujar sobre el display+
+  @author   +Bianco-Blanco-Gerli-Paysse+
+ ******************************************************************************/
+
 #ifndef RASPI_DRAW_H
 #define RASPI_DRAW_H
+
+
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+
 
 #include <stdint.h>
 #include "config.h"
 #include "levels.h"
 // Para usar el typedef DISP y los macros
+
+
+/*******************************************************************************
+ * CONSTANTS, MACROS, ENUMERATIONS, STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
 
 // Enumerador de mensajes para acceder a la matriz
 enum msgs {
@@ -26,19 +43,73 @@ enum msgs {
 	MSG_MAX_MENUS
 };
 
+
+/*******************************************************************************
+ * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
 // Exponemos la matriz de mensajes para que frontendRender pueda usarla
 extern const uint16_t msgsDisp[MSG_MAX_MENUS][MAP_HEIGHT + 1];
 
-// Prototipos de funciones de dibujo
+
+/*******************************************************************************
+ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
+ ******************************************************************************/
 
 void drawZone(const Row * rows);
+/**
+ * @brief TODO: dibuja zona en display, fila por fila según backend
+ * @param param1 rows puntero a arreglo con las caracteristicas de cada fila
+ * @return Nada
+*/
+
 void drawObstacles(const Entity obstacles[]);
+/**
+ * @brief TODO: dibuja obstáculos 
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Nada
+*/
+
 void drawFloaters(const Entity floaters[]);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Nada
+*/
+
 void drawFrog(const Frog * frog, int blink);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Nada
+*/
 
 void drawMSG(const uint16_t bitmap[MAP_HEIGHT+1]);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Nada
+*/
+
 void drawScore(int idxScore, uint16_t score);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Devuelve un entero para manejo de errores
+*/
+
 void drawBoxes (FinishBox boxes[], int blink);
+/**
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Nada
+*/
 
 void showRank(const Top10Status status);
 void showScore(const uint16_t score);
