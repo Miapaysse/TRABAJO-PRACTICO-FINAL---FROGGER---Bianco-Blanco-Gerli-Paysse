@@ -45,11 +45,10 @@ Input_t frontendGetInput(void);
 void frontendRender(Game_t * game);
 
 /**
- * @brief TODO: Esta funcion actualiza el puntaje cada vez que la rana llega a una zona segura. 
- * @param frog Recibe el puntero a la rana para analizar si llego a una zona segura
- * @param score Recibe el puntero al puntaje 
- * @return devuelve un entero para control de errores
-*/
+ * @brief TODO: Esta funcion dibuja en pantalla el estado actual del juego, incluyendo la rana,
+ *  los enemigos, el puntaje, el nivel y las vidas restantes.
+ * @param game Recibe el puntero a la estructura que contiene el estado del juego.
+ * @return No devuelve nada.
 
 void frontendDestroy(void);
 

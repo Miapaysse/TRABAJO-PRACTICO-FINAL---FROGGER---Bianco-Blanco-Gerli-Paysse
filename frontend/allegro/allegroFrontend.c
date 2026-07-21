@@ -62,40 +62,36 @@ ALLEGRO_COLOR pink;
  ******************************************************************************/
 
 int frontendInit(void) {
-
     //Inicializa el núcleo de Allegro y todos los subsistemas necesarios para el juego. 
     if (al_init() == false) {
         return ERR_ALLEGRO_INIT_FAILED;
     }
-    //Inicializa
+    //Inicializa el subsistema de teclado de Allegro
     if (al_install_keyboard() == false) {
         return ERR_KEYBOARD_INIT_FAILED;
     }
-
+    //Inicializa el subsistema de fuentes de Allegro
     if (al_init_image_addon() == false) {
         return ERR_IMAGE_ADDON_FAILED;
     }
-
+    //Inicializa el subsistema de primitivas de Allegro
     if (al_init_primitives_addon() == false) {
         return ERR_PRIMITIVES_ADDON_FAILED;
     }
-
+    //Inicializa el subsistema de fuentes de Allegro
     if (al_init_font_addon() == false) {
         return ERR_FONT_ADDON_FAILED;
     }
-
     //Creamos ventana del juego
     al_set_new_display_flags(ALLEGRO_WINDOWED);
-
     display = al_create_display(MAP_WIDTH*SCALE, (MAP_HEIGHT+1)*SCALE);
     if(display == NULL) {
         return ERR_DISPLAY_INIT_FAILED;
     }
-
+    //Inicializa el subsistema de fuentes TrueType de Allegro
     if (al_init_ttf_addon() == false) {
         return ERR_FONT_ADDON_FAILED;
     }
-
     //Creamos la cola de eventos para manejar el teclado y la ventana
     queue = al_create_event_queue();
     if(queue == NULL) {
