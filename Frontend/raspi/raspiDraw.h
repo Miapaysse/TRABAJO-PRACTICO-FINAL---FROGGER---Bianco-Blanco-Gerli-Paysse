@@ -22,6 +22,7 @@ enum msgs {
 	LIVE_LOSED,
 	NEXT_LEVEL,
 	MY_RANKING,
+	MSG_ERROR,
 	MSG_MAX_MENUS
 };
 

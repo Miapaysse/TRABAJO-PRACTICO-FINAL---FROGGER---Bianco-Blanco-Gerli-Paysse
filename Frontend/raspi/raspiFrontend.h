@@ -38,5 +38,6 @@ void frontendInit(void);
 Input frontendGetInput(void);
 void frontendRender(Game * game);
 void frontendDestroy(void);
+void  frontManageError(ErrorCode_t err);
 
 #endif

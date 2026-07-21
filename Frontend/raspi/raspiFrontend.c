@@ -199,3 +199,8 @@ void frontendRender(Game * game) {
 	disp_update();
 }
 
+void frontManageError(ErrorCode_t err){
+	drawMSG(msgsDisp[MSG_ERROR]);
+	disp_update();
+	usleep(2000000);
+}
