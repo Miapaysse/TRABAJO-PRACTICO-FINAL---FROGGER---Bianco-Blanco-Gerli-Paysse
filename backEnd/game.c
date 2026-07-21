@@ -53,7 +53,7 @@ static void processInputMenu(Game * game, Input input);
  ******************************************************************************/
 
 
-void updateGame(Game * game, Input input){
+int updateGame(Game * game, Input input){
     game->timeNow = clock();
     switch ((game->state).id){
         case MENU: 
@@ -62,11 +62,11 @@ void updateGame(Game * game, Input input){
         case PLAYING:
             processInputPlaying(&(game->state),input, &(game->frog));
 
-            updateEntities(game);
+            TRY(updateEntities(game));
 
-            manageInteractions(game);
+            TRY(manageInteractions(game));
 
-            checkLevel(game);
+            TRY(checkLevel(game));
 
             //Si estaba jugando y gano o perdio
             if (game->state.id == GAME_OVER || game->state.id == VICTORY) {
@@ -75,18 +75,18 @@ void updateGame(Game * game, Input input){
             
         break;
         case PAUSED:
-            processInputPaused(game, input);
+            TRY(processInputPaused(game, input));
         break;
         case VICTORY:
             resetFrog(&(game->frog));
-            processInputVictory(game, input);
+            TRY(processInputVictory(game, input));
         break;
         case GAME_OVER:
             resetFrog(&(game->frog));
-            processInputGameOver(game, input);
+            TRY(processInputGameOver(game, input));
         break;
         case POINTS:
-            processInputPoints(game, input);
+            TRY(processInputPoints(game, input));
         break;
 
         case EXIT:

@@ -53,6 +53,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #define ISEVEN(x) ((x)%2==0)
+
+#define TRY(x) (do { int err = (x); if(err) return err; } while(0))
 ////////////////////////////////////////////////////////////////
 
 typedef enum{
@@ -74,6 +76,8 @@ typedef enum{
   ERR_INVALID_FLOATER_COUNT,
   ERR_INVALID_OBSTACLE_COUNT
 }ErrorCode_t;
+
+
 
 typedef enum{ //con esto aca funco entites.h con rapsi
    UP,

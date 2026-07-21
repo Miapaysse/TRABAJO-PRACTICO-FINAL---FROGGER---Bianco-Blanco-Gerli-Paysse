@@ -122,7 +122,7 @@ typedef struct Game {
  ******************************************************************************/
 
 
- void updateGame(Game * game, Input input);
+int updateGame(Game * game, Input input);
  /**
  * @brief TODO: updates the game
  * @param param1 Descripcion parametro 1

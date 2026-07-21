@@ -3,12 +3,23 @@
 
 int main(void){
     Game game = {0};
-    gameInit(&game);
-    frontendInit();
+    ErrorCode_t err;
 
+    if(err=gameInit(&game)){
+        frontManageError(err); //aca el front imprime "errorMessage(err)"
+        return err;
+    }
+    if(frontendInit()){
+        frontManageError(err); //aca el front imprime "errorMessage(err)"
+        return err;
+    }
+    
     while(game.state.id != EXIT){
         Input input = frontendGetInput();
-        updateGame(&game, input);
+        if(updateGame(&game, input)){
+            frontManageError(err); //aca el front imprime "errorMessage(err)"
+            return err;
+        }
         frontendRender(&game);
     }
 
