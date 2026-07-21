@@ -60,6 +60,7 @@ typedef enum{
   ERR_INVALID_GAME_POINTER, 
   ERR_INVALID_LEVEL_POINTER,
   ERR_INVALID_FROG_POINTER,
+  ERR_INVALID_ENTITY_POINTER
   ERR_INVALID_OBSTACLE_POINTER,
   ERR_INVALID_FLOATER_POINTER,
   ERR_INVALID_SCORE_POINTER,
@@ -78,7 +79,7 @@ typedef enum{ //con esto aca funco entites.h con rapsi
    LEFT,
    RIGHT,
    SELECT,
-   NONE
+   NONE,  
 } Input;
 
 typedef enum{ //con esto aca funco entites.h con rapsi

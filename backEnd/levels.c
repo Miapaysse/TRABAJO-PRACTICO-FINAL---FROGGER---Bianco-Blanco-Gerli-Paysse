@@ -216,7 +216,7 @@ int checkLevel(Game * game){ //Si llego a la linea de meta chequeamos si cayo en
     return 0;
 }
 
-  int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
+int goToNextLevel(Game * game){ //Avanzamos al siguiente nivel dependiendo del nivel en el que estamos 
     int errorType;
     if(game != NULL){ 
         game->lastEntityUpdate = clock();
